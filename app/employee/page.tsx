@@ -6,9 +6,15 @@ import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
 import { Member } from "@/lib/member/memberConstants";
 import { getEmployees } from "@/lib/serverFunctions";
+import { Metadata } from "next";
 
 type Props = {
   searchParams: { page: string };
+};
+
+export const metadata: Metadata = {
+  title: "Pengurus",
+  description: "Daftar Pengurus IPSI Kota Bandung",
 };
 
 const page = async ({ searchParams }: Props) => {

@@ -21,7 +21,7 @@ type Props = {
 export function generateMetadata({ params }: Props): Metadata {
   const label = getSpecialUserLabel(params.athleteType);
   return {
-    title: label,
+    title: label.replace("Atlet ", ""),
     description: `Informasi tentang ${label} IPSI Kota Bandung`,
   };
 }
