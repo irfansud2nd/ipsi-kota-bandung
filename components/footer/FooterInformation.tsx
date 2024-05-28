@@ -1,0 +1,98 @@
+import Link from "next/link";
+import Container from "../ui/Container";
+import { IoMdMail } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
+import { FaFacebookF, FaInstagram, FaPhone } from "react-icons/fa6";
+import React from "react";
+
+const FooterInformation = () => {
+  const logos = [
+    {
+      src: "/images/src1.png",
+      alt: "logo 1",
+    },
+    {
+      src: "/images/src1.png",
+      alt: "logo 2",
+    },
+    {
+      src: "/images/src1.png",
+      alt: "logo 3",
+    },
+    {
+      src: "/images/src1.png",
+      alt: "logo 4",
+    },
+  ];
+
+  const socmeds = [
+    {
+      href: "https://www.instagram.com/ipsikotabandung",
+      icon: <FaInstagram />,
+    },
+    {
+      href: "https://web.facebook.com/profile.php?id=100075907940926",
+      icon: <FaFacebookF />,
+    },
+  ];
+
+  return (
+    <div className="w-full bg-muted py-5">
+      <Container className="px-5 md:px-10">
+        <div className="flex justify-between max-md:flex-col gap-y-5">
+          <div className="flex flex-col gap-3 max-md:order-2">
+            <Link
+              href={"https://maps.app.goo.gl/hy5xcJnrxGn4Aurs9"}
+              className="hover:text-blue-400 transition flex gap-1 items-center"
+            >
+              <IoLocationSharp className="size-10 min-w-10 min-h-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <div>
+                <p className="font-semibold">Sekretariat IPSI Kota Bandung</p>
+                <p>Jl. Jakarta No.18 (GOR KONI Kota Bandung) </p>
+                <p>Kacapiring, Batununggal, Kota Bandung, Jawa Barat 40271</p>
+              </div>
+            </Link>
+            <div className="flex gap-1 items-center">
+              <FaPhone className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <div>
+                <p className="font-semibold">Telepon</p>
+                <p>0821-1132-3283</p>
+              </div>
+            </div>
+            <Link
+              href={"mailto:ipsikotabandungofficial@gmail.com"}
+              className="hover:text-blue-400 transition flex gap-1 items-center"
+            >
+              <IoMdMail className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <div>
+                <p className="font-semibold">Email</p>
+                <p>ipsikotabandungofficial@gmail.com</p>
+              </div>
+            </Link>
+          </div>
+          <div className="flex gap-2 justify-center max-md:order-1">
+            {logos.map((image) => (
+              <div
+                className="size-[70px] bg-gray-200 flex justify-center items-center"
+                key={image.alt}
+              >
+                {image.alt}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex gap-3 mt-5">
+          {socmeds.map((socmed) => (
+            <Link href={socmed.href} target="_blank" key={socmed.href}>
+              {React.cloneElement(socmed.icon, {
+                className:
+                  "size-10 p-1 bg-blue-400 hover:bg-transparent text-black hover:text-blue-400 transition rounded-full inline mr-2 border-2 border-blue-400",
+              })}
+            </Link>
+          ))}
+        </div>
+      </Container>
+    </div>
+  );
+};
+export default FooterInformation;

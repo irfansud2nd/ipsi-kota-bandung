@@ -1,0 +1,39 @@
+import NewsList from "@/components/news/NewsList";
+import { Metadata } from "next";
+import { News } from "@/lib/news/newsConstants";
+import { getNewsArr } from "@/lib/serverFunctions";
+import PagePagination from "@/components/ui/PagePagination";
+import PageBanner from "@/components/ui/PageBanner";
+
+export const metadata: Metadata = {
+  title: "Berita",
+  description: "Kumpulan Berita IPSI Kota Bandung",
+};
+
+const page = async ({ searchParams }: { searchParams: { page: string } }) => {
+  let limit = 6;
+  const page = Number(searchParams.page) || 1;
+  const newsArr: News[] = await getNewsArr(page, limit);
+
+  return (
+    <div>
+      <PageBanner
+        imgUrl="/images/home-banner-people.jpg"
+        title="Berita"
+        className="text-white"
+        text="IPSI Kota Bandung"
+      />
+      <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5  w-full">
+        <NewsList newsArr={newsArr} />
+        <PagePagination
+          page={page}
+          limit={limit}
+          dataLength={newsArr.length}
+          link="/news?"
+          className="mt-5 md:justify-end md:px-10"
+        />
+      </div>
+    </div>
+  );
+};
+export default page;

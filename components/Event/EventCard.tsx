@@ -1,0 +1,75 @@
+import { Championship, Event } from "@/lib/event/eventConstants";
+import Link from "next/link";
+import { IoLocationSharp } from "react-icons/io5";
+import { FaCalendarAlt, FaSignInAlt } from "react-icons/fa";
+import { formatDate } from "@/lib/functions";
+import { FaClock } from "react-icons/fa6";
+
+type Props = {
+  event: Event | Championship;
+};
+const EventCard = ({ event }: Props) => {
+  const championship =
+    (event as Championship).register !== undefined
+      ? (event as Championship)
+      : undefined;
+  const link = `/${championship ? "championship" : "event"}/${event.id}`;
+
+  return (
+    <div className="rounded-lg bg-muted overflow-hidden hover:drop-shadow-lg hover:-translate-y-1 transition-all">
+      <Link href={link}>
+        <img
+          src={event.image.downloadUrl}
+          className="w-full aspect-video object-cover object-center"
+        />
+      </Link>
+      <div className="p-3">
+        <Link
+          href={link}
+          className="text-xl font-semibold block mb-2 hover:text-green-500 transition"
+        >
+          {event.title}
+        </Link>
+        <div className="flex gap-2 items-center">
+          <IoLocationSharp className="size-5 min-w-5 min-h-5 text-green-500" />
+          {event.location.url ? (
+            <Link
+              href={event.location.url}
+              className="hover:text-green-400 transition"
+            >
+              <span>{event.location.name}</span>
+            </Link>
+          ) : (
+            <span>{event.location.name}</span>
+          )}
+        </div>
+        <div className="border-t-2 mt-2 pt-2 flex justify-between items-center">
+          <FaCalendarAlt className="size-5 mr-2 text-green-500" />
+          <p>
+            {formatDate(event.date.start, {
+              withoutHour: true,
+              longMonth: true,
+            })}
+          </p>
+          {championship ? (
+            championship.register.date.start < Date.now() && (
+              <Link
+                href={`/championship/${event.id}/register`}
+                className="ml-auto hover:text-green-500 transition flex gap-2 items-center"
+              >
+                <FaSignInAlt className="size-5 text-green-500" />
+                Pendaftaran
+              </Link>
+            )
+          ) : (
+            <>
+              <FaClock className="size-5 mr-2 ml-auto text-green-500" />
+              <p>{formatDate(event.date.start, { hourOnly: true })}</p>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+export default EventCard;
