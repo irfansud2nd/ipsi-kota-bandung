@@ -3,7 +3,7 @@ import Container from "../ui/Container";
 
 const FooterOwner = () => {
   return (
-    <div className="w-full bg-blue-500 py-3">
+    <div className="w-full bg-blue-400 py-3">
       <Container className="px-10">
         <p className="inline">
           <span className="font-semibold">© 2024 IPSI KOTA BANDUNG</span>

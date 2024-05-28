@@ -47,7 +47,7 @@ const page = () => {
           <img
             src="/images/logo-ipsi-bandung.png"
             alt="logo ipsi kota bandung"
-            className="h-[150px] w-fit my-auto"
+            className="h-[150px] w-fit object-scale-down my-auto"
           />
           <div className="flex-grow">
             <h2 className="text-xl font-semibold">Sekilas Profil</h2>

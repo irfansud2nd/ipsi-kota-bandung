@@ -23,7 +23,7 @@ const MemberCard = ({ member, className }: Props) => {
       <img
         src={imageSource}
         alt={`Foto ${member.name}`}
-        className="bg-gray-200 aspect-square object-cover object-center"
+        className="bg-gray-200 w-full aspect-square object-cover object-center"
       />
       <div className="p-2">
         <h3 className="text-lg font-medium">{member.name}</h3>
