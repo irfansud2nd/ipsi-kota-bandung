@@ -136,7 +136,7 @@ const EventDisplay = ({ event, preview }: Props) => {
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-5 border-b-2 pb-2">
         <h3 className="font-bold text-xl">Tentang {event.title}</h3>
         <p>{event.description}</p>
       </div>

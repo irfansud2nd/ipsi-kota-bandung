@@ -28,7 +28,7 @@ const Error = ({
           className="max-w-[50vw] w-[150px] sm:w-[250px]"
         />
       </div>
-      <p className="text-muted-foreground">{error.message}</p>
+      <p className="text-muted-foreground text-center">{error.message}</p>
       <div className="flex gap-2">
         <Button onClick={reset}>Coba lagi</Button>
         <Button asChild>

@@ -14,7 +14,6 @@ import {
 import { getChampionships } from "@/lib/event/eventFunctions";
 import Link from "next/link";
 import EventCard from "@/components/Event/EventCard";
-import { Championship, Event } from "@/lib/event/eventConstants";
 
 type Props = {
   params: { eventId: string; eventType: string };
@@ -41,7 +40,7 @@ const page = async ({ params }: Props) => {
   const isChampionship = params.eventType == "championship";
   const events = isChampionship
     ? getChampionships(1, 6, event)
-    : await getEvents(1, 6);
+    : await getEvents(1, 6, event);
 
   if (!event) return notFound();
 
@@ -50,14 +49,14 @@ const page = async ({ params }: Props) => {
       <EventDisplay event={event} />
 
       {events.length > 0 && (
-        <div className={`py-2 mt-4 border-t-2`}>
+        <div className={`mt-4 bg-muted rounded p-2`}>
           <Link
-            className="text-xl font-semibold hover:text-green-500 transition"
+            className="text-xl font-semibold hover:text-green-500 transition ml-14"
             href={isChampionship ? "/championship" : "/event"}
           >
             {isChampionship ? "Kejuaraan" : "Event"} Lainnya
           </Link>
-          <Carousel className="mx-5 md:mx-10">
+          <Carousel className="mx-12 mt-4 px-2">
             <CarouselContent>
               {events.map((event) => (
                 <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
