@@ -11,7 +11,7 @@ import { SheetClose } from "../ui/sheet";
 import Link from "next/link";
 import { getAdminLinks } from "@/lib/admin/adminActions";
 
-const Links = ({
+const LinksComp = ({
   menu,
 }: {
   menu: { links: Links; groupedLinks: GroupedLinks };
@@ -59,7 +59,7 @@ const MobileMenuLinks = async () => {
 
   return (
     <>
-      <Links menu={clientLinks} />
+      <LinksComp menu={clientLinks} />
       {showAdminMenu && (
         <div className="mt-2">
           <div className="border-y-2 py-1 flex items-center gap-1">
@@ -69,7 +69,7 @@ const MobileMenuLinks = async () => {
             </h2>
             <span className="border-t-2 w-full" />
           </div>
-          <Links menu={adminMenu} />
+          <LinksComp menu={adminMenu} />
         </div>
       )}
     </>
