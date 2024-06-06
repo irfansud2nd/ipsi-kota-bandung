@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import ChampionshipMenuButton from "@/components/championship/register/menu/ChampionshipMenuButton";
+import { notFound, redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -10,10 +11,16 @@ type Props = {
 const page = ({ params }: Props) => {
   const { eventType, eventId } = params;
   if (eventType != "championship") return notFound();
+
+  redirect("register/contingent");
+
   return (
-    <div>
-      <p>{eventType}</p>
-      <p>{eventId}</p>
+    <div className="h-[3000px] bg-green-200">
+      <div className="flex items-center ">
+        <ChampionshipMenuButton />
+        <p>{eventType}</p>
+        <p>{eventId}</p>
+      </div>
     </div>
   );
 };

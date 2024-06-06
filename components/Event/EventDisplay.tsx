@@ -4,8 +4,8 @@ import { formatDate } from "@/lib/functions";
 import Link from "next/link";
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
-import { FaClock, FaUser } from "react-icons/fa6";
-import { IoLocationSharp } from "react-icons/io5";
+import { FaClock, FaRectangleList, FaUser } from "react-icons/fa6";
+import { IoDocumentText, IoLocationSharp } from "react-icons/io5";
 
 type Props = {
   event: Event;
@@ -30,7 +30,9 @@ const EventDisplay = ({ event, preview }: Props) => {
     {
       label: "Penyelenggara",
       icon: <FaUser />,
-      content: event.creator.name,
+      content: event.creator.name.length
+        ? event.creator.name
+        : "IPSI Kota Bandung",
     },
     {
       label: "Lokasi",
@@ -38,7 +40,7 @@ const EventDisplay = ({ event, preview }: Props) => {
       content: event.location.url ? (
         <Link
           href={event.location.url}
-          className="hover:text-green- transition"
+          className="hover:text-primary transition"
           target="_blank"
         >
           {event.location.name}
@@ -82,25 +84,75 @@ const EventDisplay = ({ event, preview }: Props) => {
     },
   ];
 
-  const championships =
+  const championship =
     (event as Championship).register !== undefined
       ? (event as Championship)
       : undefined;
 
-  if (championships) {
+  if (championship) {
     infos = infos.filter((info) => info.label !== "Waktu Event");
-    infos.push({
-      label: "Link Pendaftaran",
-      icon: <FaClock />,
-      content: (
-        <Link
-          href={`/championship/${event.id}/register`}
-          className="hover:text-green-400 transition"
-        >
-          Klik disini
-        </Link>
-      ),
-    });
+    const championshipInfos = [
+      {
+        label: "Waktu Pendaftaran",
+        icon: <FaCalendarAlt />,
+        content: (
+          <span className="whitespace-nowrap">
+            {formatDate(championship.register.start, {
+              longMonth: true,
+              withoutHour: true,
+              withoutYear: championship.register.end != 0,
+            })}
+            {" - "}
+            {formatDate(championship.register.end, {
+              longMonth: true,
+              withoutHour: true,
+            })}
+          </span>
+        ),
+      },
+      {
+        label: "Technical Meeting",
+        icon: <FaCalendarAlt />,
+        content: (
+          <span className="whitespace-nowrap">
+            {formatDate(championship.techmeet.date, {
+              longMonth: true,
+            })}
+          </span>
+        ),
+      },
+      {
+        label: "Proposal",
+        icon: <IoDocumentText />,
+        content: championship.proposal ? (
+          <Link
+            href={championship.proposal}
+            className="hover:text-green-400 transition"
+          >
+            Klik disini
+          </Link>
+        ) : (
+          <span className="text-muted-foreground">Belum tersedia</span>
+        ),
+      },
+      {
+        label: "Link Pendaftaran",
+        icon: <FaRectangleList />,
+        content:
+          Date.now() <= championship.register.start ? (
+            <span className="text-muted-foreground">Belum dibuka</span>
+          ) : (
+            <Link
+              href={`/championship/${championship.id}/register`}
+              className="hover:text-green-400 transition"
+            >
+              Klik disini
+            </Link>
+          ),
+      },
+    ];
+
+    infos = infos.concat(championshipInfos);
   }
 
   return (

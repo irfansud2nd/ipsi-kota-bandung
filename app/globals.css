@@ -60,6 +60,9 @@
   .gradient_colors {
     @apply from-blue-400 via-yellow-400 to-green-400;
   }
+  .registration_content {
+    @apply bg-muted rounded-md p-1 mt-1;
+  }
 
   /* INPUT */
   .input_container {

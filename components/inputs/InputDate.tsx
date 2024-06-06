@@ -6,8 +6,7 @@ import { championships } from "@/lib/event/eventConstants";
 import { Input } from "../ui/input";
 import ErrorText from "../ui/ErrorText";
 import { InputProps, getInputValue } from "@/lib/form/formConstants";
-import { formatDate } from "@/lib/functions";
-import { dateToNumber } from "@/lib/form/formFunctions";
+import { dateToNumber, formatDate } from "@/lib/functions";
 type Props = InputProps & {
   time?: boolean;
 };
@@ -52,9 +51,13 @@ const InputDate = ({
         onBlur={() => setFieldTouched(name, true)}
         className={`${errors[name] && touched[name] && "border-destructive"}`}
         type={time ? "time" : "date"}
-        value={formatDate(value, { htmlFormat: true, hourOnly: time })}
+        value={formatDate(value, {
+          htmlFormat: true,
+          hourOnly: time,
+          withoutHour: true,
+        })}
         onChange={(e) => {
-          setFieldValue(name, dateToNumber(e.target.value,time));
+          setFieldValue(name, dateToNumber(e.target.value, time));
         }}
         disabled={isSubmitting}
       />

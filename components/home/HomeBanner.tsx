@@ -3,7 +3,7 @@ import Container from "../ui/Container";
 const HomeBanner = () => {
   return (
     <div
-      className="w-full h-fit max-h-screen bg-cover bg-no-repeat bg-center overflow-hidden"
+      className="w-full h-fit max-h-screen bg-cover bg-no-repeat bg-center overflow-hidden -mb-10 relative -z-[1]"
       style={{ backgroundImage: "url(/images/home-banner-people.jpg)" }}
     >
       <Container
@@ -14,9 +14,9 @@ const HomeBanner = () => {
           <h2 className="uppercase text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-wider transition-all animate__animated animate__slideInLeft">
             #IPSIBANDUNGJUARA
           </h2>
-          <h3 className="text-2xl sm:text-3xl lg:text-5xl font-bold transition-all animate__animated animate__slideInRight">
+          {/* <h3 className="text-2xl sm:text-3xl lg:text-5xl font-bold transition-all animate__animated animate__slideInRight">
             Tagline
-          </h3>
+          </h3> */}
         </div>
         <img
           src="/images/home-banner-person.png"

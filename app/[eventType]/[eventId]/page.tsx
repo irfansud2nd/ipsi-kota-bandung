@@ -11,7 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getChampionships } from "@/lib/event/eventFunctions";
+import { getChampionship, getChampionships } from "@/lib/event/eventFunctions";
 import Link from "next/link";
 import EventCard from "@/components/Event/EventCard";
 
@@ -21,17 +21,25 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const event = await getEvent(params.eventId);
+  const event =
+    params.eventType == "championship"
+      ? getChampionship(params.eventId)
+      : await getEvent(params.eventId);
+
   return {
-    title: event.title,
-    description: `Dapatkan informasi tentang ${event.title} disini`,
-    openGraph: {
-      images: [
-        {
-          url: event.image.downloadUrl,
-        },
-      ],
-    },
+    title: event ? event.title : "Tidak ditemukan",
+    description: event
+      ? `Dapatkan informasi tentang ${event.title} disini`
+      : "Tidak ditemukan",
+    openGraph: event
+      ? {
+          images: [
+            {
+              url: event.image.downloadUrl,
+            },
+          ],
+        }
+      : null,
   };
 }
 
@@ -47,7 +55,6 @@ const page = async ({ params }: Props) => {
   return (
     <Container className="px-5 md:px-10 py-5">
       <EventDisplay event={event} />
-
       {events.length > 0 && (
         <div className={`mt-4 bg-muted rounded p-2`}>
           <Link

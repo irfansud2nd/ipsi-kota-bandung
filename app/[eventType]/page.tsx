@@ -1,4 +1,5 @@
 import EventList from "@/components/Event/EventList";
+import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
 import { getChampionships } from "@/lib/event/eventFunctions";
@@ -45,15 +46,20 @@ const page = async ({ searchParams, params }: Props) => {
         className="text-white"
         text="IPSI Kota Bandung"
       />
-      <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5  w-full">
-        <EventList events={events} championship={eventType == "championship"} />
-        <PagePagination
-          page={page}
-          limit={limit}
-          dataLength={events.length}
-          link={`/${eventType}?`}
-          className="mt-5 md:justify-end md:px-10"
-        />
+      <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5 w-full">
+        <Container className="px-5 md:px-10 h-full ">
+          <EventList
+            events={events}
+            championship={eventType == "championship"}
+          />
+          <PagePagination
+            page={page}
+            limit={limit}
+            dataLength={events.length}
+            link={`/${eventType}?`}
+            className="mt-5 md:justify-end md:px-10"
+          />
+        </Container>
       </div>
     </div>
   );

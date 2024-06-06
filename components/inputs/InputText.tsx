@@ -4,7 +4,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
 import ErrorText from "../ui/ErrorText";
-import { calculateAge } from "@/lib/athlete/athleteFunctions";
+import { calculateAge } from "@/lib/athlete/external/athleteFunctions";
 import { championships } from "@/lib/event/eventConstants";
 import { InputProps, getInputValue } from "@/lib/form/formConstants";
 
@@ -40,11 +40,11 @@ const InputText = ({
     if (forceValue && value != forceValue) {
       setFieldValue(name, forceValue);
     }
-  }, []);
+  }, [forceValue]);
 
   let umur;
   if (under17) {
-    umur = calculateAge(values.tanggalLahir);
+    umur = calculateAge(values.birthDate);
   }
 
   const editOnly = championships.find((event) => event.id == eventId)?.status

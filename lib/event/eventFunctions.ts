@@ -82,3 +82,7 @@ export const getChampionships = (
     .sort(compare("createdAt", "desc"))
     .slice(page * limit - limit, page * limit);
 };
+
+export const getChampionship = (id: string) => {
+  return championships.find((item) => item.id == id);
+};

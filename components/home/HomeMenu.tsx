@@ -29,7 +29,7 @@ const HomeMenu = () => {
     },
   ];
   return (
-    <Container className="h-fit -translate-y-10 px-5 md:px-10">
+    <Container className="h-fit mb-10 px-5 md:px-10">
       <div className="bg-muted rounded-3xl grid grid-cols-2 sm:grid-cols-4 py-5 gap-y-5 place-items-center overflow-y-hidden">
         {menus.map((menu, i) => (
           <HomeMenuItem {...menu} delay={i * 300} key={menu.href} />

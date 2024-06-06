@@ -1,6 +1,5 @@
 "use client";
 
-import { adminLinks } from "@/lib/admin/adminConstants";
 import MobileMenuLinks from "../navbar/MobileMenuLinks";
 import { usePathname } from "next/navigation";
 
@@ -14,7 +13,7 @@ const AdminMobileMenu = () => {
         <h2 className="text-lg font-semibold whitespace-nowrap">ADMIN MENU</h2>
         <span className="border-t-2 w-full" />
       </div>
-      <MobileMenuLinks {...adminLinks} />
+      <MobileMenuLinks onAdmin />
     </div>
   ) : null;
 };

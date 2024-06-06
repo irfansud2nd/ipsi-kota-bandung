@@ -14,7 +14,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 const Navbar = () => {
   const { links, groupedLinks } = clientLinks;
   return (
-    <nav className="h-[50px] sm:h-[70px] w-full fixed top-0 z-10 bg-white">
+    <nav className="h-[50px] sm:h-[70px] w-full fixed top-0 z-50 bg-white">
       <Container className="flex items-center px-3 h-full gap-3">
         <Link href={"/"} className="flex h-full items-center mr-auto">
           <img

@@ -33,11 +33,22 @@ export const formatDate = (
 
   if (options?.htmlFormat) {
     result = `${year}-${month.number}-${date} 00:01`;
-    options.withoutHour && result.replace(" 00:01", "");
+    options.withoutHour && (result = result.replace(" 00:01", ""));
     options?.hourOnly && (result = `${hour}:${minute}`);
     if (!inputDate) result = "";
   }
 
+  return result;
+};
+
+export const dateToNumber = (date: string, time?: boolean) => {
+  let result = 0;
+  if (!date) return result;
+  if (time) {
+    result = new Date("2000-01-01 " + date + ":00").getTime();
+  } else {
+    result = new Date(date).getTime();
+  }
   return result;
 };
 
@@ -70,4 +81,35 @@ export const getStartEndOfDay = (date?: string) => {
   end.setHours(23, 59, 59);
 
   return { start: start.getTime(), end: end.getTime() };
+};
+
+export const reduceData = (data: any[], key: string = "id") => {
+  const reducedData = Object.values(
+    data.reduce((acc, obj) => {
+      acc[obj[key]] = obj;
+      return acc;
+    }, {} as any)
+  );
+  return reducedData;
+};
+
+export const getFileUrl = (
+  type: "athlete" | "official" | "news" | "member" | "payment",
+  id: string
+) => {
+  return {
+    imageUrl: `${type}/image/${id}`,
+    kkUrl: `${type}/kk/${id}`,
+    ktpUrl: `${type}/ktp/${id}`,
+    proofUrl: `${type}/${id}`,
+  };
+};
+
+export const formatToRupiah = (input: string | number, rerverse?: boolean) => {
+  if (rerverse) {
+    return input.toString().replace(/[^0-9]/g, "");
+  }
+  return `${Number(input) < 0 ? "- " : ""} Rp ${Math.abs(
+    Number(input)
+  ).toLocaleString("id")}`;
 };

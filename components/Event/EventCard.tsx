@@ -43,19 +43,34 @@ const EventCard = ({ event }: Props) => {
             <span>{event.location.name}</span>
           )}
         </div>
-        <div className="border-t-2 mt-2 pt-2 flex justify-between items-center">
-          <FaCalendarAlt className="size-5 mr-2 text-green-500" />
-          <p>
-            {formatDate(event.date.start, {
-              withoutHour: true,
-              longMonth: true,
-            })}
+        <div className="border-t-2 mt-2 pt-2 flex justify-between items-center flex-wrap">
+          <p className="whitespace-nowrap flex items-center">
+            <FaCalendarAlt className="size-5 mr-2 text-green-500" />
+            <span>
+              {formatDate(event.date.start, {
+                withoutHour: true,
+                longMonth: true,
+                withoutYear: !!event.date.end,
+              })}
+            </span>
+            {event.date.end && (
+              <>
+                <span> - </span>
+                <span>
+                  {formatDate(event.date.end, {
+                    withoutHour: true,
+                    longMonth: true,
+                  })}
+                </span>
+              </>
+            )}
           </p>
           {championship ? (
-            championship.register.date.start < Date.now() && (
+            championship.register.start <= Date.now() &&
+            championship.register.end >= Date.now() && (
               <Link
                 href={`/championship/${event.id}/register`}
-                className="ml-auto hover:text-green-500 transition flex gap-2 items-center"
+                className=" hover:text-green-500 transition flex gap-2 items-center"
               >
                 <FaSignInAlt className="size-5 text-green-500" />
                 Pendaftaran

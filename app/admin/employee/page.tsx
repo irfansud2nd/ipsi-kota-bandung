@@ -7,7 +7,7 @@ import MemberForm from "@/components/member/MemberForm";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;
-  const limit = 3;
+  const limit = 10;
   const employees = await getEmployees(page, limit);
   return (
     <div className="p-2">

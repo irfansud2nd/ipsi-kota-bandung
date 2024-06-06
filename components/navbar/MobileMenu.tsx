@@ -16,7 +16,7 @@ const MobileMenu = ({ onAdmin }: { onAdmin?: boolean }) => {
       </SheetTrigger>
       <SheetContent className="w-fit min-w-40 lg:hidden">
         <ProfileButton mobile />
-        <MobileMenuLinks {...clientLinks} />
+        <MobileMenuLinks />
         <AdminMobileMenu />
       </SheetContent>
     </Sheet>

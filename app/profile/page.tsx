@@ -1,4 +1,5 @@
 import Container from "@/components/ui/Container";
+import PageInfo from "@/components/ui/PageInfo";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -8,6 +9,8 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
+  return <PageInfo type="underDevelopment" />;
+
   const sectionButton = [
     {
       label: "Sekilas",

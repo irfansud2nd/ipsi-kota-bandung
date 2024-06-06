@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import * as yup from "yup";
 import { imageMaxSize, imageSchema } from "../form/formConstants";
+import { dateToNumber } from "../functions";
 
 export type Event = {
   id: string;
@@ -90,13 +91,20 @@ export const eventSchema = (ignoreImage: boolean = false) => {
 
 export type Championship = Event & {
   register: {
-    date: {
-      start: number;
-      end: number;
+    start: number;
+    end: number;
+  };
+  athletes: number;
+  nomorPertandingan: number;
+  techmeet: {
+    date: number;
+    location: {
+      name: string;
+      url: string;
     };
   };
-  Athletes: number;
-  nomorPertandingan: number;
+  matchCategory: MatchCategory;
+  proposal: string;
   status: {
     checkLimit: boolean;
     editOnly: boolean;
@@ -105,6 +113,12 @@ export type Championship = Event & {
     closed: boolean;
     total: number;
     confirmed: number;
+  };
+  matchCost: {
+    tanding: number;
+    tunggal: number;
+    ganda: number;
+    regu: number;
   };
 };
 
@@ -140,100 +154,154 @@ export const getDummyEvents = (length: number, startNumber: number = 0) => {
   return result;
 };
 
-export const getDummychampionships = (
-  length: number,
-  startNumber: number = 1
+const generateKategoriPertandingan = (
+  endAlphabet: string,
+  start: number,
+  step: number,
+  bebasBawah: boolean = false,
+  bebasAtas: boolean = false
 ) => {
-  let result: Championship[] = [];
-  for (let i = 1 + startNumber; i <= length + startNumber; i++) {
-    result.push({
-      id: v4(),
-      title: "Championship " + i,
-      image: {
-        downloadUrl: "url " + i,
-      },
-      location: {
-        name: "Location " + i,
-        url: "locationUrl " + i,
-      },
-      date: {
-        start: Date.now() + i * 99999999,
-        end: Date.now() + i * 99999999 + 99999999,
-      },
-      time: {
-        start: Date.now() + i * 99999999,
-        end: Date.now() + 50000 + i * 99999999,
-      },
-      creator: {
-        name: "Pesilat Championship",
-        email: "irfansud" + i + "gmail.com",
-      },
-      createdAt: Date.now() - i * 99999999 - 99999999,
-      register: {
-        date: {
-          start: Date.now() - i * 99999999,
-          end: Date.now(),
-        },
-      },
-      Athletes: 2,
-      nomorPertandingan: 3,
-      status: {
-        checkLimit: false,
-        editOnly: false,
-      },
-      payment: {
-        closed: false,
-        total: 1000000,
-        confirmed: 300000,
-      },
-      description: "desc",
-    });
+  const numberToAlphabet = (index: number) => {
+    return String.fromCharCode(index + "A".charCodeAt(0));
+  };
+
+  const alphabetToNumber = (letter: string) => {
+    return letter.toUpperCase().charCodeAt(0) - "A".charCodeAt(0);
+  };
+
+  const repeatValue = alphabetToNumber(endAlphabet);
+  let kategoriArr: string[] = [];
+  let startKategori: number = 0;
+
+  if (bebasBawah) kategoriArr.push(`Kelas <A (Dibawah ${start} KG)`);
+
+  startKategori = start;
+  for (let i = 0; i <= repeatValue; i++) {
+    kategoriArr.push(
+      `Kelas ${numberToAlphabet(i)} (${startKategori}-${
+        startKategori + step
+      } KG)`
+    );
+    startKategori += step;
   }
-  return result;
+  const endNumber = startKategori;
+  if (bebasAtas) kategoriArr.push(`Kelas Bebas (Diatas ${endNumber} KG)`);
+  return kategoriArr;
 };
 
-// export const championships = getDummychampionships(3);
 export const championships: Championship[] = [
   {
-    id: "championship-1",
-    title: "Championship 1",
+    id: "bandung-open-24",
+    title: "Bandung Open Pencak Silat Tournament",
     image: {
-      downloadUrl: "/images/logo-ipsi.png",
+      downloadUrl: "/images/championships/bandung-open-24.jpg",
     },
     location: {
-      name: "Location 1",
-      url: "locationUrl 1",
+      name: "GOR KONI Kota Bandung",
+      url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
     },
     date: {
-      start: 1714640316973 + 86400000,
-      end: 1714640316973 + 3 * 86400000,
+      start: dateToNumber("2024-08-06"),
+      end: dateToNumber("2024-08-10"),
     },
     time: {
-      start: 1714640316973 + 86400000,
-      end: 1714640316973 + 8 * 3600000,
+      start: 0,
     },
     creator: {
-      name: "Pesilat Championship",
-      email: "irfansud1" + "gmail.com",
+      name: "",
+      email: "irfansud2nd@gmail.com",
     },
-    createdAt: 1714640316973,
+    createdAt: dateToNumber("2024-06-01"),
+    description: "desc",
     register: {
-      date: {
-        start: 1714640316973 - 99999999,
-        end: 1714640316973,
+      start: dateToNumber("2024-06-10"),
+      end: dateToNumber("2024-07-31"),
+    },
+    athletes: 0,
+    nomorPertandingan: 0,
+    techmeet: {
+      date: dateToNumber("2024-08-03 10:00:00"),
+      location: {
+        name: "GOR KONI Kota Bandung",
+        url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
       },
     },
-    Athletes: 2,
-    nomorPertandingan: 3,
+    matchCategory: [
+      {
+        level: "Pra Usia Dini (6-8 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("P", 16, 2),
+          art: ["Tunggal"],
+        },
+        rookieOnly: true,
+      },
+      {
+        level: "Usia Dini (8-11 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("O", 26, 2, true),
+          art: ["Tunggal"],
+        },
+      },
+      {
+        level: "Pra Remaja (11-14 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("P", 30, 3, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        rookieOnly: true,
+      },
+      {
+        level: "Remaja (14-17 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("I", 39, 4, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        limit: {
+          paid: true,
+          vallue: 16,
+        },
+      },
+      {
+        level: "Dewasa (17-30 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("J", 45, 5, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        limit: {
+          paid: true,
+          vallue: 16,
+        },
+      },
+    ],
+    proposal:
+      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=20313b7c-90e6-4ce0-add7-8cf803d4c4be",
     status: {
       checkLimit: false,
       editOnly: false,
     },
     payment: {
       closed: false,
-      total: 1000000,
-      confirmed: 300000,
+      total: 0,
+      confirmed: 0,
     },
-    description: "desc",
+    matchCost: {
+      tanding: 350000,
+      tunggal: 350000,
+      ganda: 350000,
+      regu: 350000,
+    },
   },
 ];
+
+export type MatchCategory = {
+  level: string;
+  category: {
+    fight: string[];
+    art: ("Tunggal" | "Ganda" | "Regu")[];
+  };
+  rookieOnly?: boolean;
+  limit?: {
+    paid: boolean;
+    vallue: number;
+  };
+}[];

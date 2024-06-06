@@ -48,14 +48,3 @@ export const testFunc = async () => {
     throw error;
   }
 };
-
-export const dateToNumber = (date: string, time?: boolean) => {
-  let result = 0;
-  if (!date) return result;
-  if (time) {
-    result = new Date("2000-01-01 " + date + ":00").getTime();
-  } else {
-    result = new Date(date).getTime();
-  }
-  return result;
-};

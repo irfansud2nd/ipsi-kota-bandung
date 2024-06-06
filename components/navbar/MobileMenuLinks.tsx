@@ -1,4 +1,4 @@
-import { GroupedLinks, Links } from "@/lib/constants";
+import { GroupedLinks, Links, clientLinks } from "@/lib/constants";
 import React from "react";
 import {
   Accordion,
@@ -8,14 +8,33 @@ import {
 } from "../ui/accordion";
 import { SheetClose } from "../ui/sheet";
 import Link from "next/link";
+import { getPermittedRoles, isPermitted } from "@/lib/admin/adminFunctions";
+import { isAuthorized } from "@/lib/admin/adminActions";
+import { adminLinks } from "@/lib/admin/adminConstants";
 type Props = {
-  links: Links;
-  groupedLinks: GroupedLinks;
+  onAdmin?: boolean;
 };
-const MobileMenuLinks = ({ links, groupedLinks }: Props) => {
+const MobileMenuLinks = async ({ onAdmin }: Props) => {
+  let menu: {
+    links: Links;
+    groupedLinks: GroupedLinks;
+  } = {
+    links: [],
+    groupedLinks: [],
+  };
+
+  if (onAdmin) {
+    const { roles } = await isAuthorized();
+    menu = adminLinks(roles);
+  } else {
+    menu = clientLinks;
+  }
+
   return (
     <div className="flex flex-col gap-1">
-      {links.map((link) => (
+      {menu.links.map((link) => (
+        // (!link.restricted ||
+        //   isPermitted(roles, getPermittedRoles(link.href))) &&
         <SheetClose asChild key={link.href}>
           <Link href={link.href} className="border-b">
             {link.label}
@@ -23,7 +42,8 @@ const MobileMenuLinks = ({ links, groupedLinks }: Props) => {
         </SheetClose>
       ))}
       <Accordion type="single" collapsible>
-        {groupedLinks.map((item) => (
+        {menu.groupedLinks.map((item) => (
+          // isPermitted(roles, getPermittedRoles(item.prefix)) &&
           <AccordionItem value={item.title} key={item.title}>
             <AccordionTrigger className="py-0 px-0 text-base transition font-normal">
               {item.title}

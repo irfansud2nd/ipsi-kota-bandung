@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
 import ErrorText from "../ui/ErrorText";
-import { calculateAge } from "@/lib/athlete/athleteFunctions";
+import { calculateAge } from "@/lib/athlete/external/athleteFunctions";
 import { Input } from "../ui/input";
 import { championships } from "@/lib/event/eventConstants";
 import { InputProps } from "@/lib/form/formConstants";
@@ -31,7 +31,8 @@ const InputFile = ({
   const [disableShow, setDisableShow] = useState(false);
   const [changingFile, setChangingFile] = useState(false);
 
-  const { setFieldValue, values, isSubmitting, setFieldTouched } = formik;
+  const { setFieldValue, values, isSubmitting, setFieldTouched, touched } =
+    formik;
   const { file, downloadUrl } = values[name];
 
   useEffect(() => {
@@ -51,6 +52,11 @@ const InputFile = ({
     }
     isFileChanging && isFileChanging(changingFile);
   }, [file, downloadUrl, changingFile]);
+
+  useEffect(() => {
+    const data: any = touched[name];
+    if (data?.downloadUrl && !data?.file) setFieldTouched(`${name}.file`, true);
+  }, [touched]);
 
   let umur;
   if (under17) {
@@ -83,7 +89,9 @@ const InputFile = ({
       >
         {(changingFile || !downloadUrl) && (
           <Input
-            onBlur={() => setFieldTouched(`${name}.file`, true)}
+            onBlur={() => {
+              setFieldTouched(`${name}.file`, true);
+            }}
             onChange={(e) => {
               e.target.files?.length &&
                 setFieldValue(`${name}.file`, e.target.files[0]);

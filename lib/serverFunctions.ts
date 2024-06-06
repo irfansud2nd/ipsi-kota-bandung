@@ -62,8 +62,8 @@ export const getAnnouncement = async () => {
 // GET EVENT
 export const getEvent = cache(async (id: string) => {
   try {
-    const cEvent = championships.find((item) => item.id == id);
-    if (cEvent) return cEvent;
+    // const cEvent = championships.find((item) => item.id == id);
+    // if (cEvent) return cEvent;
 
     const { data, error } = await supabase.from("events").select().eq("id", id);
 

@@ -4,6 +4,7 @@ import {
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
 import { GroupedLinks, Links } from "../constants";
+import { getPermittedRoles, isPermitted } from "./adminFunctions";
 
 export type SpecialUserRole =
   | InternalAthleteRole
@@ -163,4 +164,16 @@ const groupedLinks: GroupedLinks = [
   },
 ];
 
-export const adminLinks = { links, groupedLinks };
+// export const adminLinks = { links, groupedLinks };
+
+export const adminLinks = (roles: SpecialUserRole[]) => {
+  return {
+    links: links.filter(
+      (link) =>
+        !link.restricted || isPermitted(roles, getPermittedRoles(link.href))
+    ),
+    groupedLinks: groupedLinks.filter((item) =>
+      isPermitted(roles, getPermittedRoles(item.prefix))
+    ),
+  };
+};

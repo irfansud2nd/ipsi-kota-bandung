@@ -1,14 +1,18 @@
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
 
-const page = () => {
+const page = async () => {
+  const session = await getServerSession();
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <h1 className="font-bold text-3xl">Hai Admin!</h1>
+      <h1 className="font-bold text-3xl">
+        Hai {session?.user?.name || "Admin"}!
+      </h1>
     </div>
   );
 };

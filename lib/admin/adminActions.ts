@@ -39,6 +39,7 @@ export const getSpecialUsers = async (
 export const isAuthorized = async (options?: {
   ignoreJwt?: boolean;
   roles?: SpecialUserRole[];
+  noFetch?: boolean;
 }) => {
   type Result = {
     roles: SpecialUserRole[];
@@ -69,6 +70,8 @@ export const isAuthorized = async (options?: {
     }
   }
 
+  if (options?.noFetch) return result;
+
   console.log("FETCH SPECIAL USERS");
   const { data } = await supabase
     .from("specialUsers")
@@ -92,6 +95,7 @@ export const isAuthorized = async (options?: {
 
 // API PROTECT
 export const apiProtect = async (options?: {
+  loggedInOnly?: boolean;
   directory?: string;
   roles?: SpecialUserRole[];
   permittedEmail?: string;
@@ -122,8 +126,11 @@ export const apiProtect = async (options?: {
     return result;
   }
 
+  if (options?.loggedInOnly) return initialResult;
+
   if (options?.permittedEmail && userEmail == options.permittedEmail)
     return initialResult;
+
   if (!roles.length) return initialResult;
 
   !roles.includes("master") && roles.push("master");

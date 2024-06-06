@@ -24,14 +24,14 @@ const page = async ({ searchParams }: Props) => {
   const employees = await getEmployees(page, limit);
 
   return (
-    <>
+    <div>
       <PageBanner
         imgUrl="/images/home-banner-people.jpg"
         title="Pengurus"
         className="text-white"
         text="IPSI Kota Bandung"
       />
-      <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5  w-full">
+      <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5 w-full">
         <Container className="px-5 md:px-10 h-full ">
           <MemberList members={employees} />
           <PagePagination
@@ -43,7 +43,7 @@ const page = async ({ searchParams }: Props) => {
           />
         </Container>
       </div>
-    </>
+    </div>
   );
 };
 export default page;

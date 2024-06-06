@@ -19,7 +19,11 @@ const Loading = ({ full, text, className, success }: Props) => {
           {success ? (
             <FaCheckCircle className="text-green-500 size-10 sm:size-20" />
           ) : (
-            <BiLoader className="animate-spin size-10 sm:size-20" />
+            // <BiLoader className="animate-spin size-10 sm:size-20" />
+            <img
+              src="/images/logo-ipsi.png"
+              className="aspect-square size-10 sm:size-20 animate-pulse"
+            />
           )}
           <h1 className="text-xl sm:text-3xl font-bold text-center">
             {text ?? "Memuat data"}

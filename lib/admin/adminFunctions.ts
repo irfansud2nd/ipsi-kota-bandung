@@ -6,20 +6,7 @@ import {
   InternalAthleteRole,
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
-import { Session } from "next-auth";
-import { decode } from "jsonwebtoken";
 import { apiProtect } from "./adminActions";
-
-// REDUCE DATA
-export const reduceData = (data: any[]) => {
-  const reducedData = Object.values(
-    data.reduce((acc, obj) => {
-      acc[obj.id] = obj;
-      return acc;
-    }, {} as any)
-  );
-  return reducedData;
-};
 
 // IS PERMITTED
 export const isPermitted = (
