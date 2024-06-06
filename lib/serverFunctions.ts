@@ -114,13 +114,15 @@ export const getNews = cache(async (id: string) => {
 
 // GET BERITAS
 export const getNewsArr = cache(
-  async (page: number, limit: number, exception?: News) => {
+  async (page?: number, limit?: number, exception?: News) => {
     try {
       let getData = supabase
         .from("news")
         .select()
-        .order("createdAt", { ascending: false })
-        .range(page * limit - limit, page * limit - 1);
+        .order("createdAt", { ascending: false });
+
+      if (page && limit)
+        getData = getData.range(page * limit - limit, page * limit - 1);
 
       if (exception) {
         getData = getData.neq("id", exception.id);

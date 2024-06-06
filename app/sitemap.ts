@@ -1,13 +1,18 @@
 import { championships } from "@/lib/event/eventConstants";
-import { getEvents } from "@/lib/serverFunctions";
+import { getEvents, getNewsArr } from "@/lib/serverFunctions";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
 
   const events = await getEvents();
+  const newsArr = await getNewsArr();
+
   const eventEntries: MetadataRoute.Sitemap = events.map((event) => ({
     url: `${baseUrl}/event/${event.id}`,
+  }));
+  const newsEntries: MetadataRoute.Sitemap = newsArr.map((news) => ({
+    url: `${baseUrl}/news/${news.id}`,
   }));
   const championshipEntries: MetadataRoute.Sitemap = championships.map(
     (championship) => ({
@@ -30,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...championshipEntries,
     {
       url: baseUrl + "/news",
+      ...newsEntries,
     },
     {
       url: baseUrl + "/profile",
