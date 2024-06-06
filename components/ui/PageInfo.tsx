@@ -25,7 +25,8 @@ const PageInfo = ({ type, text }: Props) => {
       break;
     case "underDevelopment":
       displayText = "Maaf, halaman ini masih dalam tahap pengembangan";
-      displayImage = "/images/under-development.png";
+      // displayImage = "/images/under-development.png";
+      displayImage = "/images/error.png";
       break;
     case "sorry":
       displayText = "Maaf, ada kesalahan yang terjadi";

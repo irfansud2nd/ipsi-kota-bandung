@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <div className="w-full h-full">
       <HomeBanner />
-      {/* <HomeDialog />  */}
+      <HomeDialog />
       <OngoingChampionships />
       <HomeMenu />
       <Announcement />
