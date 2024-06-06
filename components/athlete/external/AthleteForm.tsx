@@ -88,7 +88,7 @@ const AthleteForm = () => {
               }
               resetForm();
             } catch (error) {
-              console.log("ERRROR", error);
+              // console.log("ERRROR", error);
             } finally {
             }
           }}

@@ -3,10 +3,12 @@ import { sendFile, toastError } from "../form/formFunctions";
 import { News } from "./newsConstants";
 import axios from "axios";
 import { toast } from "sonner";
+import { getFileUrl } from "../functions";
 
 // SEND BERITA
 export const sendNews = async (news: News) => {
   const toastId = toast.loading("Mengunggah berita");
+  const { imageUrl } = getFileUrl("news", news.id);
   try {
     const id = v4();
     let data: News = { ...news, id: id, createdAt: Date.now() };
@@ -15,7 +17,7 @@ export const sendNews = async (news: News) => {
     if (!news.image.file)
       throw { message: "Image not found", code: "no-image" };
     toast.loading("Mengunggah gambar", { id: toastId });
-    const downloadUrl = await sendFile(news.image.file, `news/${id}`);
+    const downloadUrl = await sendFile(news.image.file, imageUrl);
     data.image.downloadUrl = downloadUrl;
     delete data.image.file;
 
@@ -33,12 +35,14 @@ export const sendNews = async (news: News) => {
 // UPDATE BERITA
 export const updateNews = async (news: News) => {
   const toastId = toast.loading("Memperbaharui berita");
+  const { imageUrl } = getFileUrl("news", news.id);
+
   try {
     let data: News = { ...news };
     if (news.image.file) {
       // DELETE OLD IMAGE
       toast.loading("Memperbaharui gambar", { id: toastId });
-      const downloadUrl = await sendFile(news.image.file, `news/${news.id}`);
+      const downloadUrl = await sendFile(news.image.file, imageUrl);
       data.image.downloadUrl = downloadUrl;
       delete data.image.file;
     }
@@ -56,6 +60,7 @@ export const updateNews = async (news: News) => {
 // DELETE BERITAS
 export const deleteNews = async (news: News) => {
   const toastId = toast.loading("Menghapus berita");
+
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });

@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { MdArrowDropDown } from "react-icons/md";
 
 const Navbar = () => {
   const { links, groupedLinks } = clientLinks;
@@ -48,7 +48,7 @@ const Navbar = () => {
             <DropdownMenu key={item.title}>
               <DropdownMenuTrigger className="flex gap-1 items-center text-lg font-medium data-[state=open]:-translate-y-1 hover:-translate-y-1 data-[state=open]:border-b-2 hover:border-b-2 border-green-400 transition-all focus:outline-none">
                 {item.title}
-                <ChevronDownIcon />
+                <MdArrowDropDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {item.links.map((link) => (

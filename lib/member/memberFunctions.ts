@@ -3,19 +3,19 @@ import { Member } from "./memberConstants";
 import { v4 } from "uuid";
 import axios from "axios";
 import { sendFile, toastError } from "../form/formFunctions";
+import { getFileUrl } from "../functions";
 
 export const sendMember = async (member: Member) => {
   const toastId = toast.loading("Menambahkan pengurus");
+
   try {
     let data: Member = member;
     data.id = v4();
+    const { imageUrl } = getFileUrl("member", data.id);
 
     if (data.image?.file) {
       toast.loading("Mengunggah gambar", { id: toastId });
-      data.image.downloadUrl = await sendFile(
-        data.image.file,
-        `event/${data.id}`
-      );
+      data.image.downloadUrl = await sendFile(data.image.file, imageUrl);
       delete data.image.file;
     }
 
@@ -33,13 +33,11 @@ export const updateMember = async (member: Member) => {
   const toastId = toast.loading("Memperbaharui pengurus");
   try {
     let data: Member = member;
+    const { imageUrl } = getFileUrl("member", data.id);
 
     if (data.image?.file) {
       toast.loading("Memperbaharui gambar", { id: toastId });
-      data.image.downloadUrl = await sendFile(
-        data.image.file,
-        `event/${data.id}`
-      );
+      data.image.downloadUrl = await sendFile(data.image.file, imageUrl);
       delete data.image.file;
     }
 

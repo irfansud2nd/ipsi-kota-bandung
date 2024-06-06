@@ -54,14 +54,11 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
       (item) => item.id == getAttendanceId(role, report.email, date)
     );
 
-    console.log({ attendance });
-
     setAttendance(attendance);
   };
 
   useEffect(() => {
     checkRegisteredAttendance();
-    console.log({ report });
   }, [report, date]);
 
   useEffect(() => {

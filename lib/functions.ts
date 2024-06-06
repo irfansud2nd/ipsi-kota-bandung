@@ -94,7 +94,7 @@ export const reduceData = (data: any[], key: string = "id") => {
 };
 
 export const getFileUrl = (
-  type: "athlete" | "official" | "news" | "member" | "payment",
+  type: "athlete" | "official" | "news" | "event" | "member" | "payment",
   id: string
 ) => {
   return {

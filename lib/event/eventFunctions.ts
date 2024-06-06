@@ -3,19 +3,21 @@ import { toast } from "sonner";
 import { v4 } from "uuid";
 import { Event, championships } from "./eventConstants";
 import { sendFile, toastError } from "../form/formFunctions";
-import { compare } from "../functions";
+import { compare, getFileUrl } from "../functions";
 
 export const sendEvent = async (event: Event) => {
   const toastId = toast.loading("Mengunggah event");
+
   try {
     const id = v4();
     let data: Event = { ...event, id, createdAt: Date.now() };
+    const { imageUrl } = getFileUrl("event", data.id);
 
     // SEND GAMBAR
     if (!event.image.file)
       throw { message: "Image not found", code: "no-image" };
     toast.loading("Mengunggah gambar", { id: toastId });
-    data.image.downloadUrl = await sendFile(event.image.file, `event/${id}`);
+    data.image.downloadUrl = await sendFile(event.image.file, imageUrl);
     delete data.image.file;
 
     // SEND EVENT
@@ -34,10 +36,12 @@ export const updateEvent = async (event: Event) => {
   const toastId = toast.loading("Memperbaharui event");
   try {
     let data: Event = { ...event };
+    const { imageUrl } = getFileUrl("event", data.id);
+
     if (event.image.file) {
       // DELETE OLD IMAGE
       toast.loading("Memperbaharui gambar", { id: toastId });
-      const downloadUrl = await sendFile(event.image.file, `event/${event.id}`);
+      const downloadUrl = await sendFile(event.image.file, imageUrl);
       data.image.downloadUrl = downloadUrl;
       delete data.image.file;
     }

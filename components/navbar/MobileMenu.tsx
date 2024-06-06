@@ -2,7 +2,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { IoMenuSharp } from "react-icons/io5";
 import { Button } from "../ui/button";
 import ProfileButton from "./ProfileButton";
-import { clientLinks } from "@/lib/constants";
 import MobileMenuLinks from "./MobileMenuLinks";
 import AdminMobileMenu from "../admin/AdminMobileMenu";
 

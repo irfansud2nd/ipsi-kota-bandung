@@ -6,7 +6,6 @@ import useConfirmation from "@/hooks/useConfirmation";
 import { deleteNews } from "@/lib/news/newsFunctions";
 import { useRouter } from "next/navigation";
 import AdminManageButtons from "../AdminManageButtons";
-import { Label } from "@radix-ui/react-dropdown-menu";
 
 export const NewsColumns: ColumnDef<News>[] = [
   {

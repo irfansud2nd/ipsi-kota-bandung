@@ -59,7 +59,7 @@ export const isAuthorized = async (options?: {
   if (!session) return result;
 
   if (!options?.ignoreJwt) {
-    console.log("CHECK TOKEN");
+    // console.log("CHECK TOKEN");
     const authorizedToken = session?.user?.authorizedToken;
     if (authorizedToken) {
       const data: any = decode(authorizedToken);
@@ -72,7 +72,7 @@ export const isAuthorized = async (options?: {
 
   if (options?.noFetch) return result;
 
-  console.log("FETCH SPECIAL USERS");
+  // console.log("FETCH SPECIAL USERS");
   const { data } = await supabase
     .from("specialUsers")
     .select()

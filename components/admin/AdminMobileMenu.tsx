@@ -1,12 +1,14 @@
 "use client";
 
-import MobileMenuLinks from "../navbar/MobileMenuLinks";
 import { usePathname } from "next/navigation";
+import MobileMenuLinks from "../navbar/MobileMenuLinks";
 
 const AdminMobileMenu = () => {
   const onAdmin = usePathname().includes("admin");
 
-  return onAdmin ? (
+  if (!onAdmin) return <></>;
+
+  return (
     <div className="mt-2">
       <div className="border-y-2 py-1 flex items-center gap-1">
         <span className="border-t-2 w-full" />
@@ -15,6 +17,6 @@ const AdminMobileMenu = () => {
       </div>
       <MobileMenuLinks onAdmin />
     </div>
-  ) : null;
+  );
 };
 export default AdminMobileMenu;
