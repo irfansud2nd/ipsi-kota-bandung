@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? {
           images: [
             {
-              url: event.image.downloadUrl,
+              url: process.env.NEXT_PUBLIC_BASE_URL + event.image.downloadUrl,
             },
           ],
         }

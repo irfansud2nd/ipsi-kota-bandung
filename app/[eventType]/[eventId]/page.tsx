@@ -35,7 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? {
           images: [
             {
-              url: event.image.downloadUrl,
+              url:
+                params.eventType == "championship"
+                  ? process.env.NEXT_PUBLIC_BASE_URL + event.image.downloadUrl
+                  : event.image.downloadUrl,
             },
           ],
         }
