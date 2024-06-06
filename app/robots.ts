@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/admin/",
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `https://www.ipsikotabandung.com/sitemap.xml`,
   };
 }
