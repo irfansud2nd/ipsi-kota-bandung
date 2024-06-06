@@ -9,14 +9,17 @@ import { Championship } from "@/lib/event/eventConstants";
 const HomeDialog = () => {
   return (
     <Dialog defaultOpen={localStorage.getItem("oOxS52zULHKFheIC") !== "hide"}>
-      <DialogContent className="w-fit">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Informasi</DialogTitle>
+          <DialogTitle className="text-center">Informasi</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-2">
+          <p>Pendaftaran</p>
           <p>
-            Pendaftaran <b>"Bandung Open Pencak Silat Tournament 2024"</b> di
-            buka pada tanggal <b>10 Juni 2024</b>.
+            <b>"Bandung Open Pencak Silat Tournament 2024"</b>
+          </p>
+          <p>
+            dibuka pada tanggal <b>10 Juni 2024</b>.
           </p>
           <Button className="mx-auto" asChild>
             <Link
@@ -29,13 +32,14 @@ const HomeDialog = () => {
             </Link>
           </Button>
         </div>
-        <div className="flex items-center gap-1 justify-end">
+        <div className="flex items-baseline gap-1 justify-end">
           <Checkbox
             onCheckedChange={(value) =>
               value
                 ? localStorage.setItem("oOxS52zULHKFheIC", "hide")
                 : localStorage.removeItem("oOxS52zULHKFheIC")
             }
+            className="translate-y-0.5"
           />
           <span>Jangan tampilkan ini lagi</span>
         </div>

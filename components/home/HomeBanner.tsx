@@ -10,9 +10,9 @@ const HomeBanner = () => {
         className="backdrop-blur-sm bg-gray-600/55"
         style={{ WebkitBackdropFilter: "blur(4px)" }}
       >
-        <Container className="flex justify-center items-end h-[60vh]">
+        <Container className="flex justify-center items-center aspect-video sm:aspect-[16/5] w-full h-fit transition-all">
           {/* <div className="flex flex-col transition-all w-fit text-white h-fit my-auto max-md:overflow-x-hidden p-2 z-[1]"> */}
-          <h2 className="uppercase text-2xl sm:text-3xl lg:text-5xl mb-28 text-white font-extrabold tracking-wider transition-all animate__animated animate__slideInLeft">
+          <h2 className="uppercase text-2xl sm:text-3xl lg:text-5xl mt-24 sm:mt-16 md:mt-28 text-white font-extrabold tracking-wider transition-all animate__animated animate__slideInLeft">
             #AREYOUTHENEXTCHAMPION?
           </h2>
           {/* </div> */}
