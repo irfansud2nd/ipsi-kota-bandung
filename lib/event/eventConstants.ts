@@ -212,7 +212,7 @@ export const championships: Championship[] = [
       email: "irfansud2nd@gmail.com",
     },
     createdAt: dateToNumber("2024-06-01"),
-    description: "desc",
+    description: "",
     register: {
       start: dateToNumber("2024-06-10"),
       end: dateToNumber("2024-07-31"),

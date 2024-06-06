@@ -44,8 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const page = async ({ params }: Props) => {
-  const event = await getEvent(params.eventId);
   const isChampionship = params.eventType == "championship";
+  const event = isChampionship
+    ? getChampionship(params.eventId)
+    : await getEvent(params.eventId);
   const events = isChampionship
     ? getChampionships(1, 6, event)
     : await getEvents(1, 6, event);

@@ -35,7 +35,7 @@ const PageInfo = ({ type, text }: Props) => {
         <h1 className="font-bold text-xl sm:text-3xl">{displayText}</h1>
         <img
           src={displayImage}
-          alt="not logged in"
+          alt={type}
           className="max-w-[50vw] w-[150px] sm:w-[250px]"
         />
       </div>

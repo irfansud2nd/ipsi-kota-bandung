@@ -13,10 +13,10 @@ type Props = {
 const EventList = ({ onHome, events, championship }: Props) => {
   return (
     <Container
-      className={`h-fit px-5 md:px-10 transition
+      className={`h-fit transition
       ${
         onHome &&
-        `-mt-20 pt-10 rounded-t-[50px] md:rounded-t-[80px] ${
+        ` px-5 md:px-10 -mt-20 pt-10 rounded-t-[50px] md:rounded-t-[80px] ${
           championship ? "bg-yellow-200 pb-20" : "bg-green-200"
         }`
       }

@@ -156,7 +156,7 @@ const EventDisplay = ({ event, preview }: Props) => {
   }
 
   return (
-    <>
+    <div className="border-b-2 pb-2">
       <div className="w-full grid grid-cols-1 md:grid-cols-3 grid-rows-1 max-md:grid-rows-2">
         {showImage ? (
           <img
@@ -188,11 +188,13 @@ const EventDisplay = ({ event, preview }: Props) => {
           </div>
         </div>
       </div>
-      <div className="mt-5 border-b-2 pb-2">
-        <h3 className="font-bold text-xl">Tentang {event.title}</h3>
-        <p>{event.description}</p>
-      </div>
-    </>
+      {event.description.length ? (
+        <div className="mt-5">
+          <h3 className="font-bold text-xl">Tentang {event.title}</h3>
+          <p>{event.description}</p>
+        </div>
+      ) : null}
+    </div>
   );
 };
 export default EventDisplay;
