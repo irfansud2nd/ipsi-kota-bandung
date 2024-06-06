@@ -14,6 +14,7 @@ import {
 import { getChampionship, getChampionships } from "@/lib/event/eventFunctions";
 import Link from "next/link";
 import EventCard from "@/components/Event/EventCard";
+import { baseUrl } from "@/lib/constants";
 
 type Props = {
   params: { eventId: string; eventType: string };
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             {
               url:
                 params.eventType == "championship"
-                  ? process.env.NEXT_PUBLIC_BASE_URL + event.image.downloadUrl
+                  ? baseUrl + event.image.downloadUrl
                   : event.image.downloadUrl,
             },
           ],

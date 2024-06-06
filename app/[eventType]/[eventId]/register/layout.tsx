@@ -2,6 +2,7 @@ import IsLoggedIn from "@/components/auth/IsLoggedIn";
 import ChampionshipRegister from "@/components/championship/register/ChampionshipRegister";
 import ChampionshipMenu from "@/components/championship/register/menu/ChampionshipMenu";
 import ReduxProvider from "@/components/providers/ReduxProvider";
+import { baseUrl } from "@/lib/constants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? {
           images: [
             {
-              url: process.env.NEXT_PUBLIC_BASE_URL + event.image.downloadUrl,
+              url: baseUrl + event.image.downloadUrl,
             },
           ],
         }

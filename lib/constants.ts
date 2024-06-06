@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { internalAthleteRoles } from "./athlete/internal/internalAthleteConstants";
 import { getSpecialUserLabel } from "./functions";
 
-export const hostName = process.env.NEXT_PUBLIC_BASE_URL;
-
 export type Links = {
   href: string;
   label: string;
@@ -59,3 +57,5 @@ export const invalidIdentifier = NextResponse.json(
   { message: "Invalid identifier" },
   { status: 500 }
 );
+
+export const baseUrl = "https://www.ipsikotabandung.com";

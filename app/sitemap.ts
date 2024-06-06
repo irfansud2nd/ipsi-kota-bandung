@@ -1,10 +1,9 @@
+import { baseUrl } from "@/lib/constants";
 import { championships } from "@/lib/event/eventConstants";
 import { getEvents, getNewsArr } from "@/lib/serverFunctions";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
-
   const events = await getEvents();
   const newsArr = await getNewsArr();
 
