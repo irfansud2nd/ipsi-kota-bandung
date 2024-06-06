@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: event ? event.title : "Tidak ditemukan",
     description: event
-      ? `Dapatkan informasi tentang ${event.title} disini`
+      ? `Dapatkan informasi tentang ${event.title} dari IPSI Kota Bandung disini`
       : "Tidak ditemukan",
     openGraph: event
       ? {
