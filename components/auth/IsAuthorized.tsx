@@ -26,26 +26,26 @@ const IsAuthorized = ({ children }: Props) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    const getToken = async () => {
+      const { roles, token, name, image } = await isAuthorized({
+        ignoreJwt: true,
+      });
+      if (roles.length) {
+        await update({
+          ...session,
+          user: {
+            ...session?.user,
+            name: name ?? session?.user?.name,
+            authorizedToken: token,
+            image: image ? image.downloadUrl : session?.user?.image,
+          },
+        });
+      }
+      setSessionUpdated(true);
+    };
+
     if (email && !sessionUpdated) getToken();
   }, []);
-
-  const getToken = async () => {
-    const { roles, token, name, image } = await isAuthorized({
-      ignoreJwt: true,
-    });
-    if (roles.length) {
-      await update({
-        ...session,
-        user: {
-          ...session?.user,
-          name: name ?? session?.user?.name,
-          authorizedToken: token,
-          image: image ? image.downloadUrl : session?.user?.image,
-        },
-      });
-    }
-    setSessionUpdated(true);
-  };
 
   if (!email) return <PageInfo type="notLoggedIn" />;
 

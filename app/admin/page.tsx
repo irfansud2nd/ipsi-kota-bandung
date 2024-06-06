@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Admin",

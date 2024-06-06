@@ -164,16 +164,4 @@ const groupedLinks: GroupedLinks = [
   },
 ];
 
-// export const adminLinks = { links, groupedLinks };
-
-export const adminLinks = (roles: SpecialUserRole[]) => {
-  return {
-    links: links.filter(
-      (link) =>
-        !link.restricted || isPermitted(roles, getPermittedRoles(link.href))
-    ),
-    groupedLinks: groupedLinks.filter((item) =>
-      isPermitted(roles, getPermittedRoles(item.prefix))
-    ),
-  };
-};
+export const adminLinks = { links, groupedLinks };

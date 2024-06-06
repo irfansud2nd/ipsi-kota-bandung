@@ -1,6 +1,6 @@
 "use server";
 import { GroupedLinks, Links, clientLinks } from "@/lib/constants";
-import React from "react";
+import React, { isValidElement } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -9,27 +9,13 @@ import {
 } from "../ui/accordion";
 import { SheetClose } from "../ui/sheet";
 import Link from "next/link";
-import { isAuthorized } from "@/lib/admin/adminActions";
-import { adminLinks } from "@/lib/admin/adminConstants";
-type Props = {
-  onAdmin?: boolean;
-};
-const MobileMenuLinks = async ({ onAdmin }: Props) => {
-  let menu: {
-    links: Links;
-    groupedLinks: GroupedLinks;
-  } = {
-    links: [],
-    groupedLinks: [],
-  };
+import { getAdminLinks } from "@/lib/admin/adminActions";
 
-  if (onAdmin) {
-    const { roles } = await isAuthorized();
-    menu = adminLinks(roles);
-  } else {
-    menu = clientLinks;
-  }
-
+const Links = ({
+  menu,
+}: {
+  menu: { links: Links; groupedLinks: GroupedLinks };
+}) => {
   return (
     <div className="flex flex-col gap-1">
       {menu.links.map((link) => (
@@ -62,6 +48,31 @@ const MobileMenuLinks = async ({ onAdmin }: Props) => {
         ))}
       </Accordion>
     </div>
+  );
+};
+
+const MobileMenuLinks = async () => {
+  const adminMenu = await getAdminLinks();
+
+  const showAdminMenu =
+    adminMenu.links.filter((item) => item.restricted == true).length > 0;
+
+  return (
+    <>
+      <Links menu={clientLinks} />
+      {showAdminMenu && (
+        <div className="mt-2">
+          <div className="border-y-2 py-1 flex items-center gap-1">
+            <span className="border-t-2 w-full" />
+            <h2 className="text-lg font-semibold whitespace-nowrap">
+              ADMIN MENU
+            </h2>
+            <span className="border-t-2 w-full" />
+          </div>
+          <Links menu={adminMenu} />
+        </div>
+      )}
+    </>
   );
 };
 export default MobileMenuLinks;

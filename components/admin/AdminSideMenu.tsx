@@ -5,14 +5,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { adminLinks } from "@/lib/admin/adminConstants";
-import { getPermittedRoles, isPermitted } from "@/lib/admin/adminFunctions";
-import { isAuthorized } from "@/lib/admin/adminActions";
+import { getAdminLinks } from "@/lib/admin/adminActions";
 
 const AdminSideMenu = async () => {
-  const { roles } = await isAuthorized();
-
-  const { links, groupedLinks } = adminLinks(roles);
+  const { links, groupedLinks } = await getAdminLinks();
 
   return (
     <div className="p-2 flex flex-col border-r-2 h-full">

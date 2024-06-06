@@ -1,11 +1,12 @@
 "use server";
 import { NextResponse } from "next/server";
 import supabase from "../database/supabase";
-import { SpecialUser, SpecialUserRole } from "./adminConstants";
+import { SpecialUser, SpecialUserRole, adminLinks } from "./adminConstants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/authOptions";
 import { getPermittedRoles, isPermitted } from "./adminFunctions";
 import { decode, sign } from "jsonwebtoken";
+import { GroupedLinks, Links } from "../constants";
 
 export const getSpecialUsers = async (
   role: SpecialUserRole,
@@ -73,7 +74,7 @@ export const isAuthorized = async (options?: {
   if (options?.noFetch) return result;
 
   // console.log("FETCH SPECIAL USERS");
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("specialUsers")
     .select()
     .eq("email", session?.user?.email);
@@ -140,9 +141,27 @@ export const apiProtect = async (options?: {
 
   result.message = "Not authorized";
   result.response = NextResponse.json(
-    { message: result.message, code: "not-authotrized" },
+    { message: result.message, code: "not-authorized" },
     { status: 403 }
   );
 
+  return result;
+};
+
+export const getAdminLinks = async () => {
+  const { links, groupedLinks } = adminLinks;
+  const { roles } = await isAuthorized({ noFetch: true });
+  let result: {
+    links: Links;
+    groupedLinks: GroupedLinks;
+  } = {
+    links: links.filter(
+      (link) =>
+        !link.restricted || isPermitted(roles, getPermittedRoles(link.href))
+    ),
+    groupedLinks: groupedLinks.filter((item) =>
+      isPermitted(roles, getPermittedRoles(item.prefix))
+    ),
+  };
   return result;
 };
