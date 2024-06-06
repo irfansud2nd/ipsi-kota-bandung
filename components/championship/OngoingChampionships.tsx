@@ -19,7 +19,7 @@ const Card = ({ championship }: { championship: Championship }) => {
     <div className="w-full bg-muted flex flex-col md:flex-row md:justify-between gap-y-3 items-center py-2 px-5 rounded-3xl">
       <div className="flex flex-col gap-1">
         <Link
-          href={`/championship/${championship.id}/register`}
+          href={`/championship/${championship.id}`}
           className="font-semibold text-xl hover:text-primary mb-1 transition"
         >
           {championship.title}
@@ -113,11 +113,7 @@ const Card = ({ championship }: { championship: Championship }) => {
 };
 
 const OngoingChampionships = () => {
-  // const ongoingChampionships = championships.filter(
-  //   (item) => item.register.start <= Date.now() && item.register.end >= Date.now()
-  // );
-
-  const ongoingChampionships = championships;
+  const ongoingChampionships = championships.filter((item) => item.showOnHome);
 
   if (!ongoingChampionships.length) return null;
 

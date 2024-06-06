@@ -1,7 +1,12 @@
 import Container from "./Container";
 
 type Props = {
-  type: "notLoggedIn" | "notAuthorized" | "underDevelopment" | "notFound";
+  type:
+    | "notLoggedIn"
+    | "notAuthorized"
+    | "underDevelopment"
+    | "notFound"
+    | "sorry";
   text?: string;
 };
 
@@ -21,6 +26,10 @@ const PageInfo = ({ type, text }: Props) => {
     case "underDevelopment":
       displayText = "Maaf, halaman ini masih dalam tahap pengembangan";
       displayImage = "/images/under-development.png";
+      break;
+    case "sorry":
+      displayText = "Maaf, ada kesalahan yang terjadi";
+      displayImage = "/images/error.png";
       break;
     default:
       displayText = "Maaf, halaman yang anda cari tidak ditemukan";

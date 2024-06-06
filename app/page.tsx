@@ -6,6 +6,7 @@ import Announcement from "@/components/home/Announcement";
 import { championships } from "@/lib/event/eventConstants";
 import { getEvents, getNewsArr } from "@/lib/serverFunctions";
 import OngoingChampionships from "@/components/championship/OngoingChampionships";
+import HomeDialog from "@/components/home/HomeDialog";
 
 export default async function Home() {
   const events = await getEvents(1, 3);
@@ -13,6 +14,7 @@ export default async function Home() {
   return (
     <div className="w-full h-full">
       <HomeBanner />
+      <HomeDialog />
       <OngoingChampionships />
       <HomeMenu />
       <Announcement />

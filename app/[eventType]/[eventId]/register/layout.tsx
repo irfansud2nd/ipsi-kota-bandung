@@ -2,6 +2,7 @@ import IsLoggedIn from "@/components/auth/IsLoggedIn";
 import ChampionshipRegister from "@/components/championship/register/ChampionshipRegister";
 import ChampionshipMenu from "@/components/championship/register/menu/ChampionshipMenu";
 import ReduxProvider from "@/components/providers/ReduxProvider";
+import PageInfo from "@/components/ui/PageInfo";
 import { baseUrl } from "@/lib/constants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Metadata } from "next";
@@ -46,7 +47,12 @@ const layout = ({
 
   const championship = getChampionship(params.eventId);
   if (!championship || Date.now() <= championship?.register.start)
-    return notFound();
+    return (
+      <PageInfo
+        type="sorry"
+        text="Maaf, pendaftaran baru bisa di lakukan tanggal 10 Juni 2024 ya!"
+      />
+    );
 
   return (
     <IsLoggedIn>

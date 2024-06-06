@@ -26,7 +26,7 @@ const page = async ({ searchParams }: Props) => {
   return (
     <div>
       <PageBanner
-        imgUrl="/images/home-banner-people.jpg"
+        imgUrl="/images/home-banner-people.png"
         title="Pengurus"
         className="text-white"
         text="IPSI Kota Bandung"

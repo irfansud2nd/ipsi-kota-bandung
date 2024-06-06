@@ -41,7 +41,7 @@ const page = async ({ searchParams, params }: Props) => {
   return (
     <div>
       <PageBanner
-        imgUrl="/images/home-banner-people.jpg"
+        imgUrl="/images/home-banner-people.png"
         title={eventType == "championship" ? "Kejuaraan" : "Event"}
         className="text-white"
         text="IPSI Kota Bandung"

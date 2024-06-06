@@ -50,7 +50,7 @@ const page = async ({ params, searchParams }: Props) => {
   return (
     <>
       <PageBanner
-        imgUrl="/images/home-banner-people.jpg"
+        imgUrl="/images/home-banner-people.png"
         title={athleteLabel}
         className="text-white"
         text="IPSI Kota Bandung"

@@ -19,7 +19,7 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
   return (
     <div>
       <PageBanner
-        imgUrl="/images/home-banner-people.jpg"
+        imgUrl="/images/home-banner-people.png"
         title="Berita"
         className="text-white"
         text="IPSI Kota Bandung"

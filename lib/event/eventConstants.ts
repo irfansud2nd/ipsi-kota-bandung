@@ -120,6 +120,8 @@ export type Championship = Event & {
     ganda: number;
     regu: number;
   };
+  showOnHome?: boolean;
+  dialogOnHome?: boolean;
 };
 
 // DUMMY DATA
@@ -194,7 +196,7 @@ export const championships: Championship[] = [
     id: "bandung-open-24",
     title: "Bandung Open Pencak Silat Tournament",
     image: {
-      downloadUrl: "/images/championships/bandung-open-24.jpg",
+      downloadUrl: "/images/championships/bandung-open-24.png",
     },
     location: {
       name: "GOR KONI Kota Bandung",
@@ -290,6 +292,8 @@ export const championships: Championship[] = [
       ganda: 350000,
       regu: 350000,
     },
+    showOnHome: true,
+    dialogOnHome: true,
   },
 ];
 
