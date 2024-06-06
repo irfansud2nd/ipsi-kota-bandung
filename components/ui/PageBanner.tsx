@@ -9,7 +9,7 @@ type Props = {
 const PageBanner = ({ imgUrl, title, className, text }: Props) => {
   return (
     <div
-      className={`w-full h-[70vh] max-md:max-h-[50vh] bg-cover bg-no-repeat bg-center -z-[1] sticky top-[50px] sm:top-[70px] 
+      className={`w-full aspect-video sm:aspect-[16/5] h-fit transition-all bg-cover bg-no-repeat bg-center -z-[1] sticky top-[50px] sm:top-[70px] 
       ${className}`}
       style={{ backgroundImage: `url(${imgUrl})` }}
     >
