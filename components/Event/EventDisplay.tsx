@@ -157,7 +157,7 @@ const EventDisplay = ({ event, preview }: Props) => {
 
   return (
     <div className="border-b-2 pb-2">
-      <div className="w-full grid grid-cols-1 md:grid-cols-3 grid-rows-1 max-md:grid-rows-2">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 grid-rows-1 max-md:grid-rows-[auto_1fr]">
         {showImage ? (
           <img
             src={imageUrl}
