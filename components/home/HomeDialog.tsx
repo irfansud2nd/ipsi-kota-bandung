@@ -5,10 +5,11 @@ import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
+import Cookies from "js-cookie";
 
 const HomeDialog = () => {
   return (
-    <Dialog defaultOpen={localStorage.getItem("oOxS52zULHKFheIC") !== "hide"}>
+    <Dialog defaultOpen={Cookies.get("oOxS52zULHKFheIC") !== "hide"}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">Informasi</DialogTitle>
@@ -36,8 +37,8 @@ const HomeDialog = () => {
           <Checkbox
             onCheckedChange={(value) =>
               value
-                ? localStorage.setItem("oOxS52zULHKFheIC", "hide")
-                : localStorage.removeItem("oOxS52zULHKFheIC")
+                ? Cookies.set("oOxS52zULHKFheIC", "hide")
+                : Cookies.remove("oOxS52zULHKFheIC")
             }
             className="translate-y-0.5"
           />
