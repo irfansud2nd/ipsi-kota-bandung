@@ -11,7 +11,7 @@ const page = async () => {
       <h1 className="text-2xl font-bold">Kelola Pengumuman</h1>
       <RichTextDisplay
         text={announcement.text}
-        fallback="Announcement"
+        fallback="Tidak ada pengumuman"
         className="border-2 p-2 text-justify rounded"
       />
       <p>

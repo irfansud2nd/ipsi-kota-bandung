@@ -7,7 +7,7 @@ import { getEvents } from "@/lib/serverFunctions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;
-  const limit = 3;
+  const limit = 10;
   const events: Event[] = await getEvents(page, limit);
   return (
     <div className="p-2">

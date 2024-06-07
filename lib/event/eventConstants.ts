@@ -260,8 +260,9 @@ export const championships: Championship[] = [
         },
         limit: {
           paid: true,
-          vallue: 16,
+          value: 16,
         },
+        oneAthletPerCategory: true,
       },
       {
         level: "Dewasa (17-30 Tahun)",
@@ -271,8 +272,9 @@ export const championships: Championship[] = [
         },
         limit: {
           paid: true,
-          vallue: 16,
+          value: 16,
         },
+        oneAthletPerCategory: true,
       },
     ],
     proposal:
@@ -306,6 +308,7 @@ export type MatchCategory = {
   rookieOnly?: boolean;
   limit?: {
     paid: boolean;
-    vallue: number;
+    value: number;
   };
+  oneAthletPerCategory?: boolean;
 }[];

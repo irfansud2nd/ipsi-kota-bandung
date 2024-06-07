@@ -35,7 +35,7 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
         return (
           <Form>
             <InputText label="Judul Berita" name="title" formik={props} />
-            <InputText label="Penulis" name="creator.name" formik={props} />
+            <InputText label="Penulis" name="creatorName" formik={props} />
             <InputFile
               label="Gambar"
               name="image"
@@ -46,11 +46,11 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
             <InputRichText label="Konten" name="text" formik={props} />
             <InputText
               label="Email Penulis"
-              name="creator.email"
+              name="creatorEmail"
               formik={props}
               forceDisabled
               forceValue={
-                newsToEdit?.creator.email ??
+                newsToEdit?.creatorEmail ??
                 (session.data?.user?.email as string)
               }
               className={`${!newsToEdit?.id && "hidden"}`}

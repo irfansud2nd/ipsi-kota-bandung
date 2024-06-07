@@ -8,10 +8,10 @@ import { getFileUrl } from "../functions";
 // SEND BERITA
 export const sendNews = async (news: News) => {
   const toastId = toast.loading("Mengunggah berita");
-  const { imageUrl } = getFileUrl("news", news.id);
   try {
     const id = v4();
     let data: News = { ...news, id: id, createdAt: Date.now() };
+    const { imageUrl } = getFileUrl("news", data.id);
 
     // SEND GAMBAR
     if (!news.image.file)
@@ -35,10 +35,10 @@ export const sendNews = async (news: News) => {
 // UPDATE BERITA
 export const updateNews = async (news: News) => {
   const toastId = toast.loading("Memperbaharui berita");
-  const { imageUrl } = getFileUrl("news", news.id);
 
   try {
     let data: News = { ...news };
+    const { imageUrl } = getFileUrl("news", data.id);
     if (news.image.file) {
       // DELETE OLD IMAGE
       toast.loading("Memperbaharui gambar", { id: toastId });
@@ -60,11 +60,12 @@ export const updateNews = async (news: News) => {
 // DELETE BERITAS
 export const deleteNews = async (news: News) => {
   const toastId = toast.loading("Menghapus berita");
+  const { imageUrl } = getFileUrl("news", news.id);
 
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await axios.delete(`/api/file?directory=news/${news.id}`);
+    await axios.delete(`/api/file?directory=${imageUrl}`);
 
     // DELETE BERITA
     toast.loading("Menghapus berita", { id: toastId });

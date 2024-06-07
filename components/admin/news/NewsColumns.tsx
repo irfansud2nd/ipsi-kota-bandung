@@ -13,11 +13,11 @@ export const NewsColumns: ColumnDef<News>[] = [
     header: "Judul Berita",
   },
   {
-    accessorKey: "creator.name",
+    accessorKey: "creatorName",
     header: "Penulis",
   },
   {
-    accessorKey: "creator.email",
+    accessorKey: "creatorEmail",
     header: "Email Penulis",
   },
   {

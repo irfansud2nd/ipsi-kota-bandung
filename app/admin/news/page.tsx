@@ -7,7 +7,7 @@ import { getNewsArr } from "@/lib/serverFunctions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;
-  const limit = 3;
+  const limit = 10;
   const newsArr: News[] = await getNewsArr(page, limit);
   return (
     <div className="p-2">
