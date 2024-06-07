@@ -21,15 +21,15 @@ export const EventColumns: ColumnDef<Event>[] = [
 
       return (
         <div>
-          {event.location.url ? (
+          {event.locationUrl ? (
             <Link
-              href={event.location.url}
+              href={event.locationUrl}
               className="hover:text-green- transition"
             >
-              {event.location.name}
+              {event.locationName}
             </Link>
           ) : (
-            event.location.name
+            event.locationName
           )}
         </div>
       );
@@ -43,13 +43,13 @@ export const EventColumns: ColumnDef<Event>[] = [
       return (
         <div>
           <p className="whitespace-nowrap">
-            {formatDate(event.date.start, {
+            {formatDate(event.dateStart, {
               longMonth: true,
               withoutHour: true,
-              withoutYear: event.date.end != 0,
+              withoutYear: event.dateEnd != 0,
             })}
-            {event.date.end
-              ? ` - ${formatDate(event.date.end, {
+            {event.dateEnd
+              ? ` - ${formatDate(event.dateEnd, {
                   longMonth: true,
                   withoutHour: true,
                 })}`
@@ -66,9 +66,9 @@ export const EventColumns: ColumnDef<Event>[] = [
       const event = row.original;
       return (
         <div>
-          {formatDate(event.time.start, { hourOnly: true })}
-          {event.time.end
-            ? ` - ${formatDate(event.time.end, {
+          {formatDate(event.timeStart, { hourOnly: true })}
+          {event.timeEnd
+            ? ` - ${formatDate(event.timeEnd, {
                 hourOnly: true,
               })} WIB`
             : " WIB - selesai"}
@@ -77,11 +77,11 @@ export const EventColumns: ColumnDef<Event>[] = [
     },
   },
   {
-    accessorKey: "creator.name",
+    accessorKey: "creatorName",
     header: "Penyelenggara",
   },
   {
-    accessorKey: "creator.email",
+    accessorKey: "creatorEmail",
     header: "Email Pembuat",
   },
   {

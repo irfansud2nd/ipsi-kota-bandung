@@ -25,12 +25,12 @@ const Card = ({ championship }: { championship: Championship }) => {
           {championship.title}
         </Link>
         <Link
-          href={championship.location.url || ""}
+          href={championship.locationUrl || ""}
           className="hover:text-primary flex items-center transition"
           target="_blank"
         >
           <IoLocationSharp className="size-5 mr-2 text-primary" />
-          {championship.location.name}
+          {championship.locationName}
         </Link>
         {/* WAKTU PENDAFTARAN */}
         <TooltipProvider>
@@ -66,17 +66,17 @@ const Card = ({ championship }: { championship: Championship }) => {
               <p className="whitespace-nowrap flex items-center">
                 <FaCalendarAlt className="size-5 mr-2 text-primary" />
                 <span>
-                  {formatDate(championship.date.start, {
+                  {formatDate(championship.dateStart, {
                     withoutHour: true,
                     longMonth: true,
                     withoutYear: true,
                   })}
                 </span>
-                {championship.date.end && (
+                {championship.dateEnd && (
                   <>
                     <span> - </span>
                     <span>
-                      {formatDate(championship.date.end, {
+                      {formatDate(championship.dateEnd, {
                         withoutHour: true,
                         longMonth: true,
                       })}

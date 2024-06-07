@@ -30,23 +30,23 @@ const EventDisplay = ({ event, preview }: Props) => {
     {
       label: "Penyelenggara",
       icon: <FaUser />,
-      content: event.creator.name.length
-        ? event.creator.name
+      content: event.creatorName.length
+        ? event.creatorName
         : "IPSI Kota Bandung",
     },
     {
       label: "Lokasi",
       icon: <IoLocationSharp />,
-      content: event.location.url ? (
+      content: event.locationUrl ? (
         <Link
-          href={event.location.url}
+          href={event.locationUrl}
           className="hover:text-primary transition"
           target="_blank"
         >
-          {event.location.name}
+          {event.locationName}
         </Link>
       ) : (
-        event.location.name
+        event.locationName
       ),
     },
     {
@@ -54,13 +54,13 @@ const EventDisplay = ({ event, preview }: Props) => {
       icon: <FaCalendarAlt />,
       content: (
         <span className="whitespace-nowrap">
-          {formatDate(event.date.start, {
+          {formatDate(event.dateStart, {
             longMonth: true,
             withoutHour: true,
-            withoutYear: event.date.end != 0,
+            withoutYear: event.dateEnd != 0,
           })}
-          {event.date.end
-            ? ` - ${formatDate(event.date.end, {
+          {event.dateEnd
+            ? ` - ${formatDate(event.dateEnd, {
                 longMonth: true,
                 withoutHour: true,
               })}`
@@ -73,9 +73,9 @@ const EventDisplay = ({ event, preview }: Props) => {
       icon: <FaClock />,
       content: (
         <span>
-          {formatDate(event.time.start, { hourOnly: true })}
-          {event.time.end
-            ? ` - ${formatDate(event.time.end, {
+          {formatDate(event.timeStart, { hourOnly: true })}
+          {event.timeEnd
+            ? ` - ${formatDate(event.timeEnd, {
                 hourOnly: true,
               })} WIB`
             : " WIB - selesai"}

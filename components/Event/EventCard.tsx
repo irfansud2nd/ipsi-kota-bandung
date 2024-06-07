@@ -32,32 +32,32 @@ const EventCard = ({ event }: Props) => {
         </Link>
         <div className="flex gap-2 items-center">
           <IoLocationSharp className="size-5 min-w-5 min-h-5 text-green-500" />
-          {event.location.url ? (
+          {event.locationUrl ? (
             <Link
-              href={event.location.url}
+              href={event.locationUrl}
               className="hover:text-green-400 transition"
             >
-              <span>{event.location.name}</span>
+              <span>{event.locationName}</span>
             </Link>
           ) : (
-            <span>{event.location.name}</span>
+            <span>{event.locationName}</span>
           )}
         </div>
         <div className="border-t-2 mt-2 pt-2 flex justify-between items-center flex-wrap">
           <p className="whitespace-nowrap flex items-center">
             <FaCalendarAlt className="size-5 mr-2 text-green-500" />
             <span>
-              {formatDate(event.date.start, {
+              {formatDate(event.dateStart, {
                 withoutHour: true,
                 longMonth: true,
-                withoutYear: !!event.date.end,
+                withoutYear: !!event.dateEnd,
               })}
             </span>
-            {event.date.end && (
+            {event.dateEnd && (
               <>
                 <span> - </span>
                 <span>
-                  {formatDate(event.date.end, {
+                  {formatDate(event.dateEnd, {
                     withoutHour: true,
                     longMonth: true,
                   })}
@@ -79,7 +79,7 @@ const EventCard = ({ event }: Props) => {
           ) : (
             <>
               <FaClock className="size-5 mr-2 ml-auto text-green-500" />
-              <p>{formatDate(event.date.start, { hourOnly: true })}</p>
+              <p>{formatDate(event.dateStart, { hourOnly: true })}</p>
             </>
           )}
         </div>

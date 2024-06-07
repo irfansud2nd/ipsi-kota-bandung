@@ -10,22 +10,14 @@ export type Event = {
     file?: File;
     downloadUrl: string;
   };
-  location: {
-    name: string;
-    url?: string;
-  };
-  date: {
-    start: number;
-    end?: number;
-  };
-  time: {
-    start: number;
-    end?: number;
-  };
-  creator: {
-    name: string;
-    email: string;
-  };
+  locationName: string;
+  locationUrl?: string;
+  dateStart: number;
+  dateEnd?: number;
+  timeStart: number;
+  timeEnd?: number;
+  creatorName: string;
+  creatorEmail: string;
   createdAt: number;
   description: string;
 };
@@ -37,19 +29,11 @@ export const eventInitialValue: Event = {
     file: undefined,
     downloadUrl: "",
   },
-  location: {
-    name: "",
-  },
-  date: {
-    start: 0,
-  },
-  time: {
-    start: 0,
-  },
-  creator: {
-    name: "IPSI Kota Bandung",
-    email: "",
-  },
+  locationName: "",
+  dateStart: 0,
+  timeStart: 0,
+  creatorName: "IPSI Kota Bandung",
+  creatorEmail: "",
   createdAt: 0,
   description: "",
 };
@@ -60,24 +44,17 @@ export const eventSchema = (ignoreImage: boolean = false) => {
       .string()
       .required("Tolong lengkapi judul event")
       .max(225, "Judul event terlalu panjang"),
-    location: yup.object({
-      name: yup.string().required("Tolong lengkapi nama lokasi"),
-      url: yup.string().url("Link tidak valid"),
-    }),
-    date: yup.object({
-      start: yup.number().min(1, "Tolong lengkapi tanggal mulai"),
-    }),
-    time: yup.object({
-      start: yup.number().min(1, "Tolong lengkapi jam mulai"),
-    }),
-    creator: yup.object({
-      name: yup
-        .string()
-        .required("Tolong lengkapi nama penyelenggara")
-        .max(225, "Nama penyelenggara terlalu panjang"),
-    }),
+    locationName: yup.string().required("Tolong lengkapi nama lokasi"),
+    locationUrl: yup.string().url("Link tidak valid"),
+    dateStart: yup.number().min(1, "Tolong lengkapi tanggal mulai"),
+    timeStart: yup.number().min(1, "Tolong lengkapi jam mulai"),
+    creatorName: yup
+      .string()
+      .required("Tolong lengkapi nama penyelenggara")
+      .max(225, "Nama penyelenggara terlalu panjang"),
     description: yup.string().required("Tolong lengkapi Deskripsi"),
   });
+
   if (!ignoreImage)
     schema = schema.concat(
       yup.object({
@@ -134,21 +111,13 @@ export const getDummyEvents = (length: number, startNumber: number = 0) => {
       image: {
         downloadUrl: "url " + i,
       },
-      location: {
-        name: "Location " + i,
-      },
-      date: {
-        start: Date.now() + i * 99999999,
-        end: Date.now() + i * 99999999 + 99999999,
-      },
-      time: {
-        start: Date.now() + i * 99999999,
-        end: Date.now() + 50000 + i * 99999999,
-      },
-      creator: {
-        name: "IPSI Kota Bandung",
-        email: "irfansud" + i + "gmail.com",
-      },
+      locationName: "Location " + i,
+      dateStart: Date.now() + i * 99999999,
+      dateEnd: Date.now() + i * 99999999 + 99999999,
+      timeStart: Date.now() + i * 99999999,
+      timeEnd: Date.now() + 50000 + i * 99999999,
+      creatorName: "IPSI Kota Bandung",
+      creatorEmail: "irfansud" + i + "gmail.com",
       createdAt: Date.now() - i * 99999999,
       description: "Description " + i,
     });
@@ -198,21 +167,13 @@ export const championships: Championship[] = [
     image: {
       downloadUrl: "/images/championships/bandung-open-24.png",
     },
-    location: {
-      name: "GOR KONI Kota Bandung",
-      url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-    },
-    date: {
-      start: dateToNumber("2024-08-06"),
-      end: dateToNumber("2024-08-10"),
-    },
-    time: {
-      start: 0,
-    },
-    creator: {
-      name: "",
-      email: "irfansud2nd@gmail.com",
-    },
+    locationName: "GOR KONI Kota Bandung",
+    locationUrl: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+    dateStart: dateToNumber("2024-08-06"),
+    dateEnd: dateToNumber("2024-08-10"),
+    timeStart: 0,
+    creatorName: "",
+    creatorEmail: "irfansud2nd@gmail.com",
     createdAt: dateToNumber("2024-06-01"),
     description: "",
     register: {

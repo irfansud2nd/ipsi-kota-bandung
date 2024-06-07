@@ -49,27 +49,27 @@ const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
                 />
                 <InputText
                   label="Nama Lokasi"
-                  name="location.name"
+                  name="locationName"
                   formik={props}
                 />
                 <InputText
                   label="Link Google Maps Lokasi"
-                  name="location.url"
+                  name="locationUrl"
                   helperText="(opsional)"
                   formik={props}
                 />
                 <InputText
                   label="Penyelenggara"
-                  name="creator.name"
+                  name="creatorName"
                   formik={props}
                 />
                 <InputText
                   label="Email Pembuat"
-                  name="creator.email"
+                  name="creatorEmail"
                   formik={props}
                   forceDisabled
                   forceValue={
-                    eventToEdit?.creator.email ??
+                    eventToEdit?.creatorEmail ??
                     (session.data?.user?.email as string)
                   }
                 />
@@ -77,24 +77,24 @@ const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
               <div>
                 <InputDate
                   label="Tanggal Mulai"
-                  name="date.start"
+                  name="dateStart"
                   formik={props}
                 />
                 <InputDate
                   label="Tanggal Selesai"
-                  name="date.end"
+                  name="dateEnd"
                   formik={props}
                   helperText="(untuk event >1 hari)"
                 />
                 <InputDate
                   label="Jam Mulai"
-                  name="time.start"
+                  name="timeStart"
                   formik={props}
                   time
                 />
                 <InputDate
                   label="Jam Selesai"
-                  name="time.end"
+                  name="timeEnd"
                   formik={props}
                   time
                   helperText="(opsional)"
