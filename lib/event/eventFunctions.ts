@@ -58,10 +58,12 @@ export const updateEvent = async (event: Event) => {
 // DELETE EVENTS
 export const deleteEvent = async (event: Event) => {
   const toastId = toast.loading("Menghapus event");
+  const { imageUrl } = getFileUrl("event", event.id);
+
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await axios.delete(`/api/file?directory=event/${event.id}`);
+    await axios.delete(`/api/file?directory=${imageUrl}`);
 
     // DELETE EVENT
     toast.loading("Menghapus event", { id: toastId });
