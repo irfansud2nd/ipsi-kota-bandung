@@ -282,7 +282,7 @@ export const championships: Championship[] = [
     },
     showOnHome: true,
     dialogOnHome: true,
-    testerEmail: ["irfansud2nd@gmail.com"],
+    testerEmail: ["irfansud2nd@gmail.com", "iqbalbobalfarisy@gmail.com"],
   },
 ];
 
