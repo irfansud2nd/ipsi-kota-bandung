@@ -7,6 +7,7 @@ import { baseUrl } from "@/lib/constants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { formatDate } from "@/lib/functions";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const layout = ({
+const layout = async ({
   children,
   params,
 }: Props & { children: React.ReactNode }) => {
@@ -49,16 +50,27 @@ const layout = ({
   const championship = getChampionship(params.eventId);
   if (!championship) return notFound();
 
-  // if (Date.now() <= championship.register.start)
-  //   return (
-  //     <PageInfo
-  //       type="sorry"
-  //       text={`Maaf, pendaftaran baru bisa di lakukan tanggal ${formatDate(
-  //         championship.register.start,
-  //         { withoutHour: true, longMonth: true }
-  //       )}  ya!`}
-  //     />
-  //   );
+  let isTester = false;
+
+  if (championship.testerEmail) {
+    const session = await getServerSession();
+    if (
+      session?.user?.email &&
+      championship.testerEmail.includes(session.user.email)
+    )
+      isTester = true;
+  }
+
+  if (Date.now() <= championship.register.start && !isTester)
+    return (
+      <PageInfo
+        type="sorry"
+        text={`Maaf, pendaftaran baru bisa di lakukan tanggal ${formatDate(
+          championship.register.start,
+          { withoutHour: true, longMonth: true }
+        )}  ya!`}
+      />
+    );
 
   return (
     <IsLoggedIn>

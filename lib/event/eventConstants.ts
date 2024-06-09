@@ -108,6 +108,7 @@ export type Championship = Event & {
   };
   showOnHome?: boolean;
   dialogOnHome?: boolean;
+  testerEmail?: string[];
 };
 
 // DUMMY DATA
@@ -281,6 +282,7 @@ export const championships: Championship[] = [
     },
     showOnHome: true,
     dialogOnHome: true,
+    testerEmail: ["irfansud2nd@gmail.com"],
   },
 ];
 
