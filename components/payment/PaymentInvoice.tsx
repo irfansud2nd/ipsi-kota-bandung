@@ -44,8 +44,7 @@ const PaymentInvoice = ({
   const championship = getChampionship(championshipId) as Championship;
   const paidMatchBaseds = useSelector(
     (state: RootState) => state.athlete.matchBased
-  );
-  // .filter((item) => item.payment_id);
+  ).filter((item) => item.payment_id);
 
   const registeredContingent = useSelector(
     (state: RootState) => state.contingent.registered
