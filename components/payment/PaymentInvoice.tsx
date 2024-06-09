@@ -7,7 +7,7 @@ import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import Terbilang from "terbilang-ts";
 import { Button } from "../ui/button";
 import { useReactToPrint } from "react-to-print";
-import { useRef } from "react";
+import { ReactElement, useRef } from "react";
 import { getChampionship, isLevelRookieOnly } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import { useSelector } from "react-redux";
@@ -34,7 +34,13 @@ type Data = {
   cost: number;
 };
 
-const PaymentInvoice = ({ championshipId }: { championshipId: string }) => {
+const PaymentInvoice = ({
+  championshipId,
+  onPhone,
+}: {
+  championshipId: string;
+  onPhone?: boolean;
+}) => {
   const championship = getChampionship(championshipId) as Championship;
   const paidMatchBaseds = useSelector(
     (state: RootState) => state.athlete.matchBased
@@ -45,13 +51,6 @@ const PaymentInvoice = ({ championshipId }: { championshipId: string }) => {
     (state: RootState) => state.contingent.registered
   ) as RegisteredContingent;
   const limit = 8;
-
-  const printRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    documentTitle: `Invoice ${registeredContingent.name}`,
-    onPrintError: () => alert("error"),
-  });
 
   const generateMatchBasedMatchId = () => {
     let ids: string[] = [];
@@ -185,11 +184,18 @@ const PaymentInvoice = ({ championshipId }: { championshipId: string }) => {
     return result;
   };
 
+  const printRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Invoice ${registeredContingent.name}`,
+    onPrintError: () => alert("error"),
+  });
+
   return (
     <>
       <Button onClick={handlePrint}>Download</Button>
       <div className="hidden">
-        <div ref={printRef}>
+        <div ref={printRef} className={`${onPhone && "scale-90"}`}>
           {splitData().map((data) => (
             <div className=" w-[1050px] h-[1485px] mx-auto font-semibold text-xl bg-gray-400">
               <div

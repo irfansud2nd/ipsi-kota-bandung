@@ -75,8 +75,8 @@ const ChampionshipMenu = () => {
 
   return (
     <div
-      className={`bg-gray-200 w-fit h-fit m-2 mr-0 mt-2 rounded-md md:top-[80px] p-2 flex flex-col gap-3 fixed md:sticky transition-all z-10 
-      ${!show && "-left-full"}`}
+      className={`bg-gray-200 w-fit h-fit mr-0 mt-2 rounded-md md:top-[80px] p-2 flex flex-col gap-3 fixed md:sticky transition-all z-10 
+      ${show ? "left-2 mr-2" : "-left-full"}`}
     >
       <ChampionshipMenuButton onSideMenu />
       {menus.map((menu) => (

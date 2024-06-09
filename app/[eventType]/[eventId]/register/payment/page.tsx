@@ -80,6 +80,7 @@ const page = ({ params }: { params: { eventId: string } }) => {
         </div>
       </Tabs>
       <PaymentInvoice championshipId={params.eventId} />
+      <PaymentInvoice championshipId={params.eventId} onPhone />
     </div>
   );
 };
