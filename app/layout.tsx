@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/authOptions";
 import { Toaster } from "sonner";
 
-const poppPoppins = Poppins({
+const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
@@ -34,7 +34,7 @@ export default async function RootLayout({
     <html lang="en" className="scroll-smooth">
       <SessionProvider session={session}>
         <body
-          className={`${poppPoppins.className} grid grid-rows-[1fr_auto] min-h-screen`}
+          className={`${poppins.className} grid grid-rows-[1fr_auto] min-h-screen`}
         >
           <Toaster position="top-center" richColors />
           <Navbar />

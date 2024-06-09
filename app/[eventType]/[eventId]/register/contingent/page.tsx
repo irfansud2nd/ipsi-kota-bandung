@@ -1,4 +1,3 @@
-import ChampionshipMenuButton from "@/components/championship/register/menu/ChampionshipMenuButton";
 import ContingentInfo from "@/components/contingent/ContingentInfo";
 import { Metadata } from "next";
 

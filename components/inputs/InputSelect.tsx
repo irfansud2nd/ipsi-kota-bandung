@@ -10,6 +10,7 @@ import {
 } from "../ui/select";
 import { championships } from "@/lib/event/eventConstants";
 import { InputProps } from "@/lib/form/formConstants";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 type InputSelectProps = InputProps & {
   options: string[];
@@ -31,7 +32,7 @@ const InputSelect = ({
   forceValue,
   showOnEditOnly,
   onEdit,
-  eventId,
+  championshipId,
   className,
 }: InputSelectProps) => {
   const { setFieldValue, values, isSubmitting } = formik;
@@ -48,8 +49,9 @@ const InputSelect = ({
     if (forceValue && value != forceValue) setFieldValue(name, forceValue);
   }, [forceValue]);
 
-  const editOnly = championships.find((event) => event.id == eventId)?.status
-    .editOnly;
+  const editOnly =
+    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    false;
 
   return (
     <div

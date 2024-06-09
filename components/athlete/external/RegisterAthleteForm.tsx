@@ -3,37 +3,34 @@ import InputSelect from "@/components/inputs/InputSelect";
 import InputText from "@/components/inputs/InputText";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { countDuplicateMatch } from "@/lib/athlete/external/athleteActions";
 import {
   Athlete,
   AthleteAtEvent,
   athleteAtEventSchema,
   athleteAtEventInitialValue,
-  getMatchCategory,
   matchSchema,
   matchType,
 } from "@/lib/athlete/external/athleteConstants";
 import {
   addAthleteAtEvent,
+  getMatchCategory,
+  getMatchCost,
   updateAthleteAtEvent,
 } from "@/lib/athlete/external/athleteFunctions";
-import {
-  ContingentAtEvent,
-  RegisteredContingent,
-} from "@/lib/contingent/contingentConstants";
-import { getContingentAtEventByChampionshipId } from "@/lib/contingent/contingentFunctions";
+import { RegisteredContingent } from "@/lib/contingent/contingentConstants";
 import { Championship } from "@/lib/event/eventConstants";
-import { getChampionship } from "@/lib/event/eventFunctions";
+import { getChampionship, isLevelRookieOnly } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
-import { reduceData } from "@/lib/functions";
 import {
   addAthletesAtEventsRedux,
   setAthleteAtEventToEditRedux,
 } from "@/lib/redux/championship/register/athleteSlice";
-import { addContingentAtEventsRedux } from "@/lib/redux/championship/register/contingentSlice";
 import { RootState } from "@/lib/redux/store";
 import { Form, Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 type Props = {
   eventId: string;
@@ -47,11 +44,12 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
   const {
     all: athletes,
     athleteAtEvents,
-    athletAtEventToEdit,
+    athleteAtEventToEdit,
   } = useSelector((state: RootState) => state.athlete);
-  const { contingentAtEvents } = useSelector(
-    (state: RootState) => state.contingent
-  );
+
+  const registeredContingent = useSelector(
+    (state: RootState) => state.contingent.registered
+  ) as RegisteredContingent;
 
   const dispatch = useDispatch();
 
@@ -64,45 +62,97 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
 
   const initialValues: AthleteAtEvent = {
     ...athleteAtEventInitialValue,
+    athlete_id: athletes[0]?.id || "",
     level: levels[0],
-    championshipId: championship.id,
+    type: matchType[art ? 1 : 0],
+    category: championship.matchCategory[0].category[art ? "art" : "fight"][0],
+    contingent_registration_id: registeredContingent.registration_id,
+    championship_id: registeredContingent.championship_id,
+    registered_at: Date.now(),
   };
 
-  const isRookeOnly = (level: string) => {
-    if (
-      championship.matchCategory.find((item) => item.level == level)?.rookieOnly
-    )
-      return true;
-    return false;
+  const isMatchSame = (item1: AthleteAtEvent, item2: AthleteAtEvent) => {
+    return (
+      item1.schema == item2.schema &&
+      item1.type == item2.type &&
+      item1.level == item2.level &&
+      item1.category == item2.category &&
+      item1.team == item2.team
+    );
   };
 
   const isMatchDuplicate = (athleteAtEvent: AthleteAtEvent) => {
     const registeredMathces = athleteAtEvents.filter(
-      (item) => item.athleteId == athleteAtEvent.athleteId
+      (item) => item.athlete_id == athleteAtEvent.athlete_id
     );
     if (!registeredMathces.length) return false;
 
     if (
-      registeredMathces.some(
-        (registered) =>
-          registered.schema == athleteAtEvent.schema &&
-          registered.type == athleteAtEvent.type &&
-          registered.level == athleteAtEvent.level &&
-          registered.category == athleteAtEvent.category &&
-          registered.team == athleteAtEvent.team
+      !registeredMathces.some((registered) =>
+        isMatchSame(registered, athleteAtEvent)
       )
     )
-      return true;
+      return false;
+
+    return true;
+  };
+
+  const checkOneAthletePerCategory = (athleteAtEvent: AthleteAtEvent) => {
+    if (athleteAtEvent.schema == matchSchema[0]) return false;
+    let limit = 1;
+    if (athleteAtEvent.category.includes("Ganda")) limit = 2;
+    if (athleteAtEvent.category.includes("Regu")) limit = 3;
+    if (
+      !championship.matchCategory.find(
+        (item) => item.level == athleteAtEvent.level
+      )?.oneAthletePerCategory
+    )
+      return false;
+
+    const registered = athleteAtEvents.filter((item) =>
+      isMatchSame(item, athleteAtEvent)
+    );
+
+    return registered.length >= limit;
+  };
+
+  const checkLimited = async (athleteAtEvent: AthleteAtEvent) => {
+    if (athleteAtEvent.schema == matchSchema[0]) return;
+
+    const limit = championship.matchCategory.find(
+      (item) => item.level == athleteAtEvent.level
+    )?.limit;
+    if (!limit) return;
+
+    let countLimit = limit.tanding;
+    if (athleteAtEvent.category.includes("Ganda")) countLimit = limit.ganda;
+    if (athleteAtEvent.category.includes("Regu")) countLimit = limit.regu;
+    if (athleteAtEvent.category.includes("Tunggal")) countLimit = limit.tunggal;
+
+    try {
+      const count = await countDuplicateMatch(athleteAtEvent, limit.paid);
+
+      // console.log({ count });
+      if (count < countLimit) return;
+      return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
+    } catch (error: any) {
+      return error.message as string;
+    }
   };
 
   const toggleDialog = (state: boolean) => {
     setOpen(state);
-    if (athletAtEventToEdit && !state) dispatch(setAthleteAtEventToEditRedux());
+    if (athleteAtEventToEdit && !state)
+      dispatch(setAthleteAtEventToEditRedux());
   };
 
   useEffect(() => {
-    if (athletAtEventToEdit) setOpen(true);
-  }, [athletAtEventToEdit]);
+    if (athleteAtEventToEdit) setOpen(true);
+  }, [athleteAtEventToEdit]);
+
+  // useEffect(() => {
+  // console.log({ validateTeam });
+  // }, [validateTeam]);
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
@@ -111,38 +161,47 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
       </DialogTrigger>
       <DialogContent>
         <Formik
-          initialValues={athletAtEventToEdit ?? initialValues}
+          initialValues={athleteAtEventToEdit ?? initialValues}
           onSubmit={async (values, { resetForm }) => {
-            if (isMatchDuplicate(values)) {
-              toastError("Atlet telah mendaftar di kelas yang sama");
-              return;
-            }
+            const toastId = toast.loading(
+              `${
+                athleteAtEventToEdit ? "Memperharui" : "Mendaftarkan"
+              } pertandingan`
+            );
             try {
-              const contingentAtEvent = getContingentAtEventByChampionshipId(
-                contingentAtEvents,
-                championship.id
-              ) as ContingentAtEvent;
+              // if (isMatchDuplicate(values))
+              //   throw { message: "Atlet telah mendaftar di kelas yang sama" };
 
-              const {
-                athleteAtEvent,
-                contingentAtEvent: updatedContingentAtEvent,
-              } = athletAtEventToEdit
-                ? await updateAthleteAtEvent(
-                    athletAtEventToEdit,
-                    values,
-                    contingentAtEvent
-                  )
-                : await addAthleteAtEvent(values, contingentAtEvent);
+              // if (checkOneAthletePerCategory(values))
+              //   throw {
+              //     message:
+              //       "1 Kontingen hanya diperolehkan mendaftarkan 1 Atlet di kategori yang anda pilih",
+              //   };
 
-              dispatch(addAthletesAtEventsRedux([athleteAtEvent]));
-              dispatch(
-                addContingentAtEventsRedux({
-                  contingentAtEvents: [contingentAtEvent],
-                  championshipId: championship.id,
-                })
+              if (!values.athlete_id)
+                throw { message: "Tolong pilih atlet terlebih dahulu" };
+
+              if (!values.contingent_registration_id)
+                throw { message: "ID Pendaftaran kontingen tidak ditemukan" };
+
+              const message = await checkLimited(values);
+              if (message) throw { message };
+
+              if (athleteAtEventToEdit) {
+                await updateAthleteAtEvent(values);
+                dispatch(addAthletesAtEventsRedux([values]));
+              } else {
+                const athleteAtEvent = await addAthleteAtEvent(values);
+                dispatch(addAthletesAtEventsRedux([athleteAtEvent]));
+              }
+              toast.success(
+                `Pertandingan berhasil di${
+                  athleteAtEventToEdit ? "perbaharui" : "daftarkan"
+                }`,
+                { id: toastId }
               );
             } catch (error) {
-              console.log(error);
+              toastError(error, toastId);
             } finally {
             }
           }}
@@ -155,7 +214,7 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                   <div>
                     <InputSelect
                       label="Nama Atlet"
-                      name="athleteId"
+                      name="athlete_id"
                       formik={props}
                       options={athletes.map((item) => item.id)}
                       customOptionLabel={(id) => getAthleteById(id).name}
@@ -165,26 +224,24 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                       name="height"
                       helperText="(CM)"
                       formik={props}
-                      forceValue={
-                        props.values.athleteId
-                          ? getAthleteById(props.values.athleteId).height
-                          : ""
-                      }
-                      forceDisabled
-                      showOnEditOnly
+                      displayOnly={{
+                        state: true,
+                        value: props.values.athlete_id
+                          ? getAthleteById(props.values.athlete_id).height
+                          : "",
+                      }}
                     />
                     <InputText
                       label="Tinggi Badan"
                       name="weight"
                       helperText="(CM)"
                       formik={props}
-                      forceValue={
-                        props.values.athleteId
-                          ? getAthleteById(props.values.athleteId).weight
-                          : ""
-                      }
-                      forceDisabled
-                      showOnEditOnly
+                      displayOnly={{
+                        state: true,
+                        value: props.values.athlete_id
+                          ? getAthleteById(props.values.athlete_id).weight
+                          : "",
+                      }}
                     />
                     <InputSelect
                       label="Jenis Pertandingan"
@@ -201,11 +258,14 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                       name="schema"
                       formik={props}
                       forceValue={
-                        isRookeOnly(props.values.level)
+                        isLevelRookieOnly(props.values.level, championship)
                           ? matchSchema[0]
                           : undefined
                       }
-                      forceDisabled={isRookeOnly(props.values.level)}
+                      forceDisabled={isLevelRookieOnly(
+                        props.values.level,
+                        championship
+                      )}
                       options={matchSchema}
                     />
                     <InputSelect
@@ -231,25 +291,17 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                     {art && !props.values.category.includes("Tunggal") && (
                       <InputText label="Nama Tim" name="team" formik={props} />
                     )}
+                    <InputText
+                      label="Biaya"
+                      name="payment_bill"
+                      formik={props}
+                      forceValue={getMatchCost(props.values)}
+                      forceDisabled
+                    />
                   </div>
                 </div>
                 <Button type="submit" className="ml-auto">
                   Simpan
-                </Button>
-                <Button
-                  type="button"
-                  className="w-fit ml-auto mt-2"
-                  onClick={() => {
-                    console.log({ athleteAtEvents });
-                    console.log(
-                      reduceData(
-                        [...athleteAtEvents, ...[props.values]],
-                        "registrationId"
-                      )
-                    );
-                  }}
-                >
-                  Test
                 </Button>
               </Form>
             );

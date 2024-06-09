@@ -10,17 +10,23 @@ import {
 } from "../ui/dialog";
 import {
   Contingent,
+  ContingentSql,
   contingentInitialValue,
   contingentSchema,
 } from "@/lib/contingent/contingentConstants";
 import InputText from "../inputs/InputText";
 import { useSession } from "next-auth/react";
-import { addContingent } from "@/lib/contingent/contingentFunctions";
+import {
+  addContingentAndRegister,
+  contingentToContingenSql,
+  updateContingent,
+} from "@/lib/contingent/contingentFunctions";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import {
   addContingentAtEventsRedux,
   setUnregisteredContingent,
+  updateContingentRedux,
 } from "@/lib/redux/championship/register/contingentSlice";
 
 type Props = {
@@ -36,38 +42,37 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
 
   const initialValue: Contingent = {
     ...contingentInitialValue,
-    createdBy: session.data?.user?.email || "",
+    created_by: session.data?.user?.email || "",
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Tambah Kontingen</Button>
+        <Button>{contingentToEdit ? "Edit" : "Tambah"} Kontingen</Button>
       </DialogTrigger>
       <DialogContent className="w-fit">
         <Formik
-          onSubmit={(values, { resetForm, setSubmitting }) => {
-            if (contingentToEdit?.id) {
-            } else {
-              addContingent(values, championshipId)
-                .then(({ contingent, contingentAtEvent }) => {
-                  dispatch(
-                    setUnregisteredContingent(contingent),
-                    contingentAtEvent &&
-                      addContingentAtEventsRedux({
-                        contingentAtEvents: [contingentAtEvent],
-                        championshipId,
-                      })
-                  );
-                  setOpen(false);
-                })
-                .finally(() => {
-                  resetForm();
-                  setSubmitting(false);
-                });
-            }
+          onSubmit={async (values, { resetForm, setSubmitting }) => {
+            try {
+              if (contingentToEdit) {
+                const contingent = await updateContingent(values);
+                dispatch(updateContingentRedux(contingent));
+              } else {
+                const { contingent, contingentAtEvents } =
+                  await addContingentAndRegister(values, championshipId);
+                dispatch(setUnregisteredContingent(contingent));
+                dispatch(
+                  addContingentAtEventsRedux({
+                    contingentAtEvents,
+                    championshipId,
+                  })
+                );
+              }
+              resetForm();
+              setOpen(false);
+            } catch (error) {}
           }}
-          initialValues={contingentToEdit ?? initialValue}
+          initialValues={contingentToEdit ? contingentToEdit : initialValue}
           validationSchema={contingentSchema}
         >
           {(props: FormikProps<Contingent>) => (

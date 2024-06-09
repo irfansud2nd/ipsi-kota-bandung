@@ -4,196 +4,224 @@ import {
   Athlete,
   matchType,
   MatchBased,
+  AthleteSql,
+  AthleteAtEventSql,
 } from "./athleteConstants";
 import { v4 } from "uuid";
-import {
-  Contingent,
-  ContingentAtEvent,
-} from "@/lib/contingent/contingentConstants";
 import { getFileUrl } from "@/lib/functions";
 import { sendFile, toastError } from "@/lib/form/formFunctions";
-import axios from "axios";
-import {
-  managePersonOnContingent,
-  managePersonOnRegisteredContingent,
-} from "@/lib/contingent/contingentFunctions";
 import { getChampionship } from "@/lib/event/eventFunctions";
-import { Championship } from "@/lib/event/eventConstants";
+import { Championship, MatchCategory } from "@/lib/event/eventConstants";
+import {
+  addAthleteAtEventSql,
+  addAthleteSql,
+  deleteAthleteAtEventSql,
+  deleteAthleteSql,
+  getAthletesSqlByEmail,
+  updateAthleteAtEventSql,
+  updateAthleteAtEventsSql,
+  updateAthleteSql,
+} from "./athleteActions";
+import { apiProtect } from "@/lib/admin/adminActions";
+import { deleteFile } from "@/lib/serverFunctions";
 
-export const calculateAge = (date: any) => {
-  const birthDate = new Date(date);
-  const currentDate = new Date();
-  currentDate.getTime();
-  let age: Date = new Date(currentDate.getTime() - birthDate.getTime());
-  return age.getFullYear() - 1970;
+// ATHLETE
+export const getAthletesByEmail = async (email: string) => {
+  try {
+    const { message } = await apiProtect({ permittedEmail: email });
+    if (message) throw new Error(message);
+
+    const athletesSql = await getAthletesSqlByEmail(email);
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const addAthlete = async (
-  athleteData: Athlete,
-  contingentData: Contingent
-) => {
+export const addAthlete = async (athleteData: Athlete) => {
   const toastId = toast.loading("Mendaftarkan Atlet");
   const id = v4();
 
-  let contingent: Contingent = contingentData;
   let athlete: Athlete = { ...athleteData, id };
-  athlete.createdAt = Date.now();
+  athlete.created_at = Date.now();
 
-  const { imageUrl, ktpUrl, kkUrl } = getFileUrl("athlete", id);
+  const { imageUrl, kkUrl } = getFileUrl("athlete", id);
 
   try {
-    if (!athlete.createdBy) {
+    if (!athlete.created_by) {
       throw { message: "Email pendaftar tidak ditemukan" };
     }
-    if (!athlete.contingentId)
+    if (!athlete.contingent_id)
       throw { message: "ID Kontingen tidak ditemukan" };
-    if (!athlete.contingentName)
+    if (!athlete.contingent_name)
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!athlete.image.file) throw { message: "Pas foto tidak ditemukan" };
-    // if (!athlete.ktp.file) throw { message: "KTP tidak ditemukan" };
     if (!athlete.kk.file) throw { message: "KK tidak ditemukan" };
+
+    const { message } = await apiProtect({
+      permittedEmail: athlete.created_by,
+    });
+    if (message) throw { message };
 
     // SEND IMAGE
     toast.loading("Mengunggah pas foto atlet", { id: toastId });
     athlete.image.downloadUrl = await sendFile(athlete.image.file, imageUrl);
     delete athlete.image.file;
 
-    // // SEND KTP
-    // toast.loading("Mengunggah KTP", { id: toastId });
-    // athlete.ktp.downloadUrl = await sendFile(athlete.ktp.file, ktpUrl);
-    // delete athlete.ktp.file;
-
     // SEND KK
     toast.loading("Mengunggah KK", { id: toastId });
     athlete.kk.downloadUrl = await sendFile(athlete.kk.file, kkUrl);
     delete athlete.kk.file;
 
-    // ADD ATHLETE TO CONTINGENT
-    toast.loading("Menambahkan atlet ke kontingen", { id: toastId });
-    contingent = await managePersonOnContingent(contingent, athlete, "add");
-
     // SEND ATHLETE
     toast.loading("Mendaftarkan atlet", { id: toastId });
-    await axios.post("/api/athlete", athlete);
+    await addAthleteSql(athleteToAthleteSql(athlete));
+
+    // FINISH
     toast.success("Atlet berhasil didaftarkan", { id: toastId });
-    return { athlete, contingent };
+    return athlete;
   } catch (error) {
     toastError(error, toastId);
     throw error;
   }
 };
 
-export const getAthletes = async (championshipId: string) => {
+export const updateAthlete = async (athlete: Athlete) => {
+  const toastId = toast.loading("Memperbahrui atlet");
+  const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
+
   try {
-    const res = await axios.get(
-      `/api/athlete/registered?championshipId=${championshipId}`
+    const { message } = await apiProtect({
+      permittedEmail: athlete.created_by,
+    });
+    if (message) throw new Error(message);
+
+    if (athlete.image.file) {
+      // UPDATE IMAGE
+      toast.loading("Memperbaharui pas foto atlet", { id: toastId });
+      athlete.image.downloadUrl = await sendFile(athlete.image.file, imageUrl);
+      delete athlete.image.file;
+    }
+
+    if (athlete.kk.file) {
+      // UPDATE KK
+      toast.loading("Memperbaharui KK atlet", { id: toastId });
+      athlete.kk.downloadUrl = await sendFile(athlete.kk.file, kkUrl);
+      delete athlete.kk.file;
+    }
+
+    // UPDATE ATHLETE
+    toast.loading("Memperbaharui atlet", { id: toastId });
+    await updateAthleteSql(athleteToAthleteSql(athlete));
+
+    // FINISH
+    toast.success("Atlet berhasil diperbaharui", { id: toastId });
+    return athlete;
+  } catch (error) {
+    toastError(error, toastId);
+    throw error;
+  }
+};
+
+export const deleteAthlete = async (athlete: Athlete) => {
+  const toastId = toast.loading("Menghapus Atlet");
+
+  const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
+
+  try {
+    const { message } = await apiProtect({
+      permittedEmail: athlete.created_by,
+    });
+    if (message) throw { message };
+
+    // DELETE IMAGE
+    toast.loading("Menghapus pas foto atlet", { id: toastId });
+    await deleteFile(imageUrl);
+
+    // DELETE KK
+    toast.loading("Menghapus KK", { id: toastId });
+    await deleteFile(kkUrl);
+
+    // DELETE ATHLETE
+    toast.loading("Menghapus atlet", { id: toastId });
+    await deleteAthleteSql(athleteToAthleteSql(athlete));
+
+    // FINISH
+    toast.success("Atlet berhasil dihapus", { id: toastId });
+  } catch (error) {
+    toastError(error, toastId);
+    throw error;
+  }
+};
+
+// ATHLETE AT EVENT
+export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw { message };
+
+    const athleteAtEventSql = await addAthleteAtEventSql(
+      athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
-    const { athletes, athleteAtEvents } = res.data.result as {
-      athletes: Athlete[];
-      athleteAtEvents: AthleteAtEvent[];
+    const result: AthleteAtEvent = {
+      ...athleteAtEventSql,
+      championship_id: athleteAtEvent.championship_id,
     };
-
-    return { athletes, athleteAtEvents };
+    return result;
   } catch (error) {
-    toastError(error);
     throw error;
   }
 };
 
-export const addAthleteAtEvent = async (
-  athleteAtEvent: AthleteAtEvent,
-  contingentAtEvent: ContingentAtEvent
-) => {
-  let data: AthleteAtEvent = { ...athleteAtEvent, registeredAt: Date.now() };
-
-  const toastId = toast.loading("Mendaftarkan pertandingan");
+export const updateAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    // SEND ATHLETE AT EVENT
-    const dataToSend: any = data;
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw { message };
 
-    delete dataToSend.registrationId;
-    delete dataToSend.height;
-    delete dataToSend.weight;
-
-    const res = await axios.post("/api/athlete/registered", dataToSend);
-    data = res.data.result[0];
-
-    // UPDATE REGISTERED CONTINGENT
-    const updatedContingentAtEvent = await managePersonOnRegisteredContingent(
-      contingentAtEvent,
-      athleteAtEvent,
-      "add"
+    await updateAthleteAtEventSql(
+      athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
-
-    toast.success("Pertandingan berhasil didaftarkan", { id: toastId });
-    return {
-      athleteAtEvent: data,
-      contingentAtEvent: updatedContingentAtEvent,
-    };
   } catch (error) {
-    toastError(error, toastId);
     throw error;
   }
 };
 
-export const updateAthleteAtEvent = async (
-  prevAthleteAtEvent: AthleteAtEvent,
-  athleteAtEvent: AthleteAtEvent,
-  contingentAtEvent: ContingentAtEvent
+export const updateAthleteAtEvents = async (
+  athleteAtEvents: AthleteAtEvent[]
 ) => {
-  let data: AthleteAtEvent = { ...athleteAtEvent };
-
-  const toastId = toast.loading("Memperharui pertandingan");
   try {
-    // SEND ATHLETE AT EVENT
-    const dataToSend: any = data;
-    delete dataToSend.height;
-    delete dataToSend.weight;
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw { message };
 
-    await axios.patch("/api/athlete/registered", dataToSend);
-
-    // UPDATE REGISTERED CONTINGENT
-    const updatedContingentAtEvent = await managePersonOnRegisteredContingent(
-      contingentAtEvent,
-      athleteAtEvent,
-      "update",
-      prevAthleteAtEvent
+    await updateAthleteAtEventsSql(
+      athleteAtEvents.map((item) => athleteAtEventToAhthleteAtEventSql(item))
     );
-
-    toast.success("Pertandingan berhasil diperbaharui", { id: toastId });
-    return {
-      athleteAtEvent: data,
-      contingentAtEvent: updatedContingentAtEvent,
-    };
   } catch (error) {
-    toastError(error, toastId);
     throw error;
   }
 };
 
-export const deleteAthleteAtEvent = async (
-  athleteAtEvent: AthleteAtEvent,
-  contingentAtEvent: ContingentAtEvent
-) => {
-  const toastId = toast.loading("Menghapus pertandingan");
+export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    // DELETE ATHLETE AT EVENT
-    await axios.delete(
-      `/api/athlete/registered?registrationId=${athleteAtEvent.registrationId}&athleteId=${athleteAtEvent.athleteId}`
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw { message };
+
+    await deleteAthleteAtEventSql(
+      athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
-
-    // UPDATE REGISTERED CONTINGENT
-    const updatedContingentAtEvent = await managePersonOnRegisteredContingent(
-      contingentAtEvent,
-      athleteAtEvent,
-      "delete"
-    );
-
-    toast.success("Pertandingan berhasil dihapus", { id: toastId });
-
-    return updatedContingentAtEvent;
   } catch (error) {
-    toastError(error, toastId);
     throw error;
   }
 };
@@ -201,7 +229,7 @@ export const deleteAthleteAtEvent = async (
 export const getMatchCost = (athleteAtEvent: AthleteAtEvent) => {
   let result = 0;
   const { matchCost } = getChampionship(
-    athleteAtEvent.championshipId
+    athleteAtEvent.championship_id
   ) as Championship;
   if (athleteAtEvent.type == matchType[0]) {
     result = matchCost.tanding;
@@ -214,19 +242,108 @@ export const getMatchCost = (athleteAtEvent: AthleteAtEvent) => {
   return result;
 };
 
+export const getMatchCostByCategory = (
+  category: string,
+  championship: Championship
+) => {
+  let result = 0;
+  const { matchCost } = championship;
+
+  if (category.includes("Tunggal")) {
+    result = matchCost.tunggal;
+  } else if (category.includes("Ganda")) {
+    result = matchCost.ganda;
+  } else if (category.includes("Regu")) {
+    result = matchCost.regu;
+  } else {
+    result = matchCost.tanding;
+  }
+  return result;
+};
+
+export const getTotalMatchCost = (athleteAtEvents: AthleteAtEvent[]) => {
+  let result = 0;
+  athleteAtEvents.map((item) => (result += getMatchCost(item)));
+  return result;
+};
+
+// OTHERS
+export const calculateAge = (date: any) => {
+  const birthDate = new Date(date);
+  const currentDate = new Date();
+  currentDate.getTime();
+  let age: Date = new Date(currentDate.getTime() - birthDate.getTime());
+  return age.getFullYear() - 1970;
+};
+
 export const matchBasedToAthleteAtEvent = (matchBased: MatchBased) => {
   let result: AthleteAtEvent = {
-    registrationId: matchBased.registrationId,
-    athleteId: matchBased.athleteId,
-    championshipId: matchBased.championshipId,
+    registration_id: matchBased.registration_id,
+    athlete_id: matchBased.athlete_id,
+    championship_id: matchBased.championship_id,
+    contingent_registration_id: matchBased.contingent_registration_id,
     schema: matchBased.schema,
     type: matchBased.type,
     level: matchBased.level,
     category: matchBased.category,
     team: matchBased.team,
-    paymentId: matchBased.paymentId,
-    registeredAt: matchBased.registeredAt,
+    payment_id: matchBased.payment_id,
+    registered_at: matchBased.registered_at,
+    payment_bill: matchBased.payment_bill,
   };
 
   return result;
+};
+
+export const athleteSqlToAthlete = (athleteSql: AthleteSql) => {
+  const result: Athlete = {
+    ...athleteSql,
+    image: {
+      downloadUrl: athleteSql.image,
+    },
+    kk: {
+      downloadUrl: athleteSql.kk,
+    },
+  };
+  return result;
+};
+
+export const athleteToAthleteSql = (athlete: Athlete) => {
+  const result: AthleteSql = {
+    ...athlete,
+    image: athlete.image.downloadUrl,
+    kk: athlete.kk.downloadUrl,
+  };
+  return result;
+};
+
+export const athleteAtEventToAhthleteAtEventSql = (
+  athletAtEvent: AthleteAtEvent
+) => {
+  const result: AthleteAtEventSql = {
+    registration_id: athletAtEvent.registration_id,
+    athlete_id: athletAtEvent.athlete_id,
+    contingent_registration_id: athletAtEvent.contingent_registration_id,
+    schema: athletAtEvent.schema,
+    type: athletAtEvent.type,
+    level: athletAtEvent.level,
+    category: athletAtEvent.category,
+    team: athletAtEvent.team,
+    payment_id: athletAtEvent.payment_id,
+    payment_bill: athletAtEvent.payment_bill,
+    registered_at: athletAtEvent.registered_at,
+  };
+  return result;
+};
+
+export const getMatchCategory = (
+  level: string,
+  type: string,
+  matchCategory: MatchCategory
+) => {
+  const categories = matchCategory.find(
+    (item) => item.level == level
+  )?.category;
+  const result = type == matchType[0] ? categories?.fight : categories?.art;
+  return result ?? [];
 };

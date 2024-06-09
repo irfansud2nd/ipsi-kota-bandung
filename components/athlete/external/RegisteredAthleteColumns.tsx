@@ -10,23 +10,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { Athlete, MatchBased } from "@/lib/athlete/external/athleteConstants";
+import { MatchBased } from "@/lib/athlete/external/athleteConstants";
 import TableSortButton from "@/components/ui/TableSortButton";
 import useConfirmation from "@/hooks/useConfirmation";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import {
   deleteAthleteAtEventRedux,
   setAthleteAtEventToEditRedux,
-  setAthleteToEditRedux,
 } from "@/lib/redux/championship/register/athleteSlice";
 import {
   deleteAthleteAtEvent,
   matchBasedToAthleteAtEvent,
 } from "@/lib/athlete/external/athleteFunctions";
-import { RootState } from "@/lib/redux/store";
-import { getContingentAtEventByChampionshipId } from "@/lib/contingent/contingentFunctions";
-import { ContingentAtEvent } from "@/lib/contingent/contingentConstants";
-import { addContingentAtEventsRedux } from "@/lib/redux/championship/register/contingentSlice";
+import { apiProtect } from "@/lib/admin/adminActions";
+import { toastError } from "@/lib/form/formFunctions";
+import { toast } from "sonner";
 
 export const RegisteredAthleteColumns = (
   championshipId: string,
@@ -56,25 +54,21 @@ export const RegisteredAthleteColumns = (
       cell: ({ row }) => <div>{row.original.weight} KG</div>,
     },
     {
-      accessorKey: "match.schema",
+      accessorKey: "schema",
       header: "Skema",
-      cell: ({ row }) => <div>{row.original.schema}</div>,
     },
     {
-      accessorKey: "match.level",
+      accessorKey: "level",
       header: "Tingkatan",
-      cell: ({ row }) => <div>{row.original.level}</div>,
     },
     {
-      accessorKey: "match.category",
+      accessorKey: "category",
       header: "Kategori",
-      cell: ({ row }) => <div>{row.original.category}</div>,
     },
     {
       id: "team",
-      accessorKey: "match.team",
+      accessorKey: "team",
       header: "Nama Tim",
-      cell: ({ row }) => <div>{row.original.team}</div>,
     },
     {
       header: "Aksi",
@@ -82,19 +76,11 @@ export const RegisteredAthleteColumns = (
       cell: ({ row }) => {
         const matchBased = row.original;
 
-        const contingentAtEvents = useSelector(
-          (state: RootState) => state.contingent.contingentAtEvents
-        );
-        const contingentAtEvent = getContingentAtEventByChampionshipId(
-          contingentAtEvents,
-          championshipId
-        ) as ContingentAtEvent;
-
         const dispatch = useDispatch();
         const { confirm, ConfirmationDialog } = useConfirmation();
 
         const handleDelete = async (matchBased: MatchBased) => {
-          const paid = matchBased.paymentId;
+          const paid = matchBased.payment_id;
           const message = paid
             ? "Pertandingan yang sudah dibayar tidak dapat dihapus."
             : "Apakah anda yakin?";
@@ -105,18 +91,21 @@ export const RegisteredAthleteColumns = (
             message,
             ...options,
           });
-          result &&
-            deleteAthleteAtEvent(matchBased, contingentAtEvent).then(
-              (updatedContingentAtEvent) => {
-                dispatch(
-                  addContingentAtEventsRedux({
-                    contingentAtEvents: [updatedContingentAtEvent],
-                    championshipId,
-                  })
-                );
-                dispatch(deleteAthleteAtEventRedux(matchBased));
-              }
-            );
+          if (!result) return;
+          const toastId = toast.loading("Menghapus pertandingan");
+          try {
+            const { message } = await apiProtect({
+              permittedEmail: matchBased.created_by,
+            });
+            if (message) throw { message };
+
+            const athleteAtEvent = matchBasedToAthleteAtEvent(matchBased);
+            await deleteAthleteAtEvent(athleteAtEvent);
+            dispatch(deleteAthleteAtEventRedux(athleteAtEvent));
+            toast.success("Pertandingan berhasil dihapus", { id: toastId });
+          } catch (error) {
+            toastError(error, toastId);
+          }
         };
 
         return (

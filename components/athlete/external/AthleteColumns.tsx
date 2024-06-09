@@ -15,9 +15,14 @@ import TableSortButton from "@/components/ui/TableSortButton";
 import { formatDate } from "@/lib/functions";
 import useConfirmation from "@/hooks/useConfirmation";
 import { getChampionship } from "@/lib/event/eventFunctions";
-import { setAthleteToEditRedux } from "@/lib/redux/championship/register/athleteSlice";
+import {
+  deleteAthleteRedux,
+  setAthleteToEditRedux,
+} from "@/lib/redux/championship/register/athleteSlice";
+import { RootState } from "@/lib/redux/store";
+import { deleteAthlete } from "@/lib/athlete/external/athleteFunctions";
 
-export const AthletColumns = (championshipId: string) => {
+export const AthleteColumns = (championshipId: string) => {
   const championship = getChampionship(championshipId);
 
   let columns: ColumnDef<Athlete>[] = [
@@ -40,10 +45,10 @@ export const AthletColumns = (championshipId: string) => {
       header: "Jenis Kelamin",
     },
     {
-      accessorKey: "birthDate",
+      accessorKey: "birth_date",
       header: "Tangga Lahir",
       cell: ({ row }) => (
-        <div>{formatDate(row.original.birthDate, { withoutHour: true })}</div>
+        <div>{formatDate(row.original.birth_date, { withoutHour: true })}</div>
       ),
     },
     {
@@ -57,12 +62,12 @@ export const AthletColumns = (championshipId: string) => {
       cell: ({ row }) => <div>{row.original.weight} KG</div>,
     },
     {
-      accessorKey: "createdAt",
+      accessorKey: "created_at",
       header: ({ column }) => {
         return <TableSortButton column={column} text="Waktu Pendaftaran" />;
       },
       cell: ({ row }) => (
-        <div>{formatDate(row.original.createdAt, { withoutHour: true })}</div>
+        <div>{formatDate(row.original.created_at, { withoutHour: true })}</div>
       ),
     },
     {
@@ -71,22 +76,37 @@ export const AthletColumns = (championshipId: string) => {
       cell: ({ row }) => {
         const athlete = row.original;
         const dispatch = useDispatch();
-        // const kontingen = useSelector(
-        //   (state: RootState) => state.kontingen.registered
-        // );
+        const athleteAtEvents = useSelector(
+          (state: RootState) => state.athlete.athleteAtEvents
+        );
+
+        const getHisAthleteAtEvents = () => {
+          return athleteAtEvents.filter(
+            (athleteAtEvent) => athleteAtEvent.athlete_id == athlete.id
+          );
+        };
+
+        const isAthletePaid = () => {
+          const athleteAtEvent = getHisAthleteAtEvents();
+          if (!athleteAtEvent.length) return false;
+          if (athleteAtEvent.find((item) => !item.payment_id)) return false;
+          return true;
+        };
 
         const { confirm, ConfirmationDialog } = useConfirmation();
 
-        const handleDelete = async (atlet: Athlete) => {
-          // const paid = isAtletPaid(atlet);
-          // const message = paid
-          //   ? "Atlet yang sudah dibayar tidak dapat dihapus."
-          //   : "Apakah anda yakin?";
-          // const options = paid
-          //   ? { cancelLabel: "Baik", cancelOnly: true }
-          //   : undefined;
-          // const result = await confirm("Hapus Atlet", message, options);
-          // result && deleteAtlet(atlet, dispatch, kontingen);
+        const handleDelete = async () => {
+          const paid = isAthletePaid();
+          const message = paid
+            ? "Atlet yang sudah dibayar tidak dapat dihapus."
+            : "Apakah anda yakin?";
+          const options = paid
+            ? { cancelLabel: "Baik", cancelOnly: true }
+            : undefined;
+          const result = await confirm("Hapus Atlet", { ...options, message });
+          if (!result) return;
+          await deleteAthlete(athlete);
+          dispatch(deleteAthleteRedux(athlete));
         };
 
         return (
@@ -107,7 +127,7 @@ export const AthletColumns = (championshipId: string) => {
                 </DropdownMenuItem>
                 {!championship?.status.editOnly && (
                   <DropdownMenuItem
-                    onClick={() => handleDelete(athlete)}
+                    onClick={handleDelete}
                     className={`text-destructive`}
                   >
                     Hapus

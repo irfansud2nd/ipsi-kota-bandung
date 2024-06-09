@@ -14,7 +14,7 @@ type State = {
   registered: RegisteredAthlete[];
   matchBased: MatchBased[];
   athleteToEdit: Athlete | undefined;
-  athletAtEventToEdit: AthleteAtEvent | undefined;
+  athleteAtEventToEdit: AthleteAtEvent | undefined;
 };
 
 const initialState: State = {
@@ -23,46 +23,7 @@ const initialState: State = {
   registered: [],
   matchBased: [],
   athleteToEdit: undefined,
-  athletAtEventToEdit: undefined,
-};
-
-const getRegistered = (state: State, data: Athlete[]) => {
-  //   let result: Athlete[] = [];
-  //   data.map((athlete) => {
-  //     if (athlete.match.length) {
-  //       athlete.match.map((match) => {
-  //         const data: Athlete = { ...athlete, match: [match] };
-  //         result.push(data);
-  //       });
-  //     }
-  //   });
-  //   state.registered = result.sort(compare("name", "asc"));
-};
-
-const getFiltered = (state: State, athletes: Athlete[]) => {
-  //   athletes.map((athlete) => {
-  //     athlete.match.map((match) => {
-  //       const idMatch = `${match.jenis}/${match.tingkatan}/${match.kategori}/${athlete.jenisKelamin}`;
-  //       const exist = state.filtered.find(
-  //         (item) => item.idMatch == idMatch
-  //       );
-  //       if (exist) {
-  //         const newAthletes = reduceData([
-  //           ...exist.athletes,
-  //           athlete,
-  //         ]) as Athlete[];
-  //         state.filtered = reduceData([
-  //           ...state.filtered,
-  //           { idMatch, athletes: newAthletes },
-  //         ]) as FilteredAthletes[];
-  //       } else {
-  //         state.filtered = [
-  //           ...state.filtered,
-  //           { idMatch, athletes: [athlete] },
-  //         ];
-  //       }
-  //     });
-  //   });
+  athleteAtEventToEdit: undefined,
 };
 
 const athleteSlice = createSlice({
@@ -72,6 +33,26 @@ const athleteSlice = createSlice({
     addAthletesRedux: (state, action: PayloadAction<Athlete[]>) => {
       let data = reduceData([...state.all, ...action.payload]) as Athlete[];
       state.all = data.sort(compare("name", "asc"));
+    },
+    deleteAthleteRedux: (state, action: PayloadAction<Athlete>) => {
+      const athlete = action.payload;
+
+      state.all = state.all.filter((item) => item.id !== athlete.id);
+      state.registered = state.registered.filter(
+        (item) => item.id !== athlete.id
+      );
+      state.athleteAtEvents = state.athleteAtEvents.filter(
+        (item) => item.athlete_id !== athlete.id
+      );
+      state.matchBased = state.matchBased.filter(
+        (item) => item.athlete_id !== athlete.id
+      );
+    },
+    deleteAllAthletesRedux: (state) => {
+      state.all = [];
+      state.athleteAtEvents = [];
+      state.matchBased = [];
+      state.registered = [];
     },
     setAthleteToEditRedux: (
       state,
@@ -83,9 +64,11 @@ const athleteSlice = createSlice({
       state,
       action: PayloadAction<AthleteAtEvent[]>
     ) => {
+      if (!action.payload.length) return;
+
       let athleteAtEvents = reduceData(
         [...state.athleteAtEvents, ...action.payload],
-        "registrationId"
+        "registration_id"
       ) as AthleteAtEvent[];
 
       state.athleteAtEvents = athleteAtEvents;
@@ -95,7 +78,7 @@ const athleteSlice = createSlice({
         registeredAthletes.push({
           ...athlete,
           matches: athleteAtEvents.filter(
-            (match) => match.athleteId == athlete.id
+            (match) => match.athlete_id == athlete.id
           ),
         });
       });
@@ -110,7 +93,7 @@ const athleteSlice = createSlice({
 
       matchBaseds = reduceData(
         [...state.matchBased, ...matchBaseds],
-        "registrationId"
+        "registration_id"
       ) as MatchBased[];
       state.matchBased = matchBaseds;
     },
@@ -119,24 +102,25 @@ const athleteSlice = createSlice({
       action: PayloadAction<AthleteAtEvent>
     ) => {
       state.athleteAtEvents = state.athleteAtEvents.filter(
-        (item) => item.registrationId != action.payload.registrationId
+        (item) => item.registration_id != action.payload.registration_id
       );
       state.matchBased = state.matchBased.filter(
-        (item) => item.registrationId != action.payload.registrationId
+        (item) => item.registration_id != action.payload.registration_id
       );
     },
-
     setAthleteAtEventToEditRedux: (
       state,
       action: PayloadAction<AthleteAtEvent | undefined>
     ) => {
-      state.athletAtEventToEdit = action.payload;
+      state.athleteAtEventToEdit = action.payload;
     },
   },
 });
 
 export const {
   addAthletesRedux,
+  deleteAthleteRedux,
+  deleteAllAthletesRedux,
   setAthleteToEditRedux,
   addAthletesAtEventsRedux,
   deleteAthleteAtEventRedux,

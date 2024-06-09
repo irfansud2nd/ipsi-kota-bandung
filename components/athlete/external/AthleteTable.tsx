@@ -1,6 +1,6 @@
 "use client";
 import { DataTable } from "@/components/ui/DataTable";
-import { AthletColumns } from "./AthleteColumns";
+import { AthleteColumns } from "./AthleteColumns";
 import { Athlete } from "@/lib/athlete/external/athleteConstants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
@@ -23,7 +23,7 @@ const AthleteTable = ({ registered, championshipId }: Props) => {
           ? "atlet yang telah mendaftarkan pertandingan di event ini"
           : "atlet yang tergabung di kontingen anda"}
       </p>
-      <DataTable columns={AthletColumns(championshipId)} data={athletes} />
+      <DataTable columns={AthleteColumns(championshipId)} data={athletes} />
     </div>
   );
 };

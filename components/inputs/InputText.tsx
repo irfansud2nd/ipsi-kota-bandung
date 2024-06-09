@@ -1,5 +1,5 @@
 import { ErrorMessage } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
@@ -7,9 +7,14 @@ import ErrorText from "../ui/ErrorText";
 import { calculateAge } from "@/lib/athlete/external/athleteFunctions";
 import { championships } from "@/lib/event/eventConstants";
 import { InputProps, getInputValue } from "@/lib/form/formConstants";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 type Props = InputProps & {
   upperCase?: boolean;
+  displayOnly?: {
+    state: boolean;
+    value: string;
+  };
 };
 
 const InputText = ({
@@ -23,8 +28,15 @@ const InputText = ({
   forceDisabled,
   forceValue,
   showOnEditOnly,
-  eventId,
+  championshipId,
+  displayOnly,
 }: Props) => {
+  const [display, setDisplay] = useState<string | undefined>();
+
+  useEffect(() => {
+    setDisplay(displayOnly?.value);
+  }, [displayOnly?.value]);
+
   const {
     errors,
     touched,
@@ -47,8 +59,9 @@ const InputText = ({
     umur = calculateAge(values.birthDate);
   }
 
-  const editOnly = championships.find((event) => event.id == eventId)?.status
-    .editOnly;
+  const editOnly =
+    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    false;
 
   return (
     <div
@@ -74,14 +87,17 @@ const InputText = ({
         onBlur={() => setFieldTouched(name, true)}
         type="text"
         className={`${errors[name] && touched[name] && "border-destructive"}`}
-        value={value}
+        value={display ?? value}
         onChange={(e) =>
+          !displayOnly?.state &&
           setFieldValue(
             name,
             upperCase ? e.target.value.toUpperCase() : e.target.value
           )
         }
-        disabled={forceDisabled ? true : isSubmitting}
+        disabled={
+          displayOnly?.state ? true : forceDisabled ? true : isSubmitting
+        }
       />
       <ErrorMessage name={name} component={ErrorText} />
     </div>

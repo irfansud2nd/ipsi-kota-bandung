@@ -2,206 +2,211 @@ import { v4 } from "uuid";
 import {
   Contingent,
   ContingentAtEvent,
+  ContingentAtEventSql,
+  ContingentSql,
   RegisteredContingent,
 } from "./contingentConstants";
-import { toast } from "sonner";
-import axios from "axios";
-import { toastError } from "../form/formFunctions";
-import { Athlete, AthleteAtEvent } from "../athlete/external/athleteConstants";
-import { Official } from "../official/officialContants";
-import { getMatchCost } from "../athlete/external/athleteFunctions";
+import {
+  addContingentAtEventSql,
+  addContingentSql,
+  deleteContingentAtEventSql,
+  deleteContingentSql,
+  getContingenAtEvents,
+  getContingentByEmail,
+  updateContingentSql,
+} from "./contingentActions";
+import { apiProtect } from "../admin/adminActions";
 
-export const addContingent = async (
-  contingentData: Contingent,
-  eventId?: string
-) => {
-  const id = v4();
-
-  let result: {
-    contingent: Contingent;
-    contingentAtEvent: ContingentAtEvent | undefined;
-    registeredContingent: RegisteredContingent | undefined;
-  } = {
-    contingent: contingentData,
-    contingentAtEvent: undefined,
-    registeredContingent: undefined,
-  };
-
-  result.contingent = contingentData;
-  result.contingent.id = id;
-  result.contingent.createdAt = Date.now();
-
-  const toastId = toast.loading("Mendaftarkan Contingent");
-
+// CONTINGENT
+export const updateContingent = async (contingent: Contingent) => {
   try {
-    if (!result.contingent.createdBy)
-      throw { message: "Email pendaftar tidak ditemukan" };
+    const { message } = await apiProtect({
+      permittedEmail: contingent.created_by,
+    });
+    if (message) throw new Error(message);
 
-    await axios.post("/api/contingent", result.contingent);
+    await updateContingentSql(contingentToContingenSql(contingent));
 
-    if (eventId) {
-      const data = await addRegisteredContingent(
-        result.contingent,
-        eventId,
-        toastId
-      );
-      result = { ...result, ...data };
-    }
-
-    toast.success("Contingent berhasil didaftarkan", { id: toastId });
-    return result;
+    return contingent;
   } catch (error) {
-    toastError(error, toastId);
     throw error;
   }
 };
 
-export const addRegisteredContingent = async (
+export const deleteContingent = async (contingent: Contingent) => {
+  try {
+    const { message } = await apiProtect({
+      permittedEmail: contingent.created_by,
+    });
+    if (message) throw new Error(message);
+
+    // DELETE CONTINGENT SQL
+    await deleteContingentSql(contingentToContingenSql(contingent));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// CONTINGENT AT EVENT
+export const addContingentAtEvent = async (
   contingent: Contingent,
-  championshipId: string,
-  prevToastId?: string | number
+  championshipId: string
 ) => {
-  const data: ContingentAtEvent = {
-    registrationId: 0,
-    contingentId: contingent.id,
-    championshipId,
-    registeredAthletes: 0,
-    registeredOfficials: 0,
-    matchCount: 0,
-    registeredAt: Date.now(),
-    paymentIds: [],
-    paymentBill: 0,
-    paymentTotal: 0,
+  const contingentAtEvent: ContingentAtEvent = {
+    registration_id: 0,
+    contingent_id: contingent.id,
+    championship_id: championshipId,
+    registered_athletes: 0,
+    registered_officials: 0,
+    match_count: 0,
+    registered_at: Date.now(),
+    payment_ids: [],
+    payment_bill: 0,
+    payment_total: 0,
   };
 
-  const toastId =
-    prevToastId ?? toast.loading("Menambahkan Contingent ke event");
-
   try {
-    const dataToSend: any = data;
-    delete dataToSend.registrationId;
-
-    const res = await axios.post("/api/contingent/registered", data);
-
-    const contingentAtEvents: ContingentAtEvent[] = res.data.result;
-
-    !prevToastId &&
-      toast.success("Contingent berhasil didaftarkan", { id: toastId });
-    return contingentAtEvents;
-  } catch (error) {
-    !prevToastId && toastError(error, toastId);
-    throw error;
-  }
-};
-
-export const updateRegisteredContingen = async (
-  registeredContingent: RegisteredContingent,
-  prevToastId?: string | number
-) => {
-  const toastId = prevToastId ?? toast.loading("Memperbaharui kontingen");
-  try {
-    const res = await axios.post(
-      "/api/contingent/registered",
-      registeredContingent
+    const response = await addContingentAtEventSql(
+      contingentAtEventToContingentAtEventSql(contingentAtEvent)
     );
 
-    !prevToastId &&
-      toast.success("Kontingen berhasil diperbaharui", { id: toastId });
-    return res.data.result as RegisteredContingent;
+    const contingentAtEvents: ContingentAtEvent[] = [
+      { ...contingentAtEvent, ...response },
+    ];
+
+    return contingentAtEvents;
   } catch (error) {
-    !prevToastId && toastError(error, toastId);
     throw error;
   }
 };
 
-export const getContingent = async () => {
-  try {
-    const res = await axios.get("/api/contingent/registered");
-    let result = res.data.result as {
-      contingent: Contingent;
-      contingentAtEvents: ContingentAtEvent[];
-    };
-    return result;
-  } catch (error) {
-    toastError(error);
-    throw error;
-  }
-};
-
-export const managePersonOnContingent = async (
-  contingent: Contingent,
-  person: Athlete | Official,
-  action: "add" | "delete"
+export const deleteContingentAtEvent = async (
+  contingentAtEvent: ContingentAtEvent
 ) => {
-  let athlete: Athlete | undefined = undefined;
-  let official: Official | undefined = undefined;
-
-  (person as Athlete).birthPlace
-    ? (athlete = person as Athlete)
-    : (official = person as Official);
-
-  let data: Contingent = contingent;
-  const property = athlete ? "athletes" : "officials";
-
-  if (action == "add") data[property] += 1;
-  if (action == "delete") data[property] = data[property] -= 1;
-
   try {
-    await axios.patch("/api/contingent", data);
-    return data;
+    const { message } = await apiProtect({ loggedInOnly: true });
+    if (message) throw { message };
+
+    await deleteContingentAtEventSql(
+      contingentAtEventToContingentAtEventSql(contingentAtEvent)
+    );
   } catch (error) {
     throw error;
   }
 };
 
-export const managePersonOnRegisteredContingent = async (
-  contingentAtEvent: ContingentAtEvent,
-  person: AthleteAtEvent | Official,
-  action: "add" | "delete" | "update",
-  prevAthleteAtEvent?: AthleteAtEvent
-) => {
-  let athleteAtEvent: AthleteAtEvent | undefined = undefined;
-  let official: Official | undefined = undefined;
-
-  (person as AthleteAtEvent).athleteId
-    ? (athleteAtEvent = person as AthleteAtEvent)
-    : (official = person as Official);
-
-  let data: ContingentAtEvent = { ...contingentAtEvent };
-  const property = athleteAtEvent
-    ? "registeredAthletes"
-    : "registeredOfficials";
-
-  if (action == "add") data[property] += 1;
-  if (action == "delete") data[property] = data[property] -= 1;
-
-  if (athleteAtEvent) {
-    if (action == "update" && prevAthleteAtEvent) {
-      data.paymentBill -= getMatchCost(prevAthleteAtEvent);
-      data.paymentBill += getMatchCost(athleteAtEvent);
-    } else if (action == "delete") {
-      data.matchCount -= 1;
-      data.paymentBill -= getMatchCost(athleteAtEvent);
-    } else {
-      data.matchCount += 1;
-      data.paymentBill += getMatchCost(athleteAtEvent);
-    }
-  }
-
-  try {
-    await axios.patch("/api/contingent/registered", data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
+// CONTINGENT AND CONTINGENT AT EVENT
 export const getContingentAtEventByChampionshipId = (
   contingentAtEvents: ContingentAtEvent[],
   championshipId: string
 ) => {
   if (!contingentAtEvents.length || !championshipId) return undefined;
   return contingentAtEvents.find(
-    (item) => item.championshipId == championshipId
+    (item) => item.championship_id == championshipId
   );
+};
+export const getContingentInfoByEmail = async (email: string) => {
+  try {
+    const { message } = await apiProtect({ permittedEmail: email });
+    if (message) throw { message };
+
+    let result: {
+      contingent: Contingent | undefined;
+      contingentAtEvents: ContingentAtEvent[];
+    } = {
+      contingent: undefined,
+      contingentAtEvents: [],
+    };
+
+    result.contingent = await getContingentByEmail(email);
+    if (!result.contingent) return result;
+
+    result.contingentAtEvents = await getContingenAtEvents(
+      result.contingent.id
+    );
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addContingentAndRegister = async (
+  contingentData: Contingent,
+  eventId: string
+) => {
+  const id = v4();
+
+  let contingent = contingentData;
+
+  contingent.id = id;
+  contingent.created_at = Date.now();
+
+  try {
+    if (!contingent.created_by)
+      throw { message: "Email pendaftar tidak ditemukan" };
+
+    await addContingentSql(contingentToContingenSql(contingent));
+
+    const contingentAtEvents = await addContingentAtEvent(contingent, eventId);
+
+    return { contingent, contingentAtEvents };
+  } catch (error) {
+    throw error;
+  }
+};
+
+// OTHERS
+export const contingentToContingenSql = (contingent: Contingent) => {
+  let result: ContingentSql = {
+    id: contingent.id,
+    name: contingent.name,
+    created_by: contingent.created_by,
+    created_at: contingent.created_at,
+  };
+  return result;
+};
+
+export const contingentAtEventToContingentAtEventSql = (
+  contingenAtEvent: ContingentAtEvent
+) => {
+  let result: ContingentAtEventSql = {
+    registration_id: contingenAtEvent.registration_id,
+    contingent_id: contingenAtEvent.contingent_id,
+    championship_id: contingenAtEvent.championship_id,
+    registered_at: contingenAtEvent.registered_at,
+  };
+  return result;
+};
+
+export const registeredContinentToContingentAtEvent = (
+  registeredContigent: RegisteredContingent
+) => {
+  const result: ContingentAtEvent = {
+    registration_id: registeredContigent.registration_id,
+    contingent_id: registeredContigent.contingent_id,
+    championship_id: registeredContigent.championship_id,
+    registered_at: registeredContigent.registered_at,
+    registered_athletes: registeredContigent.registered_athletes,
+    registered_officials: registeredContigent.registered_officials,
+    match_count: registeredContigent.match_count,
+    payment_ids: registeredContigent.payment_ids,
+    payment_total: registeredContigent.payment_total,
+    payment_bill: registeredContigent.payment_bill,
+  };
+  return result;
+};
+
+export const getContingentConfirmationOption = (paid: boolean) => {
+  let message = "";
+  if (paid) {
+    message = "Kontingen yang sudah melakukan pembayaran tidak dapat dihapus.";
+  } else {
+    message +=
+      "Atlet dan Official yang tergabung dalam kontingen ini akan ikut terhapus. ";
+    message += "Apakah anda yakin?";
+  }
+  const options = paid ? { cancelLabel: "Baik", cancelOnly: true } : undefined;
+
+  return { ...options, message };
 };

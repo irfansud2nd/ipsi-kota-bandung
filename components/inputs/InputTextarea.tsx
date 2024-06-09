@@ -5,6 +5,7 @@ import ErrorText from "../ui/ErrorText";
 import { InputProps } from "@/lib/form/formConstants";
 import { Textarea } from "../ui/textarea";
 import { championships } from "@/lib/event/eventConstants";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 type Props = InputProps;
 
@@ -13,7 +14,7 @@ const InputTextarea = ({
   name,
   formik,
   showOnEditOnly,
-  eventId,
+  championshipId,
 }: Props) => {
   const {
     errors,
@@ -24,8 +25,9 @@ const InputTextarea = ({
     setFieldTouched,
   } = formik;
 
-  const editOnly = championships.find((event) => event.id == eventId)?.status
-    .editOnly;
+  const editOnly =
+    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    false;
 
   return (
     <div

@@ -13,13 +13,16 @@ import {
   athleteSchema,
   getDummyAthletes,
 } from "@/lib/athlete/external/athleteConstants";
-import { addAthlete } from "@/lib/athlete/external/athleteFunctions";
+import {
+  addAthlete,
+  updateAthlete,
+} from "@/lib/athlete/external/athleteFunctions";
 import { toastError } from "@/lib/form/formFunctions";
 import {
   addAthletesRedux,
   setAthleteToEditRedux,
 } from "@/lib/redux/championship/register/athleteSlice";
-import { updateContingentRedux } from "@/lib/redux/championship/register/contingentSlice";
+
 import { RootState } from "@/lib/redux/store";
 import { Form, Formik, FormikProps } from "formik";
 import { useSession } from "next-auth/react";
@@ -44,16 +47,16 @@ const AthleteForm = () => {
   const dispatch = useDispatch();
   const session = useSession();
 
-  const useDummyAthlete = 0;
+  const useDummyAthlete = 1;
   const initialData = useDummyAthlete
     ? getDummyAthletes(useDummyAthlete)[useDummyAthlete - 1]
     : athleteInitialValue;
 
   const initialValue: Athlete = {
     ...initialData,
-    createdBy: session.data?.user?.email || "",
-    contingentId: contingent?.id || "",
-    contingentName: contingent?.name || "",
+    created_by: session.data?.user?.email || "",
+    contingent_id: contingent?.id || "",
+    contingent_name: contingent?.name || "",
   };
 
   const toggleDialog = (state: boolean) => {
@@ -79,16 +82,15 @@ const AthleteForm = () => {
               return;
             }
             try {
+              let athlete = values;
               if (athleteToEdit) {
+                athlete = await updateAthlete(values);
               } else {
-                const { athlete, contingent: updatedContingent } =
-                  await addAthlete(values, contingent);
-                dispatch(addAthletesRedux([athlete]));
-                dispatch(updateContingentRedux(updatedContingent));
+                athlete = await addAthlete(values);
               }
+              dispatch(addAthletesRedux([athlete]));
               resetForm();
             } catch (error) {
-              // console.log("ERRROR", error);
             } finally {
             }
           }}
@@ -109,12 +111,12 @@ const AthleteForm = () => {
                     <InputText label="NIK" name="nik" formik={props} />
                     <InputText
                       label="Tempat Lahir"
-                      name="birthPlace"
+                      name="birth_place"
                       formik={props}
                     />
                     <InputDate
                       label="Tanggal Lahir"
-                      name="birthDate"
+                      name="birth_date"
                       formik={props}
                     />
                     <InputSelect
@@ -137,14 +139,14 @@ const AthleteForm = () => {
                       formik={props}
                       under17
                     />
+                  </div>
+                  <div>
                     <InputText
-                      label="No HP"
-                      name="phoneNumber"
+                      label="Nomor Telepon"
+                      name="phone_number"
                       formik={props}
                       under17
                     />
-                  </div>
-                  <div>
                     <InputText
                       label="Email"
                       name="email"
@@ -153,7 +155,7 @@ const AthleteForm = () => {
                     />
                     <InputText
                       label="Nama Kontingen"
-                      name="contingentName"
+                      name="contingent_name"
                       formik={props}
                       forceDisabled
                     />
@@ -171,15 +173,6 @@ const AthleteForm = () => {
                       }}
                     />
                     <InputFile
-                      label="KTP"
-                      name="ktp"
-                      formik={props}
-                      isFileChanging={(value) => {
-                        setFileChanging((prev) => ({ ...prev, ktp: !value }));
-                      }}
-                      landscape
-                    />
-                    <InputFile
                       label="Kartu Keluarga"
                       name="kk"
                       formik={props}
@@ -192,21 +185,6 @@ const AthleteForm = () => {
                 </div>
                 <Button type="submit" className="ml-auto">
                   Simpan
-                </Button>
-                <Button
-                  type="button"
-                  className="w-fit ml-auto mt-2"
-                  onClick={() => {
-                    // console.log("ERRORS", props.errors);
-                    // console.log("TOUCHED", props.touched);
-                    console.log("VALUES", props.values);
-                    // console.log({ athleteToEdit });
-                    // console.log(fileChanging);
-                    // console.log(athleteToEdit && fileChanging);
-                    console.log({ contingent });
-                  }}
-                >
-                  Test
                 </Button>
               </Form>
             );

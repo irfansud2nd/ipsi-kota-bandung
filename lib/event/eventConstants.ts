@@ -90,6 +90,15 @@ export type Championship = Event & {
     closed: boolean;
     total: number;
     confirmed: number;
+    target: {
+      name: string;
+      number: string;
+      bank: "BJB";
+    };
+    contact: {
+      name: string;
+      phoneNumber: string;
+    };
   };
   matchCost: {
     tanding: number;
@@ -165,7 +174,7 @@ export const championships: Championship[] = [
     id: "bandung-open-24",
     title: "Bandung Open Pencak Silat Tournament",
     image: {
-      downloadUrl: "/images/championships/bandung-open-24.png",
+      downloadUrl: "/images/championships/bandung-open-24/thumbnail.png",
     },
     locationName: "GOR KONI Kota Bandung",
     locationUrl: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
@@ -221,9 +230,12 @@ export const championships: Championship[] = [
         },
         limit: {
           paid: true,
-          value: 16,
+          tanding: 16,
+          tunggal: 16,
+          ganda: 8,
+          regu: 8,
         },
-        oneAthletPerCategory: true,
+        oneAthletePerCategory: true,
       },
       {
         level: "Dewasa (17-30 Tahun)",
@@ -233,9 +245,12 @@ export const championships: Championship[] = [
         },
         limit: {
           paid: true,
-          value: 16,
+          tanding: 16,
+          tunggal: 16,
+          ganda: 8,
+          regu: 8,
         },
-        oneAthletPerCategory: true,
+        oneAthletePerCategory: true,
       },
     ],
     proposal:
@@ -248,6 +263,15 @@ export const championships: Championship[] = [
       closed: false,
       total: 0,
       confirmed: 0,
+      target: {
+        name: "Andra Ramdhan Malela Putera",
+        number: "0129228164100",
+        bank: "BJB",
+      },
+      contact: {
+        name: "Bob",
+        phoneNumber: "085794163821",
+      },
     },
     matchCost: {
       tanding: 350000,
@@ -269,7 +293,10 @@ export type MatchCategory = {
   rookieOnly?: boolean;
   limit?: {
     paid: boolean;
-    value: number;
+    tanding: number;
+    tunggal: number;
+    ganda: number;
+    regu: number;
   };
-  oneAthletPerCategory?: boolean;
+  oneAthletePerCategory?: boolean;
 }[];

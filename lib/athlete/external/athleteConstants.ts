@@ -9,35 +9,61 @@ export const matchSchema = ["Pemula", "Prestasi"];
 
 export const matchType = ["Tanding", "Seni"];
 
-export type Athlete = {
+export type AthleteBase = {
   id: string;
   name: string;
   nik: string;
   address: string;
   gender: string;
   email: string;
-  phoneNumber: string;
-  birthPlace: string;
-  birthDate: number;
+  phone_number: string;
+  birth_place: string;
+  birth_date: number;
   height: string;
   weight: string;
-  contingentId: string;
-  contingentName: string;
+  contingent_id: string;
+  contingent_name: string;
+  created_by: string;
+  created_at: number;
+};
+
+export type AthleteSql = AthleteBase & {
+  image: string;
+  kk: string;
+};
+
+export type Athlete = AthleteBase & {
   image: {
     file?: File;
     downloadUrl: string;
   };
-  // ktp: {
-  //   file?: File;
-  //   downloadUrl: string;
-  // };
   kk: {
     file?: File;
     downloadUrl: string;
   };
-  createdBy: string;
-  createdAt: number;
 };
+
+export type AthleteAtEventSql = {
+  registration_id: number;
+  athlete_id: string;
+  contingent_registration_id: number;
+  schema: string;
+  type: string;
+  level: string;
+  category: string;
+  team?: string;
+  payment_id: string | null;
+  payment_bill: number;
+  registered_at: number;
+};
+
+export type AthleteAtEvent = AthleteAtEventSql & {
+  championship_id: string;
+};
+
+export type MatchBased = Athlete & AthleteAtEvent;
+
+export type RegisteredAthlete = Athlete & { matches: AthleteAtEvent[] };
 
 export const athleteInitialValue: Athlete = {
   id: "",
@@ -46,24 +72,21 @@ export const athleteInitialValue: Athlete = {
   address: "",
   gender: athleteGender[0],
   email: "",
-  phoneNumber: "",
-  birthPlace: "",
-  birthDate: 0,
+  phone_number: "",
+  birth_place: "",
+  birth_date: 0,
   height: "",
   weight: "",
-  contingentId: "",
-  contingentName: "",
+  contingent_id: "",
+  contingent_name: "",
   image: {
     downloadUrl: "",
   },
   kk: {
     downloadUrl: "",
   },
-  // ktp: {
-  //   downloadUrl: "",
-  // },
-  createdBy: "",
-  createdAt: 0,
+  created_by: "",
+  created_at: 0,
 };
 
 export const athleteSchema = (ignore?: {
@@ -84,12 +107,12 @@ export const athleteSchema = (ignore?: {
       .string()
       .email("Email tidak valid")
       .required("Tolong lengkapi email"),
-    phoneNumber: yup
+    phone_number: yup
       .number()
       .typeError("No HP mengandung huruf")
       .required("Tolong lengkapi No HP"),
-    birthPlace: yup.string().required("Tolong lengkapi tempat lahir"),
-    birthDate: yup.string().required("Tolong lengkapi tanggal lahir"),
+    birth_place: yup.string().required("Tolong lengkapi tempat lahir"),
+    birth_date: yup.string().required("Tolong lengkapi tanggal lahir"),
     height: yup
       .number()
       .typeError("Tinggi badan mengandung huruf")
@@ -98,7 +121,7 @@ export const athleteSchema = (ignore?: {
       .number()
       .typeError("Berat badan mengandung huruf")
       .required("Tolong lengkapi berat badan"),
-    contingentName: yup
+    contingent_name: yup
       .string()
       .required("Tolong daftarkan kontingen terlebih dahulu"),
   });
@@ -121,76 +144,42 @@ export const athleteSchema = (ignore?: {
       })
     );
 
-  // if (!ignore?.ktp)
-  //   schema = schema.concat(
-  //     yup.object({
-  //       ktp: yup.object({
-  //         file: imageSchema(1),
-  //       }),
-  //     })
-  //   );
-
   return schema;
 };
 
-export type AthleteAtEvent = {
-  registrationId: number;
-  athleteId: string;
-  championshipId: string;
-  schema: string;
-  type: string;
-  level: string;
-  category: string;
-  team?: string;
-  paymentId: string | null;
-  registeredAt: number;
-};
-
 export const athleteAtEventInitialValue: AthleteAtEvent = {
-  registrationId: 0,
-  athleteId: "",
-  championshipId: "",
+  registration_id: 0,
+  athlete_id: "",
+  championship_id: "",
+  contingent_registration_id: 0,
   schema: matchSchema[0],
   type: "",
   level: "",
   category: "",
-  paymentId: null,
-  registeredAt: 0,
+  team: "",
+  payment_id: null,
+  payment_bill: 0,
+  registered_at: 0,
 };
 
-export const athleteAtEventSchema = (art?: boolean) => {
+export const athleteAtEventSchema = (validateTeam?: boolean) => {
   let schema = yup.object({
-    athleteId: yup.string().required("Tolong pilih atlet"),
+    athlete_id: yup.string().required("Tolong pilih atlet"),
     schema: yup.string().required("Tolong pilih skema pertandingan"),
-    athletId: yup.string().required("Tolong pilih atlet"),
     type: yup.string().required("Tolong pilih jenis pertandingan"),
     level: yup.string().required("Tolong pilih tingakatan pertandingan"),
     category: yup.string().required("Tolong pilih kategori pertandingan"),
   });
 
-  if (art) {
+  if (validateTeam) {
     schema = schema.concat(
       yup.object({
         team: yup.string().required("Tolong pilih nama tim"),
       })
     );
   }
-};
 
-export type MatchBased = Athlete & AthleteAtEvent;
-
-export type RegisteredAthlete = Athlete & { matches: AthleteAtEvent[] };
-
-export const getMatchCategory = (
-  level: string,
-  type: string,
-  matchCategory: MatchCategory
-) => {
-  const categories = matchCategory.find(
-    (item) => item.level == level
-  )?.category;
-  const result = type == matchType[0] ? categories?.fight : categories?.art;
-  return result ?? [];
+  return schema;
 };
 
 export const getDummyAthletes = (length: number) => {
@@ -213,27 +202,24 @@ export const getDummyAthletes = (length: number) => {
       address: "Address " + i,
       gender: athleteGender[0],
       email: `athlete-${i}@gmail.com`,
-      phoneNumber: i
+      phone_number: i
         .toString()
         .charAt(i.toString().length - 1)
         .repeat(12),
-      birthPlace: "birthPlace-" + i,
-      birthDate: randomDate(new Date(2001, 0, 1), new Date()),
+      birth_place: "birthPlace-" + i,
+      birth_date: randomDate(new Date(2001, 0, 1), new Date()),
       height: (Math.floor(Math.random() * 900) + 100).toString(),
       weight: (Math.floor(Math.random() * 90) + 10).toString(),
-      contingentId: "kontingen-" + i,
-      contingentName: "Kontingen " + i,
+      contingent_id: "kontingen-" + i,
+      contingent_name: "Kontingen " + i,
       image: {
         downloadUrl: "",
       },
       kk: {
         downloadUrl: "",
       },
-      // ktp: {
-      //   downloadUrl: "",
-      // },
-      createdBy: `creatorEmail${i}@gmail.com`,
-      createdAt: 0,
+      created_by: `irfansud2nd@gmail.com`,
+      created_at: 0,
     });
   }
 

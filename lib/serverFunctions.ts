@@ -11,6 +11,14 @@ import { Announcement } from "./announcement/announcementConstants";
 import { Championship, Event, championships } from "./event/eventConstants";
 import { News } from "./news/newsConstants";
 import { Member } from "./member/memberConstants";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { storage } from "./database/firebase";
+import { imageMaxSize, imageSchema } from "./form/formConstants";
 
 export const getAttendances = cache(
   async (role: InternalAthleteRole, month: string) => {
@@ -62,9 +70,6 @@ export const getAnnouncement = async () => {
 // GET EVENT
 export const getEvent = cache(async (id: string) => {
   try {
-    // const cEvent = championships.find((item) => item.id == id);
-    // if (cEvent) return cEvent;
-
     const { data, error } = await supabase.from("events").select().eq("id", id);
 
     if (error) throw new Error(error.message);
@@ -157,3 +162,55 @@ export const getEmployees = cache(async (page: number, limit: number) => {
     throw error;
   }
 });
+
+// DELETE FILE
+export const deleteFile = async (directory: string) => {
+  try {
+    if (!directory) throw { message: "Invalid identifier" };
+    const { message } = await apiProtect({ directory });
+    if (message) throw { message };
+
+    await deleteObject(ref(storage, directory));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// SEND FILE
+export const uploadFile = async (formData: FormData) => {
+  try {
+    const file = formData.get("file") as File;
+    const directory = formData.get("directory") as string;
+
+    if (!file || !directory) throw { message: "Invalid identifier" };
+
+    const { message } = await apiProtect({ directory });
+    if (message) throw { message };
+
+    if (
+      !imageSchema(Math.max(...Object.values(imageMaxSize))).isValidSync(file)
+    )
+      throw { message: "Invalid file" };
+
+    const snapshot = await uploadBytes(ref(storage, directory), file);
+    const downloadUrl = await getDownloadURL(snapshot.ref);
+
+    return downloadUrl;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteFiles = async (directories: string[]) => {
+  try {
+    if (!directories.length) return;
+
+    const deletePromises = directories.map((directory) =>
+      deleteFile(directory)
+    );
+
+    await Promise.all(deletePromises);
+  } catch (error) {
+    throw error;
+  }
+};

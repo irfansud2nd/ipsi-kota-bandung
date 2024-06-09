@@ -7,6 +7,7 @@ import { Input } from "../ui/input";
 import ErrorText from "../ui/ErrorText";
 import { InputProps, getInputValue } from "@/lib/form/formConstants";
 import { dateToNumber, formatDate } from "@/lib/functions";
+import { getChampionship } from "@/lib/event/eventFunctions";
 type Props = InputProps & {
   time?: boolean;
 };
@@ -17,7 +18,7 @@ const InputDate = ({
   formik,
   helperText,
   showOnEditOnly,
-  eventId,
+  championshipId,
   time,
 }: Props) => {
   const {
@@ -30,8 +31,9 @@ const InputDate = ({
   } = formik;
   const value = getInputValue(name, values);
 
-  const editOnly = championships.find((event) => event.id == eventId)?.status
-    .editOnly;
+  const editOnly =
+    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    false;
 
   return (
     <div

@@ -10,6 +10,7 @@ import { championships } from "@/lib/event/eventConstants";
 import { InputProps } from "@/lib/form/formConstants";
 import { Button } from "../ui/button";
 import useShowFileDialog from "@/hooks/useShowFile";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 type Props = InputProps & {
   landscape?: boolean;
@@ -23,7 +24,7 @@ const InputFile = ({
   under17,
   className,
   showOnEditOnly,
-  eventId,
+  championshipId,
   landscape,
   isFileChanging,
 }: Props) => {
@@ -62,8 +63,10 @@ const InputFile = ({
   if (under17) {
     umur = calculateAge(values.tanggalLahir);
   }
-  const editOnly = championships.find((event) => event.id == eventId)?.status
-    .editOnly;
+
+  const editOnly =
+    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    false;
 
   const { showFile, ShowFileDialog } = useShowFileDialog();
 
@@ -111,7 +114,7 @@ const InputFile = ({
           disabled={disableShow}
           onClick={() => showFile("Gambar", url, landscape)}
         >
-          Show
+          Lihat
         </Button>
         {downloadUrl && (
           <Button

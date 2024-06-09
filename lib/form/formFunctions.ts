@@ -1,27 +1,20 @@
 import axios from "axios";
 import { imageMaxSize, imageSchema } from "./formConstants";
 import { toast } from "sonner";
+import { uploadFile } from "../serverFunctions";
 
 export const sendFile = async (file: File, directory: string) => {
-  const axiosFileConfig = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-
   if (!imageSchema(Math.max(...Object.values(imageMaxSize))).isValidSync(file))
     throw new Error("invalid File");
   const formData = new FormData();
   formData.append("file", file);
   formData.append("directory", directory);
-  return axios
-    .post("/api/file", formData, axiosFileConfig)
-    .then((res) => {
-      return res.data.downloadUrl;
-    })
-    .catch((error) => {
-      throw error;
-    });
+  try {
+    const downloadUrl = await uploadFile(formData);
+    return downloadUrl;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const toastError = (error: any, id?: string | number) => {

@@ -4,6 +4,7 @@ import { News } from "./newsConstants";
 import axios from "axios";
 import { toast } from "sonner";
 import { getFileUrl } from "../functions";
+import { deleteFile } from "../serverFunctions";
 
 // SEND BERITA
 export const sendNews = async (news: News) => {
@@ -65,7 +66,7 @@ export const deleteNews = async (news: News) => {
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await axios.delete(`/api/file?directory=${imageUrl}`);
+    await deleteFile(imageUrl);
 
     // DELETE BERITA
     toast.loading("Menghapus berita", { id: toastId });

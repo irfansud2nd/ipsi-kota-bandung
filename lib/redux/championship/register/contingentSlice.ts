@@ -1,3 +1,5 @@
+import { AthleteAtEvent } from "@/lib/athlete/external/athleteConstants";
+import { getMatchCost } from "@/lib/athlete/external/athleteFunctions";
 import {
   Contingent,
   ContingentAtEvent,
@@ -42,19 +44,9 @@ const contingentSlice = createSlice({
       ]) as ContingentAtEvent[];
       state.contingentAtEvents = data;
 
-      console.log("FROM SLICE", { data });
-      console.log("FROM SLICE", action.payload);
-
       const currentContigentAtEvent = data.find((item) => {
-        console.log({
-          item: item,
-          payload: action.payload.championshipId,
-        });
-        return item.championshipId == action.payload.championshipId;
+        return item.championship_id == action.payload.championshipId;
       });
-
-      console.log("FROM SLICE", { data, currentContigentAtEvent });
-      console.log("FROM SLICE", state.unregistered);
 
       if (currentContigentAtEvent && state.unregistered)
         state.registered = {
@@ -71,12 +63,29 @@ const contingentSlice = createSlice({
         };
       }
     },
+    deleteContingentAtEventRedux: (
+      state,
+      action: PayloadAction<ContingentAtEvent>
+    ) => {
+      state.contingentAtEvents = state.contingentAtEvents.filter(
+        (item) => item.championship_id !== action.payload.championship_id
+      );
+      state.registered = undefined;
+    },
+    deleteContingentRedux: (state) => {
+      state.all = [];
+      state.unregistered = undefined;
+      state.registered = undefined;
+      state.contingentAtEvents = [];
+    },
   },
 });
 
 export const {
   setUnregisteredContingent,
   addContingentAtEventsRedux,
+  deleteContingentAtEventRedux,
   updateContingentRedux,
+  deleteContingentRedux,
 } = contingentSlice.actions;
 export default contingentSlice.reducer;

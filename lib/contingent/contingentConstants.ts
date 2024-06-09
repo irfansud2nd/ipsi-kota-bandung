@@ -1,25 +1,31 @@
 import * as yup from "yup";
 
-export type Contingent = {
+export type ContingentSql = {
   id: string;
   name: string;
-  athletes: number;
-  officials: number;
-  createdBy: string;
-  createdAt: number;
+  created_by: string;
+  created_at: number;
 };
 
-export type ContingentAtEvent = {
-  registrationId: number;
-  contingentId: string;
-  championshipId: string;
-  registeredAthletes: number;
-  registeredOfficials: number;
-  matchCount: number;
-  paymentIds: string[];
-  paymentTotal: number;
-  paymentBill: number;
-  registeredAt: number;
+export type Contingent = ContingentSql & {
+  athletes: number;
+  officials: number;
+};
+
+export type ContingentAtEventSql = {
+  registration_id: number;
+  contingent_id: string;
+  championship_id: string;
+  registered_at: number;
+};
+
+export type ContingentAtEvent = ContingentAtEventSql & {
+  registered_athletes: number;
+  registered_officials: number;
+  match_count: number;
+  payment_ids: string[];
+  payment_total: number;
+  payment_bill: number;
 };
 
 export type RegisteredContingent = Contingent & ContingentAtEvent;
@@ -29,8 +35,8 @@ export const contingentInitialValue: Contingent = {
   name: "",
   athletes: 0,
   officials: 0,
-  createdAt: 0,
-  createdBy: "",
+  created_at: 0,
+  created_by: "",
 };
 
 export const contingentSchema = yup.object({

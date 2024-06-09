@@ -1,9 +1,10 @@
 import axios from "axios";
 import { toast } from "sonner";
 import { v4 } from "uuid";
-import { Event, championships } from "./eventConstants";
+import { Championship, Event, championships } from "./eventConstants";
 import { sendFile, toastError } from "../form/formFunctions";
 import { compare, getFileUrl } from "../functions";
+import { deleteFile } from "../serverFunctions";
 
 export const sendEvent = async (event: Event) => {
   const toastId = toast.loading("Mengunggah event");
@@ -63,7 +64,7 @@ export const deleteEvent = async (event: Event) => {
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await axios.delete(`/api/file?directory=${imageUrl}`);
+    await deleteFile(imageUrl);
 
     // DELETE EVENT
     toast.loading("Menghapus event", { id: toastId });
@@ -91,4 +92,15 @@ export const getChampionships = (
 
 export const getChampionship = (id: string) => {
   return championships.find((item) => item.id == id);
+};
+
+export const isLevelRookieOnly = (
+  level: string,
+  championship: Championship
+) => {
+  if (
+    championship.matchCategory.find((item) => item.level == level)?.rookieOnly
+  )
+    return true;
+  return false;
 };

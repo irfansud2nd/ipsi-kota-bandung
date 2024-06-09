@@ -5,6 +5,7 @@ import ReduxProvider from "@/components/providers/ReduxProvider";
 import PageInfo from "@/components/ui/PageInfo";
 import { baseUrl } from "@/lib/constants";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { formatDate } from "@/lib/functions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -46,13 +47,18 @@ const layout = ({
   if (params.eventType != "championship") return notFound();
 
   const championship = getChampionship(params.eventId);
-  if (!championship || Date.now() <= championship?.register.start)
-    return (
-      <PageInfo
-        type="sorry"
-        text="Maaf, pendaftaran baru bisa di lakukan tanggal 10 Juni 2024 ya!"
-      />
-    );
+  if (!championship) return notFound();
+
+  // if (Date.now() <= championship.register.start)
+  //   return (
+  //     <PageInfo
+  //       type="sorry"
+  //       text={`Maaf, pendaftaran baru bisa di lakukan tanggal ${formatDate(
+  //         championship.register.start,
+  //         { withoutHour: true, longMonth: true }
+  //       )}  ya!`}
+  //     />
+  //   );
 
   return (
     <IsLoggedIn>

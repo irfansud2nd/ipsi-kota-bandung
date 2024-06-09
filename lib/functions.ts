@@ -9,11 +9,13 @@ export const formatDate = (
     hourOnly?: boolean;
     withoutYear?: boolean;
     htmlFormat?: boolean;
+    shortYear?: boolean;
+    monthNumber?: boolean;
   }
 ) => {
   const formattedDate = new Date(inputDate);
   const date = formattedDate.getDate().toString().padStart(2, "0");
-  const year = formattedDate.getFullYear();
+  let year = formattedDate.getFullYear().toString();
   const month = {
     string: formattedDate.toLocaleString("id", {
       month: options?.longMonth ? "long" : "short",
@@ -23,11 +25,13 @@ export const formatDate = (
   const hour = formattedDate.getHours().toString().padStart(2, "0");
   const minute = formattedDate.getMinutes().toString().padStart(2, "0");
 
-  let result = `${date} ${month.string} `;
+  let result = `${date} ${options?.monthNumber ? month.number : month.string} `;
 
-  !options?.withoutYear && (result += `${year} `);
+  if (options?.shortYear) year = year.substring(year.length - 2);
 
-  !options?.withoutHour && (result += `- ${hour}:${minute}`);
+  !options?.withoutYear && (result += `${year}`);
+
+  !options?.withoutHour && (result += ` - ${hour}:${minute}`);
 
   options?.hourOnly && (result = `${hour}:${minute}`);
 

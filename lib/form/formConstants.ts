@@ -1,6 +1,8 @@
 import { FormikProps } from "formik";
 import * as yup from "yup";
 
+export const adultGender = ["Pria", "Wanita"];
+
 export const getInputValue = (name: string, values: any) => {
   if (!name.includes(".")) return values[name];
   const names = name.split(".");
@@ -17,9 +19,9 @@ export type InputProps = {
   className?: string;
   under17?: boolean;
   forceDisabled?: boolean;
-  forceValue?: string;
+  forceValue?: string | number;
   showOnEditOnly?: boolean;
-  eventId?: string;
+  championshipId?: string;
 };
 
 export const imageSchema = (mb: number = 1) => {

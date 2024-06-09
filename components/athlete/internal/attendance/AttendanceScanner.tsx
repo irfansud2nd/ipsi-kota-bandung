@@ -62,7 +62,7 @@ const AttendanceScanner = ({ athleteType }: Props) => {
     return () => {
       if (!btnScan) scanNow(true);
     };
-  });
+  }, []);
 
   const handleSubmit = (result: string) => {
     if (!result || !session.data?.user?.email) return;
