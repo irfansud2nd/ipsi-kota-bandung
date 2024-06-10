@@ -3,8 +3,7 @@ import {
   InternalAthleteRole,
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
-import { GroupedLinks, Links } from "../constants";
-import { getPermittedRoles, isPermitted } from "./adminFunctions";
+import { GroupedLinks, Links, emails } from "../constants";
 
 export type SpecialUserRole =
   | InternalAthleteRole
@@ -22,6 +21,13 @@ export type SpecialUser = {
     downloadUrl: string;
   };
 };
+
+export const hideAdminLinksFrom = [
+  {
+    email: emails.bob,
+    menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "POPROV"],
+  },
+];
 
 export const specialUserIntitialValue = (role: SpecialUserRole) => {
   let result: SpecialUser = {

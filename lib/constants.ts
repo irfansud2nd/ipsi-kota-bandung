@@ -59,3 +59,11 @@ export const invalidIdentifier = NextResponse.json(
 );
 
 export const baseUrl = "https://www.ipsikotabandung.com";
+
+export const emails = {
+  bob: "iqbalbobalfarisy@gmail.com",
+};
+
+export const phoneNumbers = {
+  bob: "685794163821",
+};

@@ -1,7 +1,12 @@
 "use server";
 import { NextResponse } from "next/server";
 import supabase from "../database/supabase";
-import { SpecialUser, SpecialUserRole, adminLinks } from "./adminConstants";
+import {
+  SpecialUser,
+  SpecialUserRole,
+  adminLinks,
+  hideAdminLinksFrom,
+} from "./adminConstants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/authOptions";
 import { getPermittedRoles, isPermitted } from "./adminFunctions";
@@ -149,19 +154,40 @@ export const apiProtect = async (options?: {
 };
 
 export const getAdminLinks = async () => {
-  const { links, groupedLinks } = adminLinks;
-  const { roles } = await isAuthorized({ noFetch: true });
   let result: {
     links: Links;
     groupedLinks: GroupedLinks;
   } = {
-    links: links.filter(
-      (link) =>
-        !link.restricted || isPermitted(roles, getPermittedRoles(link.href))
-    ),
-    groupedLinks: groupedLinks.filter((item) =>
-      isPermitted(roles, getPermittedRoles(item.prefix))
-    ),
+    links: [],
+    groupedLinks: [],
   };
+
+  const session = await getServerSession();
+  if (!session) return result;
+
+  const { links, groupedLinks } = adminLinks;
+  const { roles } = await isAuthorized({ noFetch: true });
+
+  result.links = links.filter(
+    (link) =>
+      !link.restricted || isPermitted(roles, getPermittedRoles(link.href))
+  );
+  result.groupedLinks = groupedLinks.filter((item) =>
+    isPermitted(roles, getPermittedRoles(item.prefix))
+  );
+
+  if (hideAdminLinksFrom.length) {
+    const hideLinks = hideAdminLinksFrom.find(
+      (item) => item.email == session.user?.email
+    );
+    if (!hideLinks) return result;
+    result.links = result.links.filter(
+      (item) => !hideLinks.menu.includes(item.label)
+    );
+    result.groupedLinks = result.groupedLinks.filter(
+      (item) => !hideLinks.menu.includes(item.title)
+    );
+  }
+
   return result;
 };

@@ -28,6 +28,8 @@ import {
   setUnregisteredContingent,
   updateContingentRedux,
 } from "@/lib/redux/championship/register/contingentSlice";
+import { toast } from "sonner";
+import { toastError } from "@/lib/form/formFunctions";
 
 type Props = {
   contingentToEdit?: Contingent;
@@ -53,6 +55,9 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
       <DialogContent className="w-fit">
         <Formik
           onSubmit={async (values, { resetForm, setSubmitting }) => {
+            const toastId = toast.loading(
+              `${contingentToEdit ? "Memperbaharui" : "Mendaftarkan"} Kontingen`
+            );
             try {
               if (contingentToEdit) {
                 const contingent = await updateContingent(values);
@@ -68,9 +73,17 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
                   })
                 );
               }
+              toast.success(
+                `Kontingent berhasil di ${
+                  contingentToEdit ? "perbaharui" : "daftarkan"
+                }`,
+                { id: toastId }
+              );
               resetForm();
               setOpen(false);
-            } catch (error) {}
+            } catch (error) {
+              toastError(error, toastId);
+            }
           }}
           initialValues={contingentToEdit ? contingentToEdit : initialValue}
           validationSchema={contingentSchema}

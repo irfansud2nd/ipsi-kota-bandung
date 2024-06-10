@@ -108,7 +108,7 @@ Terimakasih.`,
 
     let message = result.text.trim();
     message = encodeURIComponent(message);
-    message = `https://wa.me/6285794163821?text=${message}`;
+    message = `https://wa.me/${championship.payment.contact.phoneNumber}?text=${message}`;
     result.message = message;
 
     return result;

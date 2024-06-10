@@ -22,6 +22,7 @@ import {
 } from "@/lib/athlete/external/athleteFunctions";
 import { RegisteredContingent } from "@/lib/contingent/contingentConstants";
 import { formatDate, formatToRupiah } from "@/lib/functions";
+import { phoneNumbers } from "@/lib/constants";
 
 const anton = Anton({
   weight: ["400"],
@@ -359,7 +360,7 @@ const PaymentInvoice = ({
                 <div className="ml-auto w-[800px] h-[60px] flex justify-around items-center">
                   <Link href={""} className="flex gap-2 items-center">
                     <FaWhatsapp className="size-9" />
-                    085794163821 (Bob)
+                    {phoneNumbers.bob} (Bob)
                   </Link>
                   <Link href={""} className="flex gap-2 items-center">
                     <FaInstagram className="size-9" />
