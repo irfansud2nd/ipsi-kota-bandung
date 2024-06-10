@@ -8,20 +8,20 @@ import React from "react";
 const FooterInformation = () => {
   const logos = [
     {
-      src: "/images/src1.png",
-      alt: "logo 1",
+      src: "/images/logo-dispora.png",
+      alt: "logo dispora",
     },
     {
-      src: "/images/src1.png",
-      alt: "logo 2",
+      src: "/images/logo-koni.png",
+      alt: "logo koni",
     },
     {
-      src: "/images/src1.png",
-      alt: "logo 3",
+      src: "/images/logo-ipsi.png",
+      alt: "logo ipsi",
     },
     {
-      src: "/images/src1.png",
-      alt: "logo 4",
+      src: "/images/logo-bpjs.png",
+      alt: "logo bpjs",
     },
   ];
 
@@ -43,7 +43,7 @@ const FooterInformation = () => {
           <div className="flex flex-col gap-3 max-md:order-2">
             <Link
               href={"https://maps.app.goo.gl/hy5xcJnrxGn4Aurs9"}
-              className="hover:text-blue-400 transition flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center"
+              className="hover:text-blue-400 transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
             >
               <IoLocationSharp className="size-10 min-w-10 min-h-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
@@ -52,7 +52,7 @@ const FooterInformation = () => {
                 <p>Kacapiring, Batununggal, Kota Bandung, Jawa Barat 40271</p>
               </div>
             </Link>
-            <div className="flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center">
+            <div className="flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center">
               <FaPhone className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
                 <p className="font-semibold">Telepon</p>
@@ -61,7 +61,7 @@ const FooterInformation = () => {
             </div>
             <Link
               href={"mailto:ipsikotabandungofficial@gmail.com"}
-              className="hover:text-blue-400 transition flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center"
+              className="hover:text-blue-400 transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
             >
               <IoMdMail className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
@@ -70,14 +70,9 @@ const FooterInformation = () => {
               </div>
             </Link>
           </div>
-          <div className="flex gap-2 justify-center max-md:order-1">
+          <div className="flex flex-wrap h-fit gap-2 justify-center max-md:order-1">
             {logos.map((image) => (
-              <div
-                className="size-[70px] bg-gray-200 flex justify-center items-center"
-                key={image.alt}
-              >
-                {image.alt}
-              </div>
+              <img className="h-[50px] w-fit" key={image.src} src={image.src} />
             ))}
           </div>
         </div>
