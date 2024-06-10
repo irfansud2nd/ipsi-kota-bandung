@@ -79,7 +79,7 @@ const layout = async ({
     <IsLoggedIn>
       <ReduxProvider>
         <div className="flex h-full">
-          <ChampionshipMenu />
+          <ChampionshipMenu championship={championship} />
           <ChampionshipRegister championshipId={params.eventId}>
             <div className="p-1 py-2 w-full max-w-full grid grid-cols-1">
               {children}

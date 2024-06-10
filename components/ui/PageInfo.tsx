@@ -50,7 +50,7 @@ const PageInfo = ({ type, text }: Props) => {
           className="max-w-[50vw] w-[150px] sm:w-[250px]"
         />
       </div>
-      <div>
+      <div className="mt-2">
         <LoginButton />
       </div>
     </Container>

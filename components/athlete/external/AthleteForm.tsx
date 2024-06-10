@@ -47,7 +47,7 @@ const AthleteForm = () => {
   const dispatch = useDispatch();
   const session = useSession();
 
-  const useDummyAthlete = 1;
+  const useDummyAthlete = 0;
   const initialData = useDummyAthlete
     ? getDummyAthletes(useDummyAthlete)[useDummyAthlete - 1]
     : athleteInitialValue;

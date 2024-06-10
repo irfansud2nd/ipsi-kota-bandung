@@ -14,12 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
 import ChampionshipMenuButton from "./ChampionshipMenuButton";
 import { setSideMenu } from "@/lib/redux/championship/championshipMenuSlice";
+import { Championship } from "@/lib/event/eventConstants";
 
-export const MenuButton = () => {
-  return <p>test</p>;
-};
-
-const ChampionshipMenu = () => {
+const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
   const show = useSelector((state: RootState) => state.sideMenu.normal);
 
   const pathname = usePathname();
@@ -66,12 +63,15 @@ const ChampionshipMenu = () => {
       href: "schedule",
       icon: <FaThList />,
     },
-    // {
-    //   label: "Perolehan Medali",
-    //   href: "medal",
-    //   icon: <FaMedal />,
-    // },
   ];
+
+  if (Date.now() >= championship.dateStart) {
+    menus.push({
+      label: "Perolehan Medali",
+      href: "medal",
+      icon: <FaMedal />,
+    });
+  }
 
   return (
     <div
