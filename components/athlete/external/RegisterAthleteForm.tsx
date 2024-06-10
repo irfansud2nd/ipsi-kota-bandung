@@ -169,14 +169,14 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
               } pertandingan`
             );
             try {
-              // if (isMatchDuplicate(values))
-              //   throw { message: "Atlet telah mendaftar di kelas yang sama" };
+              if (isMatchDuplicate(values))
+                throw { message: "Atlet telah mendaftar di kelas yang sama" };
 
-              // if (checkOneAthletePerCategory(values))
-              //   throw {
-              //     message:
-              //       "1 Kontingen hanya diperolehkan mendaftarkan 1 Atlet di kategori yang anda pilih",
-              //   };
+              if (checkOneAthletePerCategory(values))
+                throw {
+                  message:
+                    "1 Kontingen hanya diperolehkan mendaftarkan 1 Atlet di kategori yang anda pilih",
+                };
 
               if (!values.athlete_id)
                 throw { message: "Tolong pilih atlet terlebih dahulu" };
