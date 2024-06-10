@@ -43,7 +43,7 @@ const FooterInformation = () => {
           <div className="flex flex-col gap-3 max-md:order-2">
             <Link
               href={"https://maps.app.goo.gl/hy5xcJnrxGn4Aurs9"}
-              className="hover:text-blue-400 transition flex gap-1 items-center"
+              className="hover:text-blue-400 transition flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center"
             >
               <IoLocationSharp className="size-10 min-w-10 min-h-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
@@ -52,16 +52,16 @@ const FooterInformation = () => {
                 <p>Kacapiring, Batununggal, Kota Bandung, Jawa Barat 40271</p>
               </div>
             </Link>
-            <div className="flex gap-1 items-center">
+            <div className="flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center">
               <FaPhone className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
                 <p className="font-semibold">Telepon</p>
-                <p>0821-1132-3283</p>
+                <p>0857-9416-3821</p>
               </div>
             </div>
             <Link
               href={"mailto:ipsikotabandungofficial@gmail.com"}
-              className="hover:text-blue-400 transition flex gap-1 items-center"
+              className="hover:text-blue-400 transition flex max-[370px]:flex-col gap-1 max-[370px]:items-start items-center"
             >
               <IoMdMail className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
