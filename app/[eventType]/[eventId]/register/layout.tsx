@@ -61,10 +61,7 @@ const layout = async ({
       isTester = true;
   }
 
-  if (
-    // Date.now() <= championship.register.start &&
-    !isTester
-  )
+  if (Date.now() <= championship.register.start && !isTester)
     return (
       <PageInfo
         type="sorry"
