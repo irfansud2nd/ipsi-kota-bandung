@@ -10,6 +10,7 @@ const FooterInformation = () => {
     {
       src: "/images/logo-dispora.png",
       alt: "logo dispora",
+      landscape: true,
     },
     {
       src: "/images/logo-koni.png",
@@ -22,6 +23,7 @@ const FooterInformation = () => {
     {
       src: "/images/logo-bpjs.png",
       alt: "logo bpjs",
+      landscape: true,
     },
   ];
 
@@ -72,7 +74,11 @@ const FooterInformation = () => {
           </div>
           <div className="flex flex-wrap h-fit gap-2 justify-center max-md:order-1">
             {logos.map((image) => (
-              <img className="h-[50px] w-fit" key={image.src} src={image.src} />
+              <img
+                className="h-[50px] w-fit object-contain object-center flex-1"
+                key={image.src}
+                src={image.src}
+              />
             ))}
           </div>
         </div>
