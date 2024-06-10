@@ -16,37 +16,37 @@ export type GroupedLinks = {
 }[];
 
 const links: Links = [
-  {
-    href: "/profile",
-    label: "Profil",
-  },
-  {
-    href: "/news",
-    label: "Berita",
-  },
-  {
-    href: "/event",
-    label: "Event",
-  },
-  {
-    href: "/championship",
-    label: "Kejuaraan",
-  },
-  {
-    href: "/employee",
-    label: "Pengurus",
-  },
+  // {
+  //   href: "/profile",
+  //   label: "Profil",
+  // },
+  // {
+  //   href: "/news",
+  //   label: "Berita",
+  // },
+  // {
+  //   href: "/event",
+  //   label: "Event",
+  // },
+  // {
+  //   href: "/championship",
+  //   label: "Kejuaraan",
+  // },
+  // {
+  //   href: "/employee",
+  //   label: "Pengurus",
+  // },
 ];
 
 const groupedLinks: GroupedLinks = [
-  {
-    title: "Atlet",
-    prefix: "/athlete",
-    links: internalAthleteRoles.map((item) => ({
-      href: "/" + item,
-      label: getSpecialUserLabel(item).replace("Atlet ", ""),
-    })),
-  },
+  // {
+  //   title: "Atlet",
+  //   prefix: "/athlete",
+  //   links: internalAthleteRoles.map((item) => ({
+  //     href: "/" + item,
+  //     label: getSpecialUserLabel(item).replace("Atlet ", ""),
+  //   })),
+  // },
 ];
 
 export const clientLinks = { links, groupedLinks };
