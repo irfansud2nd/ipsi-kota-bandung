@@ -77,3 +77,19 @@ export const deleteOfficialSql = async (officialSql: OfficialSql) => {
     throw error;
   }
 };
+
+// OTHERS
+export const countOfficialByContingentId = async (contingentId: string) => {
+  try {
+    const { count, error } = await supabase
+      .from("officials")
+      .select("id", { count: "exact", head: true })
+      .eq("contingent_id", contingentId);
+
+    if (error) throw new Error(error.message);
+
+    return count || 0;
+  } catch (error) {
+    throw error;
+  }
+};

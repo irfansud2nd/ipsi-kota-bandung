@@ -52,7 +52,7 @@ export const roleAccess: {
 }[] = [
   {
     role: "admin",
-    dir: ["news", "event", "announcement", "employee"],
+    dir: ["news", "event", "announcement", "employee", "contingent", "athlete"],
   },
   {
     role: "master",
@@ -61,6 +61,10 @@ export const roleAccess: {
   {
     role: "pelatih",
     dir: [...internalAthleteRoles],
+  },
+  {
+    role: "adminEvent",
+    dir: ["championship", "contingent", "athlete"],
   },
   ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),
 ];
@@ -88,6 +92,16 @@ const links: Links = [
   {
     href: "/admin/employee",
     label: "Pengurus",
+    restricted: true,
+  },
+  {
+    href: "/admin/contingent",
+    label: "Kontingen",
+    restricted: true,
+  },
+  {
+    href: "/admin/athlete",
+    label: "Atlet",
     restricted: true,
   },
 ];

@@ -10,8 +10,9 @@ type Props = {
   page: number;
   dataLength: number;
   limit: number;
-  className?: string;
   link: string;
+  className?: string;
+  disabled?: boolean;
 };
 
 const PagePagination = ({
@@ -20,11 +21,12 @@ const PagePagination = ({
   limit,
   className,
   link,
+  disabled,
 }: Props) => {
   return (
     <Pagination className={className}>
       <PaginationContent>
-        {page > 1 && (
+        {!disabled && page > 1 && (
           <PaginationItem>
             <PaginationPrevious
               href={`${link}page=${page - 1}`}
@@ -32,8 +34,8 @@ const PagePagination = ({
             />
           </PaginationItem>
         )}
-        <PaginationItem className="mx-2">{page}</PaginationItem>
-        {dataLength >= limit && (
+        <PaginationItem className="mx-2">Halaman : {page}</PaginationItem>
+        {!disabled && dataLength >= limit && (
           <PaginationItem>
             <PaginationNext
               href={`${link}page=${page + 1}`}

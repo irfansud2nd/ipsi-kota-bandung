@@ -1,9 +1,10 @@
 "use server";
 import { apiProtect } from "../admin/adminActions";
+import { countAthleteByContingentId } from "../athlete/external/athleteActions";
 import supabase from "../database/supabase";
+import { countOfficialByContingentId } from "../official/officialActions";
 import {
   Contingent,
-  ContingentAtEvent,
   ContingentAtEventSql,
   ContingentSql,
 } from "./contingentConstants";
@@ -31,6 +32,45 @@ export const getContingentByEmail = async (email: string) => {
 };
 
 // CONTINGENT SQL
+export const getContingents = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    console.log("getContingents", { page, limit });
+    let getData = supabase
+      .from("contingents")
+      .select()
+      .order("created_at", { ascending: false })
+      .returns<ContingentSql[]>();
+
+    if (!showAll)
+      getData = getData.range(page * limit - limit, page * limit - 1);
+
+    const { data, error } = await getData;
+    if (error) throw new Error(error.message);
+
+    let result: Contingent[] = [];
+
+    if (!data.length) return result;
+
+    for (const contingentSql of data) {
+      const athletes = await countAthleteByContingentId(contingentSql.id);
+      const officials = await countOfficialByContingentId(contingentSql.id);
+      result.push({
+        ...contingentSql,
+        athletes,
+        officials,
+      });
+    }
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addContingentSql = async (contingentSql: ContingentSql) => {
   try {
     const { message } = await apiProtect({

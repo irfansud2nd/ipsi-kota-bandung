@@ -6,8 +6,9 @@ import {
 } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
-import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -75,8 +76,11 @@ const PaginationPrevious = ({
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <ChevronLeftIcon className="h-4 w-4" />
-    <span>Sebelumnya</span>
+    <Button variant={"secondary"} size={"icon"}>
+      <FaArrowLeft className="size-4" />
+    </Button>
+    {/* <ChevronLeftIcon className="h-4 w-4" />
+    <span>Sebelumnya</span> */}
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -91,8 +95,11 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Selanjutnya</span>
-    <ChevronRightIcon className="h-4 w-4" />
+    <Button variant={"secondary"} size={"icon"}>
+      <FaArrowRight className="size-4" />
+    </Button>
+    {/* <span>Selanjutnya</span>
+    <ChevronRightIcon className="h-4 w-4" /> */}
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";

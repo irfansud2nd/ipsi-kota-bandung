@@ -185,6 +185,35 @@ export const deleteAthleteAtEventSql = async (
 };
 
 // OTHERS
+export const countAthleteByContingentId = async (contingentId: string) => {
+  try {
+    const { count, error } = await supabase
+      .from("athletes")
+      .select("id", { count: "exact", head: true })
+      .eq("contingent_id", contingentId);
+
+    if (error) throw new Error(error.message);
+
+    return count || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const countAthlete = async () => {
+  try {
+    const { count, error } = await supabase
+      .from("athletes")
+      .select("id", { count: "exact", head: true });
+
+    if (error) throw new Error(error.message);
+
+    return count || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const countDuplicateMatch = async (
   matchBased: MatchBased,
   paid: boolean
