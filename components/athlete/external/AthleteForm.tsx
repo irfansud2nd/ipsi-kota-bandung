@@ -130,14 +130,12 @@ const AthleteForm = () => {
                       helperText="(CM)"
                       name="height"
                       formik={props}
-                      under17
                     />
                     <InputText
                       label="Berat Badan"
                       helperText="(KG)"
                       name="weight"
                       formik={props}
-                      under17
                     />
                   </div>
                   <div>
@@ -145,13 +143,13 @@ const AthleteForm = () => {
                       label="Nomor Telepon"
                       name="phone_number"
                       formik={props}
-                      under17
+                      // under17
                     />
                     <InputText
                       label="Email"
                       name="email"
                       formik={props}
-                      under17
+                      // under17
                     />
                     <InputText
                       label="Nama Kontingen"
