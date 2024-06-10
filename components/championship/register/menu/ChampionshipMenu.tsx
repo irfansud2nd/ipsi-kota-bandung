@@ -66,11 +66,11 @@ const ChampionshipMenu = () => {
       href: "schedule",
       icon: <FaThList />,
     },
-    {
-      label: "Perolehan Medali",
-      href: "medal",
-      icon: <FaMedal />,
-    },
+    // {
+    //   label: "Perolehan Medali",
+    //   href: "medal",
+    //   icon: <FaMedal />,
+    // },
   ];
 
   return (
