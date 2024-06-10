@@ -3,6 +3,8 @@ import * as yup from "yup";
 import { imageMaxSize, imageSchema } from "../form/formConstants";
 import { dateToNumber } from "../functions";
 
+export type Bank = "BJB";
+
 export type Event = {
   id: string;
   title: string;
@@ -93,7 +95,7 @@ export type Championship = Event & {
     target: {
       name: string;
       number: string;
-      bank: "BJB";
+      bank: Bank;
     };
     contact: {
       name: string;
@@ -282,7 +284,11 @@ export const championships: Championship[] = [
     },
     showOnHome: true,
     dialogOnHome: true,
-    testerEmail: ["irfansud2nd@gmail.com", "iqbalbobalfarisy@gmail.com"],
+    testerEmail: [
+      "irfansud2nd@gmail.com",
+      "iqbalbobalfarisy@gmail.com",
+      "andra08malela@gmail.com",
+    ],
   },
 ];
 
