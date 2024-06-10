@@ -25,7 +25,7 @@ export type SpecialUser = {
 export const hideAdminLinksFrom = [
   {
     email: emails.bob,
-    menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "POPROV"],
+    menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "PORPROV"],
   },
 ];
 
