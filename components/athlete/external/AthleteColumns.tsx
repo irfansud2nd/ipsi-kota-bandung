@@ -87,10 +87,12 @@ export const AthleteColumns = (championshipId: string) => {
         };
 
         const isAthletePaid = () => {
-          const athleteAtEvent = getHisAthleteAtEvents();
-          if (!athleteAtEvent.length) return false;
-          if (athleteAtEvent.find((item) => !item.payment_id)) return false;
-          return true;
+          const athleteAtEvents = getHisAthleteAtEvents();
+          if (!athleteAtEvents.length) return false;
+          const paid = athleteAtEvents.filter(
+            (item) => item.payment_id != null && item.payment_id != ""
+          );
+          return paid.length > 0;
         };
 
         const { confirm, ConfirmationDialog } = useConfirmation();

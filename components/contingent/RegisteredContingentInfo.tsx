@@ -31,7 +31,7 @@ const RegisteredContingentInfo = ({
     (state: RootState) => state.athlete.athleteAtEvents
   );
   const officials = useSelector((state: RootState) => state.official.all);
-  const payments = [];
+  const payments = useSelector((state: RootState) => state.payment.all);
 
   const { confirm, ConfirmationDialog } = useConfirmation();
   const dispatch = useDispatch();

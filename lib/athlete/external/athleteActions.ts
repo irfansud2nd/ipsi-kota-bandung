@@ -5,6 +5,7 @@ import {
   AthleteAtEvent,
   AthleteAtEventSql,
   AthleteSql,
+  MatchBased,
   matchType,
 } from "./athleteConstants";
 
@@ -185,29 +186,29 @@ export const deleteAthleteAtEventSql = async (
 
 // OTHERS
 export const countDuplicateMatch = async (
-  athleteAtEvent: AthleteAtEvent,
+  matchBased: MatchBased,
   paid: boolean
 ) => {
   try {
     let func = "count_duplicate_art_match_by_championship_id";
     if (
-      athleteAtEvent.type == matchType[0] ||
-      athleteAtEvent.category.includes("Tunggal")
+      matchBased.type == matchType[0] ||
+      matchBased.category.includes("Tunggal")
     )
       func = "count_duplicate_fight_match_by_championship_id";
 
     let getCount = supabase.rpc(func, {
-      champ_id: athleteAtEvent.championship_id,
-      scm: athleteAtEvent.schema,
-      tp: athleteAtEvent.type,
-      lvl: athleteAtEvent.level,
-      ctgr: athleteAtEvent.category,
+      champ_id: matchBased.championship_id,
+      scm: matchBased.schema,
+      tp: matchBased.type,
+      lvl: matchBased.level,
+      ctgr: matchBased.category,
+      gdr: matchBased.gender,
       pd: paid,
     });
 
     const { data } = await getCount;
 
-    // console.log({ data });
     return data as number;
   } catch (error) {
     throw error;

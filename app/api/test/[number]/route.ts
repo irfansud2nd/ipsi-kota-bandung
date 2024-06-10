@@ -27,7 +27,7 @@ export const GET = async (
   //   { status: error.includes(number) ? 500 : 200 }
   // );
 
-  const data = await getPaymentsByContingentRegistrationId(31);
+  const data = await getPaymentsByContingentRegistrationId(32);
 
   // const data = await getContingenAtEvents(
   //   "3122e64b-df2c-4723-816b-4a2db5c7dc4c"

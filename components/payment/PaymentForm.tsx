@@ -19,6 +19,7 @@ import {
 import { addPayment } from "@/lib/payment/paymentFunctions";
 import { addPaymentsRedux } from "@/lib/redux/championship/register/paymentSlice";
 import {
+  checkAthletAtEventsLimited,
   getTotalMatchCost,
   matchBasedToAthleteAtEvent,
   updateAthleteAtEvents,
@@ -33,6 +34,7 @@ import { getChampionship } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa6";
+import { toastError } from "@/lib/form/formFunctions";
 
 const PaymentForm = ({
   selectedMatchBaseds,
@@ -47,6 +49,9 @@ const PaymentForm = ({
   const registeredContingent = useSelector(
     (state: RootState) => state.contingent.registered
   ) as RegisteredContingent;
+  const matchBaseds = useSelector(
+    (state: RootState) => state.athlete.matchBased
+  );
 
   const championship = getChampionship(
     registeredContingent.championship_id
@@ -107,6 +112,12 @@ Terimakasih.`,
     result.message = message;
 
     return result;
+  };
+
+  const getMatchBasedRegistrationId = (regId: number) => {
+    return selectedMatchBaseds.find(
+      (item) => item.registration_id == regId
+    ) as MatchBased;
   };
 
   return (
@@ -174,6 +185,20 @@ Terimakasih.`,
             initialValues={initialValue}
             onSubmit={async (values, { resetForm }) => {
               try {
+                const isLimit = await checkAthletAtEventsLimited(
+                  selectedMatchBaseds,
+                  matchBaseds,
+                  championship
+                );
+
+                if (isLimit) {
+                  const matchBased = getMatchBasedRegistrationId(isLimit);
+                  toastError(
+                    `Kategori yang dipilih oleh ${matchBased} yaitu ${matchBased.type} ${matchBased.schema} ${matchBased.category} ${matchBased.gender} telah penuh, silahkan pilih kategori lain atau keluarkan pertandingan tersebut dari pembayaran`
+                  );
+                  return;
+                }
+
                 const payment = await addPayment(values);
                 const updatedAthleteAtEvents = fillAthleteAtEventsPaymentId(
                   payment.id

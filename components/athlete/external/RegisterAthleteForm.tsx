@@ -11,11 +11,14 @@ import {
   athleteAtEventInitialValue,
   matchSchema,
   matchType,
+  MatchBased,
 } from "@/lib/athlete/external/athleteConstants";
 import {
   addAthleteAtEvent,
+  checkMatchBasedLimited,
   getMatchCategory,
   getMatchCost,
+  isMatchSame,
   updateAthleteAtEvent,
 } from "@/lib/athlete/external/athleteFunctions";
 import { RegisteredContingent } from "@/lib/contingent/contingentConstants";
@@ -45,6 +48,7 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
     all: athletes,
     athleteAtEvents,
     athleteAtEventToEdit,
+    matchBased: matchBaseds,
   } = useSelector((state: RootState) => state.athlete);
 
   const registeredContingent = useSelector(
@@ -71,25 +75,15 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
     registered_at: Date.now(),
   };
 
-  const isMatchSame = (item1: AthleteAtEvent, item2: AthleteAtEvent) => {
-    return (
-      item1.schema == item2.schema &&
-      item1.type == item2.type &&
-      item1.level == item2.level &&
-      item1.category == item2.category &&
-      item1.team == item2.team
-    );
-  };
-
-  const isMatchDuplicate = (athleteAtEvent: AthleteAtEvent) => {
-    const registeredMathces = athleteAtEvents.filter(
-      (item) => item.athlete_id == athleteAtEvent.athlete_id
+  const isMatchDuplicate = (matchBased: MatchBased) => {
+    const registeredMathces = matchBaseds.filter(
+      (item) => item.athlete_id == matchBased.athlete_id
     );
     if (!registeredMathces.length) return false;
 
     if (
       !registeredMathces.some((registered) =>
-        isMatchSame(registered, athleteAtEvent)
+        isMatchSame(registered, matchBased)
       )
     )
       return false;
@@ -97,47 +91,22 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
     return true;
   };
 
-  const checkOneAthletePerCategory = (athleteAtEvent: AthleteAtEvent) => {
-    if (athleteAtEvent.schema == matchSchema[0]) return false;
-    let limit = 1;
-    if (athleteAtEvent.category.includes("Ganda")) limit = 2;
-    if (athleteAtEvent.category.includes("Regu")) limit = 3;
+  const checkOneAthletePerCategory = (matchBased: MatchBased) => {
+    if (matchBased.schema == matchSchema[0]) return false;
     if (
-      !championship.matchCategory.find(
-        (item) => item.level == athleteAtEvent.level
-      )?.oneAthletePerCategory
+      !championship.matchCategory.find((item) => item.level == matchBased.level)
+        ?.oneAthletePerCategory
     )
       return false;
+    let limit = 1;
+    if (matchBased.category.includes("Ganda")) limit = 2;
+    if (matchBased.category.includes("Regu")) limit = 3;
 
-    const registered = athleteAtEvents.filter((item) =>
-      isMatchSame(item, athleteAtEvent)
+    const registered = matchBaseds.filter((item) =>
+      isMatchSame(item, matchBased)
     );
 
     return registered.length >= limit;
-  };
-
-  const checkLimited = async (athleteAtEvent: AthleteAtEvent) => {
-    if (athleteAtEvent.schema == matchSchema[0]) return;
-
-    const limit = championship.matchCategory.find(
-      (item) => item.level == athleteAtEvent.level
-    )?.limit;
-    if (!limit) return;
-
-    let countLimit = limit.tanding;
-    if (athleteAtEvent.category.includes("Ganda")) countLimit = limit.ganda;
-    if (athleteAtEvent.category.includes("Regu")) countLimit = limit.regu;
-    if (athleteAtEvent.category.includes("Tunggal")) countLimit = limit.tunggal;
-
-    try {
-      const count = await countDuplicateMatch(athleteAtEvent, limit.paid);
-
-      // console.log({ count });
-      if (count < countLimit) return;
-      return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
-    } catch (error: any) {
-      return error.message as string;
-    }
   };
 
   const toggleDialog = (state: boolean) => {
@@ -169,10 +138,14 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
               } pertandingan`
             );
             try {
-              if (isMatchDuplicate(values))
+              const matchBased: MatchBased = {
+                ...getAthleteById(values.athlete_id),
+                ...values,
+              };
+              if (isMatchDuplicate(matchBased))
                 throw { message: "Atlet telah mendaftar di kelas yang sama" };
 
-              if (checkOneAthletePerCategory(values))
+              if (checkOneAthletePerCategory(matchBased))
                 throw {
                   message:
                     "1 Kontingen hanya diperolehkan mendaftarkan 1 Atlet di kategori yang anda pilih",
@@ -184,7 +157,11 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
               if (!values.contingent_registration_id)
                 throw { message: "ID Pendaftaran kontingen tidak ditemukan" };
 
-              const message = await checkLimited(values);
+              const message = await checkMatchBasedLimited(
+                matchBaseds,
+                matchBased,
+                championship
+              );
               if (message) throw { message };
 
               if (athleteAtEventToEdit) {

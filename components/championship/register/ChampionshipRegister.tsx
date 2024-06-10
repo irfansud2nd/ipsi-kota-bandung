@@ -55,7 +55,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   const userEmail = session.data?.user?.email as string;
 
   const fetchContingent = async () => {
-    console.log("fetchContingent");
+    // console.log("fetchContingent");
     setContingentFetched(true);
 
     try {
@@ -79,7 +79,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   };
 
   const fetchAthletes = async () => {
-    console.log("fetchAthletes");
+    // console.log("fetchAthletes");
     try {
       const athletes = await getAthletesByEmail(userEmail);
       dispatch(addAthletesRedux(athletes));
@@ -94,7 +94,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   };
 
   const fetchOfficials = async () => {
-    console.log("fetchOfficials");
+    // console.log("fetchOfficials");
     try {
       const officials = await getOfficialsByEmail(userEmail);
       dispatch(addOfficialsRedux(officials));
@@ -104,7 +104,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   };
 
   const fetchPayments = async () => {
-    console.log("fetchPayments");
+    // console.log("fetchPayments");
     if (!registeredContingent) return;
     try {
       const payments = await getPaymentsByContingentRegistrationId(

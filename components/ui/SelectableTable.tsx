@@ -50,14 +50,7 @@ export function SelectableTable<TData, TValue>({
     <div className="h-full grid grid-rows-[1fr_auto]">
       <div className="rounded-md border w-full max-w-full overflow-x-auto">
         <Table className="whitespace-nowrap">
-          <TableHeader
-            className="bg-secondary"
-            style={{
-              position: "sticky",
-              top: "0",
-              zIndex: "10",
-            }}
-          >
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

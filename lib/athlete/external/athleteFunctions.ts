@@ -6,6 +6,7 @@ import {
   MatchBased,
   AthleteSql,
   AthleteAtEventSql,
+  matchSchema,
 } from "./athleteConstants";
 import { v4 } from "uuid";
 import { getFileUrl } from "@/lib/functions";
@@ -15,6 +16,7 @@ import { Championship, MatchCategory } from "@/lib/event/eventConstants";
 import {
   addAthleteAtEventSql,
   addAthleteSql,
+  countDuplicateMatch,
   deleteAthleteAtEventSql,
   deleteAthleteSql,
   getAthletesSqlByEmail,
@@ -226,6 +228,7 @@ export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   }
 };
 
+// OTHERS
 export const getMatchCost = (athleteAtEvent: AthleteAtEvent) => {
   let result = 0;
   const { matchCost } = getChampionship(
@@ -267,7 +270,6 @@ export const getTotalMatchCost = (athleteAtEvents: AthleteAtEvent[]) => {
   return result;
 };
 
-// OTHERS
 export const calculateAge = (date: any) => {
   const birthDate = new Date(date);
   const currentDate = new Date();
@@ -346,4 +348,88 @@ export const getMatchCategory = (
   )?.category;
   const result = type == matchType[0] ? categories?.fight : categories?.art;
   return result ?? [];
+};
+
+export const isMatchSame = (item1: MatchBased, item2: MatchBased) => {
+  return (
+    item1.gender == item2.gender &&
+    item1.schema == item2.schema &&
+    item1.type == item2.type &&
+    item1.level == item2.level &&
+    item1.category == item2.category &&
+    item1.team == item2.team
+  );
+};
+
+export const isNewTeam = (
+  MatchBaseds: MatchBased[],
+  MatchBased: MatchBased,
+  paid: boolean
+) => {
+  if (MatchBased.type == matchType[0]) return false;
+  if (MatchBased.category.includes("Tunggal")) return false;
+
+  let registered = MatchBaseds.filter((item) => isMatchSame(item, MatchBased));
+  if (!registered.length) return true;
+
+  if (paid) registered = registered.filter((item) => item.payment_id);
+
+  return registered.length < 1;
+};
+
+export const checkMatchBasedLimited = async (
+  matchBaseds: MatchBased[],
+  matchBased: MatchBased,
+  championship: Championship
+) => {
+  if (matchBased.schema == matchSchema[0]) return;
+
+  const limit = championship.matchCategory.find(
+    (item) => item.level == matchBased.level
+  )?.limit;
+  if (!limit) return;
+
+  let countLimit = limit.tanding;
+  if (matchBased.category.includes("Ganda")) {
+    countLimit = limit.ganda;
+    if (!isNewTeam(matchBaseds, matchBased, limit.paid)) countLimit += 1;
+  }
+  if (matchBased.category.includes("Regu")) {
+    countLimit = limit.regu;
+    if (!isNewTeam(matchBaseds, matchBased, limit.paid)) countLimit += 1;
+  }
+  if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
+
+  try {
+    const count = await countDuplicateMatch(matchBased, limit.paid);
+
+    // console.log({ count, countLimit });
+    if (count < countLimit) return;
+    return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
+  } catch (error: any) {
+    return error.message as string;
+  }
+};
+
+export const checkAthletAtEventsLimited = async (
+  matchBasedsToCheck: MatchBased[],
+  allMatchBaseds: MatchBased[],
+  championship: Championship
+) => {
+  try {
+    if (!matchBasedsToCheck.length) return;
+
+    for (const matchBasedToCheck of matchBasedsToCheck) {
+      const result = await checkMatchBasedLimited(
+        allMatchBaseds,
+        matchBasedToCheck,
+        championship
+      );
+      if (result) {
+        return matchBasedToCheck.registration_id;
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
 };
