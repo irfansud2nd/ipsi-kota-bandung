@@ -1,3 +1,4 @@
+import LoginButton from "../auth/LoginButton";
 import Container from "./Container";
 
 type Props = {
@@ -40,7 +41,7 @@ const PageInfo = ({ type, text }: Props) => {
 
   if (text) displayText = text;
   return (
-    <Container className="w-full h-full flex justify-center items-center ">
+    <Container className="w-full h-full flex flex-col justify-center items-center ">
       <div className="w-[450px] max-w-[90vw] grid grid-cols-2 items-center gap-5 ">
         <h1 className="font-bold text-xl sm:text-3xl">{displayText}</h1>
         <img
@@ -48,6 +49,9 @@ const PageInfo = ({ type, text }: Props) => {
           alt={type}
           className="max-w-[50vw] w-[150px] sm:w-[250px]"
         />
+      </div>
+      <div>
+        <LoginButton />
       </div>
     </Container>
   );
