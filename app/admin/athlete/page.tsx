@@ -1,12 +1,5 @@
 import { countAthlete } from "@/lib/athlete/external/athleteActions";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const page = async () => {
   const athleteCount = await countAthlete();

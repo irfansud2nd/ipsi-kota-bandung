@@ -38,7 +38,6 @@ export const getContingents = async (
   showAll: boolean = false
 ) => {
   try {
-    console.log("getContingents", { page, limit });
     let getData = supabase
       .from("contingents")
       .select()
@@ -55,15 +54,19 @@ export const getContingents = async (
 
     if (!data.length) return result;
 
-    for (const contingentSql of data) {
-      const athletes = await countAthleteByContingentId(contingentSql.id);
-      const officials = await countOfficialByContingentId(contingentSql.id);
-      result.push({
+    const promises = data.map(async (contingentSql) => {
+      const [athletes, officials] = await Promise.all([
+        countAthleteByContingentId(contingentSql.id),
+        countOfficialByContingentId(contingentSql.id),
+      ]);
+      return {
         ...contingentSql,
         athletes,
         officials,
-      });
-    }
+      };
+    });
+
+    result = await Promise.all(promises);
 
     return result;
   } catch (error) {
