@@ -1,3 +1,4 @@
+import { authOptions } from "@/lib/auth/authOptions";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return (
     <div className="w-full h-full flex justify-center items-center">
       <h1 className="font-bold text-3xl">

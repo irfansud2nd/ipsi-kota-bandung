@@ -3,6 +3,7 @@ import PageInfo from "@/components/ui/PageInfo";
 import { Button } from "@/components/ui/button";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
 import { isInternalAthleteRole } from "@/lib/athlete/internal/internalAthleteFunctions";
+import { authOptions } from "@/lib/auth/authOptions";
 import { getSpecialUserLabel } from "@/lib/functions";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
@@ -25,7 +26,7 @@ const page = async ({ params }: Props) => {
   const { athleteType } = params;
   if (!isInternalAthleteRole(athleteType)) return notFound();
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) return <PageInfo type="notAuthorized" />;
 
   return (

@@ -50,18 +50,7 @@ const layout = async ({
   const championship = getChampionship(params.eventId);
   if (!championship) return notFound();
 
-  let isTester = false;
-
-  if (championship.testerEmail) {
-    const session = await getServerSession();
-    if (
-      session?.user?.email &&
-      championship.testerEmail.includes(session.user.email)
-    )
-      isTester = true;
-  }
-
-  if (Date.now() <= championship.register.start && !isTester)
+  if (Date.now() <= championship.register.start)
     return (
       <PageInfo
         type="sorry"
