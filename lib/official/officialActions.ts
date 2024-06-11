@@ -86,7 +86,7 @@ export const countOfficialByContingentId = async (contingentId: string) => {
       .select("id", { count: "exact", head: true })
       .eq("contingent_id", contingentId);
 
-    if (error) throw new Error(error.message);
+    if (error) throw error;
 
     return count || 0;
   } catch (error) {

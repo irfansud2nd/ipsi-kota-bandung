@@ -206,7 +206,7 @@ export const countAthlete = async () => {
       .from("athletes")
       .select("id", { count: "exact", head: true });
 
-    if (error) throw new Error(error.message);
+    if (error) throw error;
 
     return count || 0;
   } catch (error) {

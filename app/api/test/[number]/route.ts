@@ -1,9 +1,11 @@
 import { apiProtect } from "@/lib/admin/adminActions";
+import { countAthleteByContingentId } from "@/lib/athlete/external/athleteActions";
 import {
   getContingenAtEvents,
   getContingentByEmail,
 } from "@/lib/contingent/contingentActions";
 import supabase from "@/lib/database/supabase";
+import { countOfficialByContingentId } from "@/lib/official/officialActions";
 import { getPaymentsByContingentRegistrationId } from "@/lib/payment/paymentActions";
 import { NextResponse } from "next/server";
 
@@ -27,7 +29,9 @@ export const GET = async (
   //   { status: error.includes(number) ? 500 : 200 }
   // );
 
-  const data = await getPaymentsByContingentRegistrationId(32);
+  const data = await countOfficialByContingentId(
+    "edd9f3e9-95e4-4446-8ea1-8d4f4decd606"
+  );
 
   // const data = await getContingenAtEvents(
   //   "3122e64b-df2c-4723-816b-4a2db5c7dc4c"
