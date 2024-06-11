@@ -48,7 +48,7 @@ export const getContingents = async (
       getData = getData.range(page * limit - limit, page * limit - 1);
 
     const { data, error } = await getData;
-    if (error) throw new Error(error.message);
+    if (error) throw error;
 
     let result: Contingent[] = [];
 
