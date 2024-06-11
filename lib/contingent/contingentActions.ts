@@ -54,22 +54,22 @@ export const getContingents = async (
 
     if (!data.length) return result;
 
-    // result = data.map((item) => ({ ...item, athletes: 0, officials: 0 }));
+    result = data.map((item) => ({ ...item, athletes: 0, officials: 0 }));
 
-    for (const contingentSql of data) {
-      try {
-        const athletes = await countAthleteByContingentId(contingentSql.id);
-        const officials = await countOfficialByContingentId(contingentSql.id);
+    // for (const contingentSql of data) {
+    //   try {
+    //     const athletes = await countAthleteByContingentId(contingentSql.id);
+    //     const officials = await countOfficialByContingentId(contingentSql.id);
 
-        result.push({
-          ...contingentSql,
-          athletes,
-          officials,
-        });
-      } catch (error) {
-        throw error;
-      }
-    }
+    //     result.push({
+    //       ...contingentSql,
+    //       athletes,
+    //       officials,
+    //     });
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // }
 
     return result;
   } catch (error) {
