@@ -2,7 +2,6 @@ import { v4 } from "uuid";
 import * as yup from "yup";
 import { imageMaxSize, imageSchema } from "../form/formConstants";
 import { dateToNumber } from "../functions";
-import { emails, phoneNumbers } from "../constants";
 
 export type Bank = "BJB";
 
@@ -274,7 +273,7 @@ export const championships: Championship[] = [
       },
       contact: {
         name: "Bob",
-        phoneNumber: "685794163821",
+        phoneNumber: "6285794163821",
       },
     },
     matchCost: {

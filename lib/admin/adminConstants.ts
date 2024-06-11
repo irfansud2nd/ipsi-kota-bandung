@@ -3,7 +3,7 @@ import {
   InternalAthleteRole,
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
-import { GroupedLinks, Links, emails } from "../constants";
+import { GroupedLinks, Links } from "../constants";
 
 export type SpecialUserRole =
   | InternalAthleteRole
@@ -24,10 +24,10 @@ export type SpecialUser = {
 
 export const hideAdminLinksFrom = [
   {
-    email: emails.bob,
+    email: "iqbalbobalfarisy@gmail.com",
     menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "PORPROV"],
   },
- {
+  {
     email: "andra08malela@gmail.com",
     menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "PORPROV"],
   },
