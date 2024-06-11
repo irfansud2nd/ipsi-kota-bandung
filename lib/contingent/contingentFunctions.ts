@@ -108,7 +108,7 @@ export const getContingentAtEventByChampionshipId = (
 export const getContingentInfoByEmail = async (email: string) => {
   try {
     const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw { message };
+    if (message) throw new Error(message);
 
     let result: {
       contingent: Contingent | undefined;

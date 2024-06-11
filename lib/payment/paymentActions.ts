@@ -27,10 +27,10 @@ export const getPaymentsByContingentRegistrationId = async (
   contingentRegsitrationId: number
 ) => {
   try {
-    // const { message } = await apiProtect({
-    //   loggedInOnly: true,
-    // });
-    // if (message) throw new Error(message);
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
 
     const { data, error } = await supabase
       .rpc("get_payment_by_contingent_registration_id", {

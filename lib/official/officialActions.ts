@@ -7,7 +7,7 @@ import { OfficialSql } from "./officialContants";
 export const getOfficialsSqlByEmail = async (email: string) => {
   try {
     const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw { message };
+    if (message) throw new Error(message);
 
     const { data, error } = await supabase
       .from("officials")
