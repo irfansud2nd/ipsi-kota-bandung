@@ -38,40 +38,27 @@ export const getContingents = async (
   showAll: boolean = false
 ) => {
   try {
-    let getData = supabase
-      .from("contingents")
-      .select()
-      .order("created_at", { ascending: false })
-      .returns<ContingentSql[]>();
+    const { message } = await apiProtect({ directory: "contingent" });
+    if (message) throw new Error(message);
 
-    if (!showAll)
-      getData = getData.range(page * limit - limit, page * limit - 1);
+    let params = {
+      pg: page,
+      lmt: limit,
+    };
 
-    const { data, error } = await getData;
+    if (showAll)
+      params = {
+        pg: 1,
+        lmt: 1000,
+      };
+
+    const { data, error } = await supabase
+      .rpc("get_contingents", params)
+      .returns<Contingent[]>();
+
     if (error) throw error;
 
-    let result: Contingent[] = [];
-
-    if (!data.length) return result;
-
-    result = data.map((item) => ({ ...item, athletes: 0, officials: 0 }));
-
-    // for (const contingentSql of data) {
-    //   try {
-    //     const athletes = await countAthleteByContingentId(contingentSql.id);
-    //     const officials = await countOfficialByContingentId(contingentSql.id);
-
-    //     result.push({
-    //       ...contingentSql,
-    //       athletes,
-    //       officials,
-    //     });
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // }
-
-    return result;
+    return data;
   } catch (error) {
     throw error;
   }
