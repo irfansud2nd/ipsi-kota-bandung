@@ -27,6 +27,10 @@ export const hideAdminLinksFrom = [
     email: emails.bob,
     menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "PORPROV"],
   },
+ {
+    email: "andra08malela@gmail.com",
+    menu: ["Pengurus", "Berita", "Event", "PAL", "POPWILDA", "PORPROV"],
+  },
 ];
 
 export const specialUserIntitialValue = (role: SpecialUserRole) => {
