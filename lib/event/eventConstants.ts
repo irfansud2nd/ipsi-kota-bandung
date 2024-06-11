@@ -274,7 +274,7 @@ export const championships: Championship[] = [
       },
       contact: {
         name: "Bob",
-        phoneNumber: phoneNumbers.bob,
+        phoneNumber: "685794163821",
       },
     },
     matchCost: {
@@ -287,7 +287,7 @@ export const championships: Championship[] = [
     dialogOnHome: true,
     testerEmail: [
       "irfansud2nd@gmail.com",
-      emails.bob,
+      "iqbalbobalfarisy@gmail.com",
       "andra08malela@gmail.com",
     ],
   },
