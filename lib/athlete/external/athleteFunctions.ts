@@ -400,6 +400,8 @@ export const checkMatchBasedLimited = async (
   }
   if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
 
+  countLimit -= 1;
+
   try {
     const count = await countDuplicateMatch(matchBased, limit.paid);
 
