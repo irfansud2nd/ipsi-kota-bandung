@@ -44,7 +44,7 @@ const EventCard = ({ event }: Props) => {
           )}
         </div>
         <div className="border-t-2 mt-2 pt-2 flex justify-between items-center flex-wrap">
-          <p className="flex items-center">
+          <div className="flex items-center">
             <FaCalendarAlt className="size-5 mr-2 text-green-500" />
             <div className="flex items-center flex-wrap">
               <span className="whitespace-nowrap">
@@ -66,7 +66,7 @@ const EventCard = ({ event }: Props) => {
                 </>
               )}
             </div>
-          </p>
+          </div>
           {championship ? (
             championship.register.start <= Date.now() &&
             championship.register.end >= Date.now() && (
