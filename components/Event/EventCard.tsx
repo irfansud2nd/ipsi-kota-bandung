@@ -44,26 +44,28 @@ const EventCard = ({ event }: Props) => {
           )}
         </div>
         <div className="border-t-2 mt-2 pt-2 flex justify-between items-center flex-wrap">
-          <p className="whitespace-nowrap flex items-center">
+          <p className="flex items-center">
             <FaCalendarAlt className="size-5 mr-2 text-green-500" />
-            <span>
-              {formatDate(event.dateStart, {
-                withoutHour: true,
-                longMonth: true,
-                withoutYear: !!event.dateEnd,
-              })}
-            </span>
-            {event.dateEnd && (
-              <>
-                <span> - </span>
-                <span>
-                  {formatDate(event.dateEnd, {
-                    withoutHour: true,
-                    longMonth: true,
-                  })}
-                </span>
-              </>
-            )}
+            <div className="flex items-center flex-wrap">
+              <span className="whitespace-nowrap">
+                {formatDate(event.dateStart, {
+                  withoutHour: true,
+                  longMonth: true,
+                  withoutYear: !!event.dateEnd,
+                })}
+              </span>
+              {event.dateEnd && (
+                <>
+                  <span> - </span>
+                  <span className="whitespace-nowrap">
+                    {formatDate(event.dateEnd, {
+                      withoutHour: true,
+                      longMonth: true,
+                    })}
+                  </span>
+                </>
+              )}
+            </div>
           </p>
           {championship ? (
             championship.register.start <= Date.now() &&
