@@ -8,9 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { championships } from "@/lib/event/eventConstants";
 import { InputProps } from "@/lib/form/formConstants";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { ErrorMessage } from "formik";
+import ErrorText from "../ui/ErrorText";
 
 type InputSelectProps = InputProps & {
   options: string[];
@@ -80,6 +81,7 @@ const InputSelect = ({
           ))}
         </SelectContent>
       </Select>
+      <ErrorMessage name={name} component={ErrorText} />
     </div>
   );
 };

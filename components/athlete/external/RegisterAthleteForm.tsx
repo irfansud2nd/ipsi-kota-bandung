@@ -16,6 +16,7 @@ import {
 import {
   addAthleteAtEvent,
   checkMatchBasedLimited,
+  getLevel,
   getMatchCategory,
   getMatchCost,
   isMatchSame,
@@ -62,14 +63,11 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
   };
 
   const championship = getChampionship(eventId) as Championship;
-  const levels = championship.matchCategory.map((item) => item.level);
 
   const initialValues: AthleteAtEvent = {
     ...athleteAtEventInitialValue,
     athlete_id: athletes[0]?.id || "",
-    level: levels[0],
     type: matchType[art ? 1 : 0],
-    category: championship.matchCategory[0].category[art ? "art" : "fight"][0],
     contingent_registration_id: registeredContingent.registration_id,
     championship_id: registeredContingent.championship_id,
     registered_at: Date.now(),
@@ -187,99 +185,121 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
           {(props: FormikProps<AthleteAtEvent>) => {
             return (
               <Form className="flex flex-col">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
-                  <div>
-                    <InputSelect
-                      label="Nama Atlet"
-                      name="athlete_id"
-                      formik={props}
-                      options={athletes.map((item) => item.id)}
-                      customOptionLabel={(id) => getAthleteById(id).name}
-                    />
-                    <InputText
-                      label="Tinggi Badan"
-                      name="height"
-                      helperText="(CM)"
-                      formik={props}
-                      displayOnly={{
-                        state: true,
-                        value: props.values.athlete_id
-                          ? getAthleteById(props.values.athlete_id).height
-                          : "",
-                      }}
-                    />
-                    <InputText
-                      label="Tinggi Badan"
-                      name="weight"
-                      helperText="(CM)"
-                      formik={props}
-                      displayOnly={{
-                        state: true,
-                        value: props.values.athlete_id
-                          ? getAthleteById(props.values.athlete_id).weight
-                          : "",
-                      }}
-                    />
-                    <InputSelect
-                      label="Jenis Pertandingan"
-                      name="type"
-                      options={matchType}
-                      formik={props}
-                      forceValue={matchType[art ? 1 : 0]}
-                      forceDisabled
-                    />
+                {props.values.schema ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
+                      <div>
+                        <InputSelect
+                          label="Nama Atlet"
+                          name="athlete_id"
+                          formik={props}
+                          options={athletes.map((item) => item.id)}
+                          customOptionLabel={(id) => getAthleteById(id).name}
+                          forceDisabled={!!athleteAtEventToEdit}
+                        />
+                        <InputText
+                          label="Tinggi Badan"
+                          name="height"
+                          helperText="(CM)"
+                          formik={props}
+                          displayOnly={{
+                            state: true,
+                            value: props.values.athlete_id
+                              ? getAthleteById(props.values.athlete_id).height
+                              : "",
+                          }}
+                        />
+                        <InputText
+                          label="Tinggi Badan"
+                          name="weight"
+                          helperText="(CM)"
+                          formik={props}
+                          displayOnly={{
+                            state: true,
+                            value: props.values.athlete_id
+                              ? getAthleteById(props.values.athlete_id).weight
+                              : "",
+                          }}
+                        />
+                        <InputSelect
+                          label="Jenis Pertandingan"
+                          name="type"
+                          options={matchType}
+                          formik={props}
+                          forceValue={matchType[art ? 1 : 0]}
+                          forceDisabled
+                        />
+                      </div>
+                      <div>
+                        <InputText
+                          label="Skema Pertandingan"
+                          name="schema"
+                          formik={props}
+                          displayOnly={{
+                            state: true,
+                            value: props.values.schema,
+                          }}
+                        />
+                        <InputSelect
+                          label="Kelompok Usia"
+                          name="level"
+                          formik={props}
+                          options={getLevel(
+                            props.values.schema == matchSchema[0],
+                            championship.matchCategory
+                          )}
+                        />
+                        <InputSelect
+                          label="Kategori Pertandingan"
+                          name="category"
+                          formik={props}
+                          options={getMatchCategory(
+                            props.values.level,
+                            props.values.type,
+                            championship.matchCategory
+                          )}
+                          onChange={(value) =>
+                            setValidateTeam(!!art && !value.includes("Tunggal"))
+                          }
+                          dynamicOptions
+                        />
+                        {art && !props.values.category.includes("Tunggal") && (
+                          <InputText
+                            label="Nama Tim"
+                            name="team"
+                            formik={props}
+                          />
+                        )}
+                        <InputText
+                          label="Biaya"
+                          name="payment_bill"
+                          formik={props}
+                          forceValue={getMatchCost(props.values)}
+                          forceDisabled
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-1 items-center justify-end">
+                      <Button
+                        type="button"
+                        onClick={() => props.setFieldValue("schema", "")}
+                      >
+                        Ganti Skema
+                      </Button>
+                      <Button type="submit">Simpan</Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex gap-5 justify-center">
+                    {matchSchema.map((schema) => (
+                      <Button
+                        onClick={() => props.setFieldValue("schema", schema)}
+                      >
+                        {schema}
+                      </Button>
+                    ))}
                   </div>
-                  <div>
-                    <InputSelect
-                      label="Skema Pertandingan"
-                      name="schema"
-                      formik={props}
-                      forceValue={
-                        isLevelRookieOnly(props.values.level, championship)
-                          ? matchSchema[0]
-                          : undefined
-                      }
-                      forceDisabled={isLevelRookieOnly(
-                        props.values.level,
-                        championship
-                      )}
-                      options={matchSchema}
-                    />
-                    <InputSelect
-                      label="Tingkatan Petandingan"
-                      name="level"
-                      formik={props}
-                      options={levels}
-                    />
-                    <InputSelect
-                      label="Kategori Pertandingan"
-                      name="category"
-                      formik={props}
-                      options={getMatchCategory(
-                        props.values.level,
-                        props.values.type,
-                        championship.matchCategory
-                      )}
-                      onChange={(value) =>
-                        setValidateTeam(!!art && !value.includes("Tunggal"))
-                      }
-                      dynamicOptions
-                    />
-                    {art && !props.values.category.includes("Tunggal") && (
-                      <InputText label="Nama Tim" name="team" formik={props} />
-                    )}
-                    <InputText
-                      label="Biaya"
-                      name="payment_bill"
-                      formik={props}
-                      forceValue={getMatchCost(props.values)}
-                      forceDisabled
-                    />
-                  </div>
-                </div>
-                <Button type="submit" className="ml-auto">
-                  Simpan
-                </Button>
+                )}
               </Form>
             );
           }}

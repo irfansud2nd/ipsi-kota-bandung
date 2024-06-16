@@ -350,6 +350,15 @@ export const getMatchCategory = (
   return result ?? [];
 };
 
+export const getLevel = (rookie: boolean, matchCategory: MatchCategory) => {
+  const allLevels = matchCategory.map((item) => item.level);
+  const professionalLevels = matchCategory
+    .filter((item) => item.rookieOnly != true)
+    .map((item) => item.level);
+
+  return rookie ? allLevels : professionalLevels;
+};
+
 export const isMatchSame = (item1: MatchBased, item2: MatchBased) => {
   return (
     item1.gender == item2.gender &&
