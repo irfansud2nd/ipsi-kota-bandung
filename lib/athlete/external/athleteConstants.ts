@@ -152,7 +152,7 @@ export const athleteAtEventInitialValue: AthleteAtEvent = {
   athlete_id: "",
   championship_id: "",
   contingent_registration_id: 0,
-  schema: matchSchema[0],
+  schema: "",
   type: "",
   level: "",
   category: "",
