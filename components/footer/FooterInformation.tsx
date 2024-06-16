@@ -25,6 +25,14 @@ const FooterInformation = () => {
       alt: "logo bpjs",
       landscape: true,
     },
+    {
+      src: "/images/logo-ars.png",
+      alt: "logo ars",
+    },
+    {
+      src: "/images/logo-mills.png",
+      alt: "logo mills",
+    },
   ];
 
   const socmeds = [
@@ -64,6 +72,7 @@ const FooterInformation = () => {
             <Link
               href={"mailto:ipsikotabandungofficial@gmail.com"}
               className="hover:text-blue-400 transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
+              target="_blank"
             >
               <IoMdMail className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
               <div>
