@@ -16,7 +16,10 @@ import {
   paymentInitialValue,
   paymentSchema,
 } from "@/lib/payment/paymentConstants";
-import { addPayment } from "@/lib/payment/paymentFunctions";
+import {
+  addPayment,
+  getUniquePaymentTotal,
+} from "@/lib/payment/paymentFunctions";
 import { addPaymentsRedux } from "@/lib/redux/championship/register/paymentSlice";
 import {
   checkAthletAtEventsLimited,
@@ -64,15 +67,6 @@ const PaymentForm = ({
     contingent_name: registeredContingent.name,
     contingent_registration_id: registeredContingent.registration_id,
     championship_id: championship.id,
-  };
-
-  const getUniqueTotal = (phoneNumber: string) => {
-    let last3digit = phoneNumber
-      .substring(phoneNumber.length - 3)
-      .padStart(3, "0");
-    const result =
-      (getTotalMatchCost(selectedMatchBaseds) / 1000).toString() + last3digit;
-    return Number(result);
   };
 
   const fillAthleteAtEventsPaymentId = (paymentId: string) => {
@@ -233,13 +227,19 @@ Terimakasih.`,
                           displayOnly={{
                             state: true,
                             value: formatToRupiah(
-                              getUniqueTotal(props.values.phone_number)
+                              getUniquePaymentTotal(
+                                props.values.total,
+                                props.values.phone_number
+                              )
                             ),
                           }}
                           className="flex-1"
                         />
                         <CopyButton
-                          text={getUniqueTotal(props.values.phone_number)}
+                          text={getUniquePaymentTotal(
+                            getTotalMatchCost(selectedMatchBaseds),
+                            props.values.phone_number
+                          )}
                           className="mb-1"
                         />
                       </div>

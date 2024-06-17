@@ -7,9 +7,11 @@ import {
   Contingent,
   ContingentAtEventSql,
   ContingentSql,
+  RegisteredContingent,
 } from "./contingentConstants";
 
 // CONTINGENT
+// GET
 export const getContingentByEmail = async (email: string) => {
   try {
     const { message } = await apiProtect({ permittedEmail: email });
@@ -31,7 +33,6 @@ export const getContingentByEmail = async (email: string) => {
   }
 };
 
-// CONTINGENT SQL
 export const getContingents = async (
   page: number,
   limit: number,
@@ -64,6 +65,21 @@ export const getContingents = async (
   }
 };
 
+export const countContingent = async () => {
+  try {
+    const { count, error } = await supabase
+      .from("contingents")
+      .select("id", { count: "exact", head: true });
+
+    if (error) throw error;
+
+    return count || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// CONTINGENT SQL
 export const addContingentSql = async (contingentSql: ContingentSql) => {
   try {
     const { message } = await apiProtect({
@@ -132,6 +148,7 @@ export const deleteContingentSql = async (contingentSql: ContingentSql) => {
 };
 
 // CONTINGENT AT EVENT
+// READ
 export const getContingenAtEvents = async (contingentId: string) => {
   try {
     const { message } = await apiProtect({ loggedInOnly: true });
@@ -145,6 +162,23 @@ export const getContingenAtEvents = async (contingentId: string) => {
     if (error) throw error;
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const countContingentAtEventByChampionshipId = async (
+  championshipId: string
+) => {
+  try {
+    const { count, error } = await supabase
+      .from("contingent_at_events")
+      .select("registration_id", { count: "exact", head: true })
+      .eq("championship_id", championshipId);
+
+    if (error) throw error;
+
+    return count || 0;
   } catch (error) {
     throw error;
   }
@@ -192,6 +226,41 @@ export const deleteContingentAtEventSql = async (
       .eq("registration_id", contingentAtEventSql.registration_id);
 
     if (error) throw error;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// REGISTERD CONTINGENT
+// READ
+export const getRegisteredContingents = async (
+  championshipId: string,
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "championship" });
+    if (message) throw new Error(message);
+
+    let params = {
+      champ_id: championshipId,
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll) {
+      params.pg = 1;
+      params.lmt = 4000;
+    }
+
+    const { data, error } = await supabase
+      .rpc("get_registered_contingent_by_championship_id", params)
+      .returns<RegisteredContingent[]>();
+
+    if (error) throw error;
+
+    return data;
   } catch (error) {
     throw error;
   }

@@ -2,7 +2,6 @@ import { Contingent } from "@/lib/contingent/contingentConstants";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,

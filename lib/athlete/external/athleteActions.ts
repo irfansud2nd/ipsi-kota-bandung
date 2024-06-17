@@ -8,8 +8,10 @@ import {
   MatchBased,
   matchType,
 } from "./athleteConstants";
+import { athleteSqlToAthlete } from "./athleteFunctions";
 
-// ATHLETE
+// ATHLETE SQL
+// GET
 export const getAthletesSqlByEmail = async (email: string) => {
   try {
     const { message } = await apiProtect({ permittedEmail: email });
@@ -29,6 +31,31 @@ export const getAthletesSqlByEmail = async (email: string) => {
   }
 };
 
+export const getAthletesSql = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "athlete" });
+    if (message) throw new Error(message);
+
+    let getData = supabase.from("athletes").select().returns<AthleteSql[]>();
+
+    if (!showAll)
+      getData = getData.range(page * limit - limit, page * limit - 1);
+
+    const { data, error } = await getData;
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// CREATE
 export const addAthleteSql = async (athleteSql: AthleteSql) => {
   try {
     const { message } = await apiProtect({
@@ -46,6 +73,7 @@ export const addAthleteSql = async (athleteSql: AthleteSql) => {
   }
 };
 
+// UPDATE
 export const updateAthleteSql = async (athleteSql: AthleteSql) => {
   try {
     const { message } = await apiProtect({
@@ -65,6 +93,8 @@ export const updateAthleteSql = async (athleteSql: AthleteSql) => {
     throw error;
   }
 };
+
+// UPDATE
 export const deleteAthleteSql = async (athleteSql: AthleteSql) => {
   try {
     const { message } = await apiProtect({
@@ -83,7 +113,63 @@ export const deleteAthleteSql = async (athleteSql: AthleteSql) => {
   }
 };
 
+// ATHLETE
+// READ
+export const getAthletes = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "athlete" });
+    if (message) throw new Error(message);
+
+    const athletesSql = await getAthletesSql(page, limit, showAll);
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMatchBaseds = async (
+  championshipId: string,
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "championship" });
+    if (message) throw new Error(message);
+
+    let params = {
+      champ_id: championshipId,
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll) {
+      params.pg = 1;
+      params.lmt = 4000;
+    }
+
+    const { data, error } = await supabase
+      .rpc("get_match_based_by_championship_id", params)
+      .returns<MatchBased[]>();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // ATHLETE AT EVENTS
+// READ
 export const getAthtleteAtEventsByContingentRegistrationId = async (
   contingentRegistrationId: number
 ) => {
@@ -103,6 +189,7 @@ export const getAthtleteAtEventsByContingentRegistrationId = async (
   }
 };
 
+// CREATE
 export const addAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
@@ -128,6 +215,7 @@ export const addAthleteAtEventSql = async (
   }
 };
 
+// UPDATE
 export const updateAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
@@ -164,6 +252,7 @@ export const updateAthleteAtEventsSql = async (
   }
 };
 
+// DELETE
 export const deleteAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
@@ -239,6 +328,65 @@ export const countDuplicateMatch = async (
     const { data } = await getCount;
 
     return data as number;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const countMatchByChampionshipId = async (championshipId: string) => {
+  try {
+    const { data, error } = await supabase
+      .rpc("count_match_by_championship_id", { champ_id: championshipId })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const countProfessionalMatches = async (
+  matches: {
+    championshipId: string;
+    schema: string;
+    type: string;
+    level: string;
+    category: string;
+    gender: string;
+    paid: boolean;
+  }[]
+) => {
+  try {
+    if (!matches.length) return [];
+
+    const countPromises = matches.map(async (match) => {
+      let func = "count_duplicate_art_match_by_championship_id";
+      if (match.type == matchType[0] || match.category.includes("Tunggal"))
+        func = "count_duplicate_fight_match_by_championship_id";
+
+      const { data, error } = await supabase
+        .rpc(func, {
+          champ_id: match.championshipId,
+          scm: match.schema,
+          tp: match.type,
+          lvl: match.level,
+          ctgr: match.category,
+          gdr: match.gender,
+          pd: match.paid,
+        })
+        .returns<number>();
+
+      if (error) throw error;
+      return {
+        ...match,
+        count: data || 0,
+      };
+    });
+
+    const counts = await Promise.all(countPromises);
+    return counts;
   } catch (error) {
     throw error;
   }

@@ -1,35 +1,42 @@
-import { getAthletes } from "@/lib/athlete/external/athleteActions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
-import AthleteTable from "@/components/admin/athlete/external/AthleteTable";
+import MatchBasedTable from "@/components/admin/athlete/external/MatchBasedTable";
+import { getMatchBaseds } from "@/lib/athlete/external/athleteActions";
 
 const page = async ({
+  params,
   searchParams,
 }: {
+  params: { championshipId: string };
   searchParams: { page: string; showAll: string };
 }) => {
   const page = Number(searchParams.page) || 1;
   const limit = 10;
   const showAll = searchParams.showAll == "true";
 
-  const athletes = await getAthletes(page, limit, showAll);
+  const matchBaseds = await getMatchBaseds(
+    params.championshipId,
+    page,
+    limit,
+    showAll
+  );
 
   return (
     <div className="p-2">
       <h1 className="font-semibold text-3xl">Daftar Atlet</h1>
       <div className="bg-muted flex flex-col">
-        <AthleteTable athletes={athletes} />
+        <MatchBasedTable matchBaseds={matchBaseds} />
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
-        <p>Menampilkan per {athletes.length} atlet</p>
+        <p>Menampilkan per {matchBaseds.length} atlet</p>
         <Button asChild>
           <Link href={"athlete?showAll=true"}>Tampilkan Semua Atlet</Link>
         </Button>
         <PagePagination
           page={page}
           limit={limit}
-          dataLength={athletes.length}
+          dataLength={matchBaseds.length}
           link="athlete?"
           className="w-fit mx-0"
           disabled={showAll}

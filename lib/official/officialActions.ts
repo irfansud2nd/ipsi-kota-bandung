@@ -2,8 +2,10 @@
 import { apiProtect } from "../admin/adminActions";
 import supabase from "../database/supabase";
 import { OfficialSql } from "./officialContants";
+import { officialSqlToOfficial } from "./officialFuntions";
 
 // OFFICIAL SQL
+// READ
 export const getOfficialsSqlByEmail = async (email: string) => {
   try {
     const { message } = await apiProtect({ permittedEmail: email });
@@ -23,6 +25,31 @@ export const getOfficialsSqlByEmail = async (email: string) => {
   }
 };
 
+export const getOfficialsSql = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "official" });
+    if (message) throw new Error(message);
+
+    let getData = supabase.from("officials").select().returns<OfficialSql[]>();
+
+    if (!showAll)
+      getData = getData.range(page * limit - limit, page * limit - 1);
+
+    const { data, error } = await getData;
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// CREATE
 export const addOfficialSql = async (officialSql: OfficialSql) => {
   try {
     const { message } = await apiProtect({
@@ -40,6 +67,7 @@ export const addOfficialSql = async (officialSql: OfficialSql) => {
   }
 };
 
+// UPDATE
 export const updateOfficialSql = async (officialSql: OfficialSql) => {
   try {
     const { message } = await apiProtect({
@@ -60,6 +88,7 @@ export const updateOfficialSql = async (officialSql: OfficialSql) => {
   }
 };
 
+// DELETE
 export const deleteOfficialSql = async (officialSql: OfficialSql) => {
   try {
     const { message } = await apiProtect({
@@ -73,6 +102,42 @@ export const deleteOfficialSql = async (officialSql: OfficialSql) => {
       .eq("id", officialSql.id);
 
     if (error) throw error;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// OFFICIAL
+// READ
+export const getOfficials = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "official" });
+    if (message) throw new Error(message);
+
+    const officialsSql = await getOfficialsSql(page, limit, showAll);
+    const officials = officialsSql.map((officialSql) =>
+      officialSqlToOfficial(officialSql)
+    );
+
+    return officials;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const countOfficial = async () => {
+  try {
+    const { count, error } = await supabase
+      .from("officials")
+      .select("id", { count: "exact", head: true });
+
+    if (error) throw error;
+
+    return count || 0;
   } catch (error) {
     throw error;
   }

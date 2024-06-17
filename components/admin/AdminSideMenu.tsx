@@ -27,7 +27,7 @@ const AdminSideMenu = async () => {
         {groupedLinks.map((item) => (
           // isPermitted(roles, getPermittedRoles(item.prefix)) &&
           <AccordionItem value={item.title} key={item.title}>
-            <AccordionTrigger className="py-0 text-base hover:bg-muted transition p-1 rounded-sm">
+            <AccordionTrigger className="py-0 text-base hover:bg-muted transition p-1 rounded-sm text-start">
               {item.title}
             </AccordionTrigger>
             <AccordionContent className="flex flex-col ml-1 pb-1">

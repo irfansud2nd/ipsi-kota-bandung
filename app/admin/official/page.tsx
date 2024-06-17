@@ -1,8 +1,8 @@
-import { getAthletes } from "@/lib/athlete/external/athleteActions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
-import AthleteTable from "@/components/admin/athlete/external/AthleteTable";
+import { getOfficials } from "@/lib/official/officialActions";
+import OfficialTable from "@/components/admin/official/OfficialTable";
 
 const page = async ({
   searchParams,
@@ -13,24 +13,24 @@ const page = async ({
   const limit = 10;
   const showAll = searchParams.showAll == "true";
 
-  const athletes = await getAthletes(page, limit, showAll);
+  const officials = await getOfficials(page, limit, showAll);
 
   return (
     <div className="p-2">
       <h1 className="font-semibold text-3xl">Daftar Atlet</h1>
       <div className="bg-muted flex flex-col">
-        <AthleteTable athletes={athletes} />
+        <OfficialTable officials={officials} />
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
-        <p>Menampilkan per {athletes.length} atlet</p>
+        <p>Menampilkan per {officials.length} atlet</p>
         <Button asChild>
-          <Link href={"athlete?showAll=true"}>Tampilkan Semua Atlet</Link>
+          <Link href={"official?showAll=true"}>Tampilkan Semua Atlet</Link>
         </Button>
         <PagePagination
           page={page}
           limit={limit}
-          dataLength={athletes.length}
-          link="athlete?"
+          dataLength={officials.length}
+          link="official?"
           className="w-fit mx-0"
           disabled={showAll}
         />

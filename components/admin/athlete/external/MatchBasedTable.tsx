@@ -1,0 +1,76 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { MatchBased } from "@/lib/athlete/external/athleteConstants";
+import { formatDate } from "@/lib/functions";
+
+const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>No</TableHead>
+          <TableHead>Nama</TableHead>
+          <TableHead>NIK</TableHead>
+          <TableHead>Jenis Kelamin</TableHead>
+          <TableHead>Alamat</TableHead>
+          <TableHead>Tempat Lahir</TableHead>
+          <TableHead>Tanggal Lahir</TableHead>
+          <TableHead>Tinggi Badan</TableHead>
+          <TableHead>Berat Badan</TableHead>
+          <TableHead>Jenis</TableHead>
+          <TableHead>Skema</TableHead>
+          <TableHead>Tingkatan</TableHead>
+          <TableHead>Kategori</TableHead>
+          <TableHead>Nama Tim</TableHead>
+          <TableHead>Pembayaran</TableHead>
+          <TableHead>Nama Kontingen</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Nomor Telepon</TableHead>
+          <TableHead>Email Pendaftar</TableHead>
+          <TableHead>Waktu Pendaftaran</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {matchBaseds.map((matchBased, i) => (
+          <TableRow key={matchBased.registration_id}>
+            <TableCell>{i + 1}</TableCell>
+            <TableCell>{matchBased.name}</TableCell>
+            <TableCell>{matchBased.nik}</TableCell>
+            <TableCell>{matchBased.gender}</TableCell>
+            <TableCell>{matchBased.address}</TableCell>
+            <TableCell>{matchBased.birth_place}</TableCell>
+            <TableCell>
+              {formatDate(matchBased.birth_date, { withoutHour: true })}
+            </TableCell>
+            <TableCell>{matchBased.height} CM</TableCell>
+            <TableCell>{matchBased.weight} KG</TableCell>
+            <TableCell>{matchBased.type}</TableCell>
+            <TableCell>{matchBased.schema}</TableCell>
+            <TableCell>{matchBased.level}</TableCell>
+            <TableCell>{matchBased.category}</TableCell>
+            <TableCell>{matchBased.team ?? "-"}</TableCell>
+            <TableCell
+              className={`${
+                matchBased.payment_id ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {matchBased.payment_id ? "Dibayar" : "Belum dibayar"}
+            </TableCell>
+            <TableCell>{matchBased.contingent_name}</TableCell>
+            <TableCell>{matchBased.email}</TableCell>
+            <TableCell>{matchBased.phone_number}</TableCell>
+            <TableCell>{matchBased.created_by}</TableCell>
+            <TableCell>{formatDate(matchBased.created_at)}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+export default MatchBasedTable;

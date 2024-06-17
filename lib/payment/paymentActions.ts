@@ -5,6 +5,7 @@ import supabase from "../database/supabase";
 import { Payment, PaymentSql } from "./paymentConstants";
 
 // PAYMENT SQL
+// CREATE
 export const addPaymentSql = async (paymentSql: PaymentSql) => {
   try {
     const { message } = await apiProtect({
@@ -22,7 +23,29 @@ export const addPaymentSql = async (paymentSql: PaymentSql) => {
   }
 };
 
+// UPDATE
+export const updatePaymentSql = async (paymentSql: PaymentSql) => {
+  try {
+    const { message } = await apiProtect({
+      directory: "payment",
+    });
+    if (message) throw new Error(message);
+
+    const { error } = await supabase
+      .from("payments")
+      .update(paymentSql)
+      .eq("id", paymentSql.id);
+
+    if (error) throw error;
+
+    return paymentSql;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // PAYMENT
+// READ
 export const getPaymentsByContingentRegistrationId = async (
   contingentRegsitrationId: number
 ) => {
@@ -41,6 +64,126 @@ export const getPaymentsByContingentRegistrationId = async (
     if (error) throw error;
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUnconfirmedPaymentByChampionshipId = async (
+  championshipId: string,
+  page: number,
+  limit: number
+) => {
+  try {
+    const { message } = await apiProtect({
+      directory: "championship",
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("get_unconfirmed_payment_by_championship_id", {
+        champ_id: championshipId,
+        pg: page,
+        lmt: limit,
+      })
+      .returns<Payment[]>();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// OTHERS
+export const sumPaymentBillByChampionshipId = async (
+  championshipId: string
+) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("sum_payment_bill_by_championship_id", {
+        champ_id: championshipId,
+      })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sumPaymentTotalByChampionshipId = async (
+  championshipId: string
+) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("sum_payment_total_by_championship_id", {
+        champ_id: championshipId,
+      })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sumConfirmedPaymentByChampionshipId = async (
+  championshipId: string
+) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("sum_confirmed_payment_by_championship_id", {
+        champ_id: championshipId,
+      })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sumUnconfirmedPaymentByChampionshipId = async (
+  championshipId: string
+) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("sum_unconfirmed_payment_by_championship_id", {
+        champ_id: championshipId,
+      })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
   } catch (error) {
     throw error;
   }

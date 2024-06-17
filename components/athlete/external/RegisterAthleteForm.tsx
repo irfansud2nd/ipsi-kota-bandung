@@ -266,6 +266,7 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                         {art && !props.values.category.includes("Tunggal") && (
                           <InputText
                             label="Nama Tim"
+                            helperText='Bukan nama kontingen, (contoh:"Pal Ganda 1, PAL Regu A")'
                             name="team"
                             formik={props}
                           />

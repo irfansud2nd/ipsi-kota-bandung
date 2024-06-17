@@ -4,6 +4,7 @@ import {
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
 import { GroupedLinks, Links } from "../constants";
+import { championships } from "../event/eventConstants";
 
 export type SpecialUserRole =
   | InternalAthleteRole
@@ -68,7 +69,7 @@ export const roleAccess: {
   },
   {
     role: "adminEvent",
-    dir: ["championship", "contingent", "athlete"],
+    dir: ["championship", "contingent", "athlete", "payment"],
   },
   ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),
 ];
@@ -98,17 +99,39 @@ const links: Links = [
     label: "Pengurus",
     restricted: true,
   },
-  {
-    href: "/admin/contingent",
-    label: "Kontingen",
-    restricted: true,
-  },
-  {
-    href: "/admin/athlete",
-    label: "Atlet",
-    restricted: true,
-  },
 ];
+
+const championshipAdminLinks = championships.map((championship) => ({
+  title: championship.title,
+  prefix: `/admin/championship/${championship.id}`,
+  restricted: true,
+  links: [
+    {
+      href: "/contingent",
+      label: "Daftar Kontingen",
+    },
+    {
+      href: "/contingent/count",
+      label: "Jumlah Kontingen",
+    },
+    {
+      href: "/athlete",
+      label: "Daftar Atlet",
+    },
+    {
+      href: "/athlete/count",
+      label: "Jumlah Pertandingan",
+    },
+    {
+      href: "/athlete/categorized/count",
+      label: "Kuota Pertandingan Prestasi",
+    },
+    {
+      href: "/payment",
+      label: "Pembayaran",
+    },
+  ],
+}));
 
 const groupedLinks: GroupedLinks = [
   {
@@ -186,6 +209,52 @@ const groupedLinks: GroupedLinks = [
       },
     ],
   },
+  {
+    title: "Kontingen",
+    prefix: "/admin/contingent",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+  {
+    title: "Atlet",
+    prefix: "/admin/athlete",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+  {
+    title: "Official",
+    prefix: "/admin/official",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+  ...championshipAdminLinks,
 ];
 
 export const adminLinks = { links, groupedLinks };

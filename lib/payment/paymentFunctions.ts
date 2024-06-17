@@ -61,3 +61,14 @@ export const paymentToPaymentSql = (payment: Payment) => {
   };
   return result;
 };
+
+export const getUniquePaymentTotal = (
+  totalPayment: number,
+  phoneNumber: string
+) => {
+  let last3digit = phoneNumber
+    .substring(phoneNumber.length - 3)
+    .padStart(3, "0");
+  const result = (totalPayment / 1000).toString() + last3digit;
+  return Number(result);
+};
