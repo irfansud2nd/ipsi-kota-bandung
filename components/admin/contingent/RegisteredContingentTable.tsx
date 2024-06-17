@@ -37,7 +37,14 @@ const RegisteredContingentTable = ({
             <TableCell>{registeredContingent.registered_athletes}</TableCell>
             <TableCell>{registeredContingent.registered_officials}</TableCell>
             <TableCell>{registeredContingent.match_count}</TableCell>
-            <TableCell>
+            <TableCell
+              className={`${
+                registeredContingent.payment_total >=
+                registeredContingent.payment_bill
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
               {registeredContingent.payment_total >=
               registeredContingent.payment_bill
                 ? "Lunas"
