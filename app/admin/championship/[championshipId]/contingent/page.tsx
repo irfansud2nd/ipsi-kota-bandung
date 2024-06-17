@@ -33,13 +33,15 @@ const page = async ({
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
         <p>Menampilkan per {registeredContingents.length} kontingen</p>
         <Button asChild>
-          <Link href={"athlete?showAll=true"}>Tampilkan Semua Kontingen</Link>
+          <Link href={"contingent?showAll=true"}>
+            Tampilkan Semua Kontingen
+          </Link>
         </Button>
         <PagePagination
           page={page}
           limit={limit}
           dataLength={registeredContingents.length}
-          link="athlete?"
+          link="contingent?"
           className="w-fit mx-0"
           disabled={showAll}
         />
