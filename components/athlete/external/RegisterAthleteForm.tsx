@@ -136,10 +136,14 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
               } pertandingan`
             );
             try {
-              const matchBased: MatchBased = {
+              let matchBased: MatchBased = {
                 ...getAthleteById(values.athlete_id),
                 ...values,
               };
+
+              if (art && matchBased.type.includes("Tunggal") && matchBased.team)
+                matchBased.team = undefined;
+
               if (isMatchDuplicate(matchBased))
                 throw { message: "Atlet telah mendaftar di kelas yang sama" };
 
