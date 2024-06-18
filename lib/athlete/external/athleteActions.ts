@@ -135,6 +135,8 @@ export const getAthletes = async (
   }
 };
 
+// MATCH BASED
+// READ
 export const getMatchBaseds = async (
   championshipId: string,
   page: number,
@@ -158,6 +160,48 @@ export const getMatchBaseds = async (
 
     const { data, error } = await supabase
       .rpc("get_match_based_by_championship_id", params)
+      .returns<MatchBased[]>();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getMatchBasedsByCategory = async (
+  championshipId: string,
+  schema: string,
+  type: string,
+  level: string,
+  category: string,
+  gender: string,
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const { message } = await apiProtect({ directory: "championship" });
+    if (message) throw new Error(message);
+
+    let params = {
+      champ_id: championshipId,
+      scm: schema,
+      tp: type,
+      lvl: level,
+      ctgr: category,
+      gdr: gender,
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll) {
+      params.pg = 1;
+      params.lmt = 4000;
+    }
+
+    const { data, error } = await supabase
+      .rpc("get_match_based_by_category", params)
       .returns<MatchBased[]>();
 
     if (error) throw error;

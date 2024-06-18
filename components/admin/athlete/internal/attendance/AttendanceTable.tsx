@@ -27,7 +27,7 @@ const AttendanceTable = ({ data, month, role }: Props) => {
 
   return (
     <div className="max-w-full overflow-x-auto">
-      <Table className="mt-2 border-2" id="table">
+      <Table className="mt-2 border-2" id="download">
         <TableHeader>
           <TableRow>
             <TableHead className="border-r sticky left-0 bg-white">

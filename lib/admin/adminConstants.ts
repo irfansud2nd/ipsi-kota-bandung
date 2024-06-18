@@ -123,6 +123,10 @@ const championshipAdminLinks = championships.map((championship) => ({
       label: "Jumlah Pertandingan",
     },
     {
+      href: "/athlete/categorized",
+      label: "Filter Kategori",
+    },
+    {
       href: "/athlete/categorized/count",
       label: "Kuota Pertandingan Prestasi",
     },
