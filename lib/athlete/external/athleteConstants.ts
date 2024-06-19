@@ -1,4 +1,3 @@
-import { MatchCategory } from "@/lib/event/eventConstants";
 import { imageSchema } from "@/lib/form/formConstants";
 import { v4 } from "uuid";
 import * as yup from "yup";

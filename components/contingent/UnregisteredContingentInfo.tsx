@@ -16,7 +16,7 @@ import {
 import { toastError } from "@/lib/form/formFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import ContingentForm from "./ContingentForm";
-import { deleteFiles } from "@/lib/serverFunctions";
+import { deleteFiles } from "@/lib/actions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
 import { deleteAllOficialsRedux } from "@/lib/redux/championship/register/officialSlice";
 import useConfirmation from "@/hooks/useConfirmation";

@@ -25,7 +25,7 @@ import {
   updateAthleteSql,
 } from "./athleteActions";
 import { apiProtect } from "@/lib/admin/adminActions";
-import { deleteFile } from "@/lib/serverFunctions";
+import { deleteFile } from "@/lib/actions";
 
 // ATHLETE
 export const getAthletesByEmail = async (email: string) => {

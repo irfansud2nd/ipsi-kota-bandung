@@ -3,7 +3,7 @@ import Container from "@/components/ui/Container";
 import PageInfo from "@/components/ui/PageInfo";
 import { News } from "@/lib/news/newsConstants";
 import { SearchPageParams } from "@/lib/constants";
-import { getNews } from "@/lib/serverFunctions";
+import { getNews } from "@/lib/actions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const id = searchParams.id;

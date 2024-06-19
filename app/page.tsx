@@ -5,7 +5,7 @@ import HomeBanner from "@/components/home/HomeBanner";
 import HomeMenu from "@/components/home/HomeMenu";
 import Announcement from "@/components/home/Announcement";
 import { championships } from "@/lib/event/eventConstants";
-import { getEvents, getNewsArr } from "@/lib/serverFunctions";
+import { getEvents, getNewsArr } from "@/lib/actions";
 import OngoingChampionships from "@/components/championship/OngoingChampionships";
 import HomeDialog from "@/components/home/HomeDialog";
 

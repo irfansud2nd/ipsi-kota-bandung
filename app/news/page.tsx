@@ -1,7 +1,7 @@
 import NewsList from "@/components/news/NewsList";
 import { Metadata } from "next";
 import { News } from "@/lib/news/newsConstants";
-import { getNewsArr } from "@/lib/serverFunctions";
+import { getNewsArr } from "@/lib/actions";
 import PagePagination from "@/components/ui/PagePagination";
 import PageBanner from "@/components/ui/PageBanner";
 import Container from "@/components/ui/Container";

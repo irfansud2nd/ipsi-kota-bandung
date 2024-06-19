@@ -1,7 +1,7 @@
-import PagePagination from "@/components/ui/PagePagination";
-import { getUnconfirmedPaymentByChampionshipId } from "@/lib/payment/paymentActions";
 import UnconfirmedPaymentTable from "@/components/admin/payment/UnconfirmedPaymentTable";
+import PagePagination from "@/components/ui/PagePagination";
 import RefreshButton from "@/components/ui/RefreshButton";
+import { getConfirmedPaymentByChampionshipId } from "@/lib/payment/paymentActions";
 
 const page = async ({
   params,
@@ -14,7 +14,7 @@ const page = async ({
   const limit = 5;
   const showAll = searchParams.showAll == "true";
 
-  const unconfirmedPayments = await getUnconfirmedPaymentByChampionshipId(
+  const confirmedPayments = await getConfirmedPaymentByChampionshipId(
     params.championshipId,
     page,
     limit
@@ -23,21 +23,19 @@ const page = async ({
   return (
     <div className="p-2">
       <div className="flex gap-1 items-center justify-between flex-wrap">
-        <h1 className="font-semibold text-3xl">
-          Pembayaran Menunggu Konfirmasi
-        </h1>
+        <h1 className="font-semibold text-3xl">Pembayaran Terkonfirmasi</h1>
         <RefreshButton />
       </div>
       <div className="bg-muted flex flex-col">
-        <UnconfirmedPaymentTable payments={unconfirmedPayments} />
+        <UnconfirmedPaymentTable payments={confirmedPayments} />
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
-        <p>Menampilkan per {unconfirmedPayments.length} pembayaran</p>
+        <p>Menampilkan per {confirmedPayments.length} pembayaran</p>
         <PagePagination
           page={page}
           limit={limit}
-          dataLength={unconfirmedPayments.length}
-          link="unconfirmed?"
+          dataLength={confirmedPayments.length}
+          link="confirmed?"
           className="w-fit mx-0"
           disabled={showAll}
         />

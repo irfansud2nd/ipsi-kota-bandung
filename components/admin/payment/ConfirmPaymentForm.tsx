@@ -8,6 +8,7 @@ import { formatToRupiah } from "@/lib/functions";
 import { updatePaymentSql } from "@/lib/payment/paymentActions";
 import { Payment } from "@/lib/payment/paymentConstants";
 import {
+  deletePayment,
   getUniquePaymentTotal,
   paymentToPaymentSql,
 } from "@/lib/payment/paymentFunctions";
@@ -21,12 +22,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { MdOutlineCancel, MdOutlineDeleteForever } from "react-icons/md";
+import useConfirmation from "@/hooks/useConfirmation";
 
-const ConfirmPaymentForm = ({ payment }: { payment: Payment }) => {
+type Props = {
+  payment: Payment;
+  confirm?: boolean;
+  remove?: boolean;
+  unconfirm?: boolean;
+};
+
+const ConfirmPaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
   const session = useSession();
   const userEmail = session.data?.user?.email;
 
   const router = useRouter();
+
+  const { confirm: confirmFunc, ConfirmationDialog } = useConfirmation();
 
   if (!userEmail) return null;
 
@@ -45,19 +57,51 @@ const ConfirmPaymentForm = ({ payment }: { payment: Payment }) => {
     }
   };
 
+  const handleUnconfirm = async () => {
+    const result = await confirmFunc("Membatalkan konfirmasi");
+    if (!result) return;
+    const toastId = toast.loading("Membatalkan Konfirmasi");
+    let data = payment;
+    data.confirmed_by = "";
+    try {
+      await updatePaymentSql(paymentToPaymentSql(data));
+      toast.success("Konfirmasi berhasil dibatalkan", { id: toastId });
+      router.refresh();
+    } catch (error) {
+      toastError(error, toastId);
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await confirmFunc("Menghapus Pembayaran");
+    if (!result) return;
+    await deletePayment(payment);
+    router.refresh();
+  };
+
   return (
     <Dialog>
+      <ConfirmationDialog />
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <Button size={"icon"}>
-                <FaCheck className="size-4" />
+              <Button
+                size={"icon"}
+                variant={remove || unconfirm ? "destructive" : "default"}
+              >
+                {confirm && <FaCheck className="size-4" />}
+                {unconfirm && <MdOutlineCancel className="size-4" />}
+                {remove && <MdOutlineDeleteForever className="size-4" />}
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Konfirmasi</p>
+            <p>
+              {confirm && "Konfirmasi"}
+              {unconfirm && "Batalkan Konfirmasi"}
+              {remove && "Batalkan Pembayaran"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -93,9 +137,19 @@ const ConfirmPaymentForm = ({ payment }: { payment: Payment }) => {
             newTab
           />
         </div>
-        <Button className="w-fit ml-auto" onClick={handleConfirm}>
-          Konfirmasi
-        </Button>
+        <div className="flex gap-1 justify-end">
+          {remove && (
+            <Button onClick={handleDelete} variant={"destructive"}>
+              Batalkan Pembayaran
+            </Button>
+          )}
+          {unconfirm && (
+            <Button onClick={handleUnconfirm} variant={"destructive"}>
+              Batalkan Konfirmasi
+            </Button>
+          )}
+          {confirm && <Button onClick={handleConfirm}>Konfirmasi</Button>}
+        </div>
       </DialogContent>
     </Dialog>
   );

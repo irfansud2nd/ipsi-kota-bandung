@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import NewsItem from "@/components/news/NewsItem";
 import NewsDisplay from "@/components/news/NewsDisplay";
-import { getNews, getNewsArr } from "@/lib/serverFunctions";
+import { getNews, getNewsArr } from "@/lib/actions";
 
 type Props = {
   params: { newsId: string };

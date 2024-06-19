@@ -1,6 +1,6 @@
 import EventDisplay from "@/components/Event/EventDisplay";
 import Container from "@/components/ui/Container";
-import { getEvent, getEvents } from "@/lib/serverFunctions";
+import { getEvent, getEvents } from "@/lib/actions";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";

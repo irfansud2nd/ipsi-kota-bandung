@@ -10,7 +10,7 @@ import { Official, OfficialSql } from "./officialContants";
 import { toast } from "sonner";
 import { getFileUrl } from "../functions";
 import { sendFile, toastError } from "../form/formFunctions";
-import { deleteFile } from "../serverFunctions";
+import { deleteFile } from "../actions";
 
 // OFFICIAL
 export const getOfficialsByEmail = async (email: string) => {

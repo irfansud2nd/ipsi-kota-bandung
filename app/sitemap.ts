@@ -1,6 +1,6 @@
 import { baseUrl } from "@/lib/constants";
 import { championships } from "@/lib/event/eventConstants";
-import { getEvents, getNewsArr } from "@/lib/serverFunctions";
+import { getEvents, getNewsArr } from "@/lib/actions";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

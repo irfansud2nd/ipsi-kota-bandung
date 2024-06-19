@@ -1,7 +1,7 @@
 import axios from "axios";
 import { imageMaxSize, imageSchema } from "./formConstants";
 import { toast } from "sonner";
-import { uploadFile } from "../serverFunctions";
+import { uploadFile } from "../actions";
 
 export const sendFile = async (file: File, directory: string) => {
   if (!imageSchema(Math.max(...Object.values(imageMaxSize))).isValidSync(file))

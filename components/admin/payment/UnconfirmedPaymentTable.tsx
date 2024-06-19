@@ -11,7 +11,11 @@ import { formatDate, formatToRupiah } from "@/lib/functions";
 import { getUniquePaymentTotal } from "@/lib/payment/paymentFunctions";
 import ConfirmPaymentForm from "./ConfirmPaymentForm";
 
-const UnconfirmedPaymentTable = ({ payments }: { payments: Payment[] }) => {
+type Props = {
+  payments: Payment[];
+};
+
+const UnconfirmedPaymentTable = ({ payments }: Props) => {
   return (
     <Table>
       <TableHeader>
@@ -42,7 +46,14 @@ const UnconfirmedPaymentTable = ({ payments }: { payments: Payment[] }) => {
             <TableCell>{formatDate(payment.created_at)}</TableCell>
             <TableCell>
               <div className="flex gap-1">
-                <ConfirmPaymentForm payment={payment} />
+                {payment.confirmed_by.length ? (
+                  <ConfirmPaymentForm payment={payment} unconfirm />
+                ) : (
+                  <>
+                    <ConfirmPaymentForm payment={payment} confirm />
+                    <ConfirmPaymentForm payment={payment} remove />
+                  </>
+                )}
               </div>
             </TableCell>
           </TableRow>

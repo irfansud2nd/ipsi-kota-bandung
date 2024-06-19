@@ -5,7 +5,7 @@ import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
 import { Member } from "@/lib/member/memberConstants";
-import { getEmployees } from "@/lib/serverFunctions";
+import { getEmployees } from "@/lib/actions";
 import { Metadata } from "next";
 
 type Props = {

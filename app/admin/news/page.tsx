@@ -3,7 +3,7 @@ import { DataTable } from "@/components/ui/DataTable";
 import PagePagination from "@/components/ui/PagePagination";
 import { News } from "@/lib/news/newsConstants";
 import { SearchPageParams } from "@/lib/constants";
-import { getNewsArr } from "@/lib/serverFunctions";
+import { getNewsArr } from "@/lib/actions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;

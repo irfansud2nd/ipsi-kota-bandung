@@ -1,4 +1,4 @@
-import { getAnnouncement } from "@/lib/serverFunctions";
+import { getAnnouncement } from "@/lib/actions";
 import Container from "../ui/Container";
 import RichTextDisplay from "../ui/RichTextDisplay";
 

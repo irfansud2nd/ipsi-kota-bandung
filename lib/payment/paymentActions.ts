@@ -44,6 +44,27 @@ export const updatePaymentSql = async (paymentSql: PaymentSql) => {
   }
 };
 
+// CREATE
+export const deletePaymentSql = async (paymentSql: PaymentSql) => {
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw new Error(message);
+
+    const { error } = await supabase
+      .from("payments")
+      .delete()
+      .eq("id", paymentSql.id);
+
+    if (error) throw error;
+
+    return paymentSql;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // PAYMENT
 // READ
 export const getPaymentsByContingentRegistrationId = async (
@@ -58,6 +79,33 @@ export const getPaymentsByContingentRegistrationId = async (
     const { data, error } = await supabase
       .rpc("get_payment_by_contingent_registration_id", {
         cont_reg_id: contingentRegsitrationId,
+      })
+      .returns<Payment[]>();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getConfirmedPaymentByChampionshipId = async (
+  championshipId: string,
+  page: number,
+  limit: number
+) => {
+  try {
+    const { message } = await apiProtect({
+      directory: "championship",
+    });
+    if (message) throw new Error(message);
+
+    const { data, error } = await supabase
+      .rpc("get_confirmed_payment_by_championship_id", {
+        champ_id: championshipId,
+        pg: page,
+        lmt: limit,
       })
       .returns<Payment[]>();
 

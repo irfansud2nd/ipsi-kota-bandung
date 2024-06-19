@@ -2,7 +2,7 @@ import AnnouncementForm from "@/components/admin/announcement/AnnouncementForm";
 import Container from "@/components/ui/Container";
 import RichTextDisplay from "@/components/ui/RichTextDisplay";
 import { formatDate } from "@/lib/functions";
-import { getAnnouncement } from "@/lib/serverFunctions";
+import { getAnnouncement } from "@/lib/actions";
 
 const page = async () => {
   const announcement = await getAnnouncement();

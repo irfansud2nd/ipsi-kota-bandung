@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/DataTable";
 import PagePagination from "@/components/ui/PagePagination";
 import { SearchPageParams } from "@/lib/constants";
-import { getEmployees } from "@/lib/serverFunctions";
+import { getEmployees } from "@/lib/actions";
 import { MemberColumns } from "@/components/member/MemberColumns";
 import MemberForm from "@/components/member/MemberForm";
 

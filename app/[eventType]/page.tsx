@@ -3,7 +3,7 @@ import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
 import { getChampionships } from "@/lib/event/eventFunctions";
-import { getEvents } from "@/lib/serverFunctions";
+import { getEvents } from "@/lib/actions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 

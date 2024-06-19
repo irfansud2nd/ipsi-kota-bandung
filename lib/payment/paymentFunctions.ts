@@ -4,9 +4,11 @@ import { v4 } from "uuid";
 import { getFileUrl } from "../functions";
 import { apiProtect } from "../admin/adminActions";
 import { sendFile, toastError } from "../form/formFunctions";
-import { addPaymentSql } from "./paymentActions";
+import { addPaymentSql, deletePaymentSql } from "./paymentActions";
+import { deleteFile } from "../actions";
 
 // PAYMENT
+// CREATE
 export const addPayment = async (paymentData: Payment) => {
   const toastId = toast.loading("Mendaftarkan pembayaran");
   const id = v4();
@@ -23,7 +25,7 @@ export const addPayment = async (paymentData: Payment) => {
       throw { message: "ID Kontingen tidak ditemukan" };
     if (!payment.contingent_name)
       throw { message: "Nama Kontingen tidak ditemukan" };
-    if (!payment.image.file) throw { message: "Pas foto tidak ditemukan" };
+    if (!payment.image.file) throw { message: "Bukti tidak ditemukan" };
 
     const { message } = await apiProtect({
       loggedInOnly: true,
@@ -31,7 +33,7 @@ export const addPayment = async (paymentData: Payment) => {
     if (message) throw { message };
 
     // SEND IMAGE
-    toast.loading("Mengunggah pas foto pembayaran", { id: toastId });
+    toast.loading("Mengunggah bukti pembayaran", { id: toastId });
     payment.image.downloadUrl = await sendFile(payment.image.file, imageUrl);
     delete payment.image.file;
 
@@ -41,6 +43,34 @@ export const addPayment = async (paymentData: Payment) => {
 
     // FINISH
     toast.success("Pembayaran berhasil didaftarkan", { id: toastId });
+    return payment;
+  } catch (error) {
+    toastError(error, toastId);
+    throw error;
+  }
+};
+// DELETE
+export const deletePayment = async (payment: Payment) => {
+  const toastId = toast.loading("Menghapus pembayaran");
+
+  const { imageUrl } = getFileUrl("payment", payment.id);
+
+  try {
+    const { message } = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (message) throw { message };
+
+    // SEND IMAGE
+    toast.loading("Menghapus bukti pembayaran", { id: toastId });
+    await deleteFile(imageUrl);
+
+    // SEND PAYMENT
+    toast.loading("Menghapus pembayaran", { id: toastId });
+    await deletePaymentSql(paymentToPaymentSql(payment));
+
+    // FINISH
+    toast.success("Pembayaran berhasil dihapus", { id: toastId });
     return payment;
   } catch (error) {
     toastError(error, toastId);

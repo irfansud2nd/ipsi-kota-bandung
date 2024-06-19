@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 import { Championship, Event, championships } from "./eventConstants";
 import { sendFile, toastError } from "../form/formFunctions";
 import { compare, getFileUrl } from "../functions";
-import { deleteFile } from "../serverFunctions";
+import { deleteFile } from "../actions";
 
 export const sendEvent = async (event: Event) => {
   const toastId = toast.loading("Mengunggah event");

@@ -33,12 +33,14 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
         count={formatToRupiah(paymentBill)}
         className="w-fit h-fit"
       />
-      <CountDisplay
-        title="Terkonfirmasi"
-        count={formatToRupiah(confirmedPayment)}
-        className="w-fit h-fit"
-      />
-      <Link href={"payment/unconfirmed"} className="">
+      <Link href={"payment/confirmed"}>
+        <CountDisplay
+          title="Terkonfirmasi"
+          count={formatToRupiah(confirmedPayment)}
+          className="w-fit h-fit"
+        />
+      </Link>
+      <Link href={"payment/unconfirmed"}>
         <CountDisplay
           title="Menunggu Konfirmasi"
           count={formatToRupiah(unconfirmedPayment)}

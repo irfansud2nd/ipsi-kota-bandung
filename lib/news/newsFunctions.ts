@@ -4,7 +4,7 @@ import { News } from "./newsConstants";
 import axios from "axios";
 import { toast } from "sonner";
 import { getFileUrl } from "../functions";
-import { deleteFile } from "../serverFunctions";
+import { deleteFile } from "../actions";
 
 // SEND BERITA
 export const sendNews = async (news: News) => {

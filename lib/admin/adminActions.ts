@@ -120,7 +120,8 @@ export const apiProtect = async (options?: {
   };
   let result = initialResult;
 
-  if (!roles.length && options?.directory) roles = getPermittedRoles("roles");
+  if (!roles.length && options?.directory)
+    roles = getPermittedRoles(options.directory);
 
   if (!userEmail) {
     result.message = "Not logged in";

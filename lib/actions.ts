@@ -4,6 +4,7 @@ import { cache } from "react";
 import {
   AttendanceReport,
   InternalAthleteRole,
+  internalAthleteRoles,
 } from "./athlete/internal/internalAthleteConstants";
 import { apiProtect } from "./admin/adminActions";
 import supabase from "./database/supabase";
@@ -19,6 +20,7 @@ import {
 } from "firebase/storage";
 import { storage } from "./database/firebase";
 import { imageMaxSize, imageSchema } from "./form/formConstants";
+import { SpecialUserRole } from "./admin/adminConstants";
 
 export const getAttendances = cache(
   async (role: InternalAthleteRole, month: string) => {
@@ -167,7 +169,14 @@ export const getEmployees = cache(async (page: number, limit: number) => {
 export const deleteFile = async (directory: string) => {
   try {
     if (!directory) throw { message: "Invalid identifier" };
-    const { message } = await apiProtect({ directory });
+
+    const acessedByGuest = ["athlete", "official"];
+    let params: any = { directory };
+
+    if (acessedByGuest.some((item) => directory.split("/").includes(item)))
+      params = { loggedInOnly: true };
+
+    const { message } = await apiProtect(params);
     if (message) throw { message };
 
     await deleteObject(ref(storage, directory));
@@ -184,7 +193,13 @@ export const uploadFile = async (formData: FormData) => {
 
     if (!file || !directory) throw { message: "Invalid identifier" };
 
-    const { message } = await apiProtect({ directory });
+    const acessedByGuest = ["athlete", "payment", "official"];
+    let params: any = { directory };
+
+    if (acessedByGuest.some((item) => directory.split("/").includes(item)))
+      params = { loggedInOnly: true };
+
+    const { message } = await apiProtect(params);
     if (message) throw { message };
 
     if (

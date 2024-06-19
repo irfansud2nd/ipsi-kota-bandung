@@ -57,7 +57,15 @@ export const roleAccess: {
 }[] = [
   {
     role: "admin",
-    dir: ["news", "event", "announcement", "employee", "contingent", "athlete"],
+    dir: [
+      "news",
+      "event",
+      "announcement",
+      "employee",
+      "contingent",
+      "athlete",
+      "official",
+    ],
   },
   {
     role: "master",
