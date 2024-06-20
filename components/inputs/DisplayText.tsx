@@ -4,12 +4,20 @@ import { Label } from "../ui/label";
 type Props = {
   label: string;
   value: string | number;
+  helperText?: string;
 };
 
-const DisplayText = ({ label, value }: Props) => {
+const DisplayText = ({ label, value, helperText }: Props) => {
   return (
     <div className={`input_container`}>
-      <Label>{label}</Label>
+      <Label>
+        {label}
+        {helperText && (
+          <span className="text-muted-foreground text-xs ml-1">
+            {helperText}
+          </span>
+        )}
+      </Label>
       <Input type="text" value={value} disabled />
     </div>
   );

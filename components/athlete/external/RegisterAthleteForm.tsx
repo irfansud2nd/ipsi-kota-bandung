@@ -1,4 +1,5 @@
 "use client";
+import DisplayText from "@/components/inputs/DisplayText";
 import InputSelect from "@/components/inputs/InputSelect";
 import InputText from "@/components/inputs/InputText";
 import { Button } from "@/components/ui/button";
@@ -201,29 +202,21 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                           customOptionLabel={(id) => getAthleteById(id).name}
                           forceDisabled={!!athleteAtEventToEdit}
                         />
-                        <InputText
+                        <DisplayText
                           label="Tinggi Badan"
-                          name="height"
                           helperText="(CM)"
-                          formik={props}
-                          displayOnly={{
-                            state: true,
-                            value: props.values.athlete_id
-                              ? getAthleteById(props.values.athlete_id).height
-                              : "",
-                          }}
+                          value={
+                            getAthleteById(props.values.athlete_id)?.height ||
+                            ""
+                          }
                         />
-                        <InputText
+                        <DisplayText
                           label="Berat Badan"
-                          name="weight"
                           helperText="(KG)"
-                          formik={props}
-                          displayOnly={{
-                            state: true,
-                            value: props.values.athlete_id
-                              ? getAthleteById(props.values.athlete_id).weight
-                              : "",
-                          }}
+                          value={
+                            getAthleteById(props.values.athlete_id)?.weight ||
+                            ""
+                          }
                         />
                         <InputSelect
                           label="Jenis Pertandingan"
@@ -235,14 +228,9 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                         />
                       </div>
                       <div>
-                        <InputText
+                        <DisplayText
                           label="Skema Pertandingan"
-                          name="schema"
-                          formik={props}
-                          displayOnly={{
-                            state: true,
-                            value: props.values.schema,
-                          }}
+                          value={props.values.schema}
                         />
                         <InputSelect
                           label="Kelompok Usia"
