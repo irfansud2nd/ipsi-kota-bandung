@@ -214,9 +214,9 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                           }}
                         />
                         <InputText
-                          label="Tinggi Badan"
+                          label="Berat Badan"
                           name="weight"
-                          helperText="(CM)"
+                          helperText="(KG)"
                           formik={props}
                           displayOnly={{
                             state: true,
