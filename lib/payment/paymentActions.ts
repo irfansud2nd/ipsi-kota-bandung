@@ -2,6 +2,7 @@
 
 import { apiProtect } from "../admin/adminActions";
 import supabase from "../database/supabase";
+import { getStartEndOfDay } from "../functions";
 import { Payment, PaymentSql } from "./paymentConstants";
 
 // PAYMENT SQL
@@ -145,6 +146,22 @@ export const getUnconfirmedPaymentByChampionshipId = async (
 };
 
 // OTHERS
+export const countPaymentSqlBefore = async (time: number) => {
+  const { start } = getStartEndOfDay(time);
+  try {
+    const { count, error } = await supabase
+      .from("payments")
+      .select("id", { count: "exact" })
+      .gt("created_at", start)
+      .lt("created_at", time);
+
+    if (error) throw error;
+    return (count || 0) + 1;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const sumPaymentBillByChampionshipId = async (
   championshipId: string
 ) => {

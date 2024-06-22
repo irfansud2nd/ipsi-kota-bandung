@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/table";
 import { formatDate, formatToRupiah } from "@/lib/functions";
 import { getUniquePaymentTotal } from "@/lib/payment/paymentFunctions";
-import ConfirmPaymentForm from "./ConfirmPaymentForm";
+import ManagePaymentForm from "./ManagePaymentForm";
 
 type Props = {
   payments: Payment[];
 };
 
-const UnconfirmedPaymentTable = ({ payments }: Props) => {
+const PaymentTable = ({ payments }: Props) => {
   return (
     <Table>
       <TableHeader>
@@ -47,11 +47,11 @@ const UnconfirmedPaymentTable = ({ payments }: Props) => {
             <TableCell>
               <div className="flex gap-1">
                 {payment.confirmed_by.length ? (
-                  <ConfirmPaymentForm payment={payment} unconfirm />
+                  <ManagePaymentForm payment={payment} unconfirm />
                 ) : (
                   <>
-                    <ConfirmPaymentForm payment={payment} confirm />
-                    <ConfirmPaymentForm payment={payment} remove />
+                    <ManagePaymentForm payment={payment} confirm />
+                    <ManagePaymentForm payment={payment} remove />
                   </>
                 )}
               </div>
@@ -62,4 +62,4 @@ const UnconfirmedPaymentTable = ({ payments }: Props) => {
     </Table>
   );
 };
-export default UnconfirmedPaymentTable;
+export default PaymentTable;

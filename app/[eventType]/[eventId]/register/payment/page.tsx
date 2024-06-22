@@ -1,6 +1,8 @@
 import ChampionshipMenuButton from "@/components/championship/register/menu/ChampionshipMenuButton";
+import InvoiceTable from "@/components/payment/InvoiceTable";
 import PaidTable from "@/components/payment/PaidTable";
 import PaymentInvoice from "@/components/payment/PaymentInvoice";
+import TestPaymentInvoice from "@/components/payment/PaymentInvoice";
 import UnpaidTable from "@/components/payment/UnpaidTable";
 import {
   Select,
@@ -24,6 +26,7 @@ const TabsListComp = () => {
         <TabsTrigger value="unpaid">Menunggu Pembayaran</TabsTrigger>
         <TabsTrigger value="unconfirmed">Menunggu Konfirmasi</TabsTrigger>
         <TabsTrigger value="confirmed">Pembayaran Selesai</TabsTrigger>
+        <TabsTrigger value="invoice">Invoice</TabsTrigger>
       </TabsList>
       {/* TABS LIST MOBILE */}
       <div className="block sm:hidden">
@@ -44,6 +47,9 @@ const TabsListComp = () => {
                 </TabsTrigger>
                 <TabsTrigger value="confirmed" asChild>
                   <SelectItem value="confirmed">Pembayaran Selesai</SelectItem>
+                </TabsTrigger>
+                <TabsTrigger value="invoice" asChild>
+                  <SelectItem value="invoice">Invoice</SelectItem>
                 </TabsTrigger>
               </SelectGroup>
             </SelectContent>
@@ -77,10 +83,14 @@ const page = ({ params }: { params: { eventId: string } }) => {
           <TabsContent value="confirmed">
             <PaidTable confirmed />
           </TabsContent>
+          <TabsContent value="invoice">
+            <InvoiceTable />
+          </TabsContent>
         </div>
       </Tabs>
       {/* <PaymentInvoice championshipId={params.eventId} />
       <PaymentInvoice championshipId={params.eventId} onPhone /> */}
+      {/* <TestPaymentInvoice championshipId={params.eventId} /> */}
     </div>
   );
 };

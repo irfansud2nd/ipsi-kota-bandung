@@ -22,7 +22,7 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
 
-  const menus = [
+  let menus = [
     {
       label: "Kontingen",
       href: "contingent",
@@ -58,19 +58,22 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
       href: "payment",
       icon: <FaMoneyBill1Wave />,
     },
-    {
-      label: "Jadwal Pertandingan",
-      href: "schedule",
-      icon: <FaThList />,
-    },
   ];
 
   if (Date.now() >= championship.dateStart) {
-    menus.push({
-      label: "Perolehan Medali",
-      href: "medal",
-      icon: <FaMedal />,
-    });
+    menus = [
+      ...menus,
+      {
+        label: "Jadwal Pertandingan",
+        href: "schedule",
+        icon: <FaThList />,
+      },
+      {
+        label: "Perolehan Medali",
+        href: "medal",
+        icon: <FaMedal />,
+      },
+    ];
   }
 
   return (

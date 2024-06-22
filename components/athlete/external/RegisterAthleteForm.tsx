@@ -118,10 +118,6 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
     if (athleteAtEventToEdit) setOpen(true);
   }, [athleteAtEventToEdit]);
 
-  // useEffect(() => {
-  // console.log({ validateTeam });
-  // }, [validateTeam]);
-
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
       <DialogTrigger asChild disabled={!athletes.length}>

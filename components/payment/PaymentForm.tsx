@@ -38,6 +38,7 @@ import { Championship } from "@/lib/event/eventConstants";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa6";
 import { toastError } from "@/lib/form/formFunctions";
+import DisplayText from "../inputs/DisplayText";
 
 const PaymentForm = ({
   selectedMatchBaseds,
@@ -203,7 +204,6 @@ Terimakasih.`,
                 resetForm();
                 setIsSent(payment);
               } catch (error) {
-                // console.log("ERRROR", error);
               } finally {
               }
             }}
@@ -220,20 +220,14 @@ Terimakasih.`,
                         formik={props}
                       />
                       <div className="flex gap-1 items-end">
-                        <InputText
+                        <DisplayText
                           label="Total pembayaran"
-                          name="unique_total"
-                          formik={props}
-                          displayOnly={{
-                            state: true,
-                            value: formatToRupiah(
-                              getUniquePaymentTotal(
-                                props.values.total,
-                                props.values.phone_number
-                              )
-                            ),
-                          }}
-                          className="flex-1"
+                          value={formatToRupiah(
+                            getUniquePaymentTotal(
+                              props.values.total,
+                              props.values.phone_number
+                            )
+                          )}
                         />
                         <CopyButton
                           text={getUniquePaymentTotal(

@@ -1,4 +1,4 @@
-import UnconfirmedPaymentTable from "@/components/admin/payment/UnconfirmedPaymentTable";
+import PaymentTable from "@/components/admin/payment/PaymentTable";
 import PagePagination from "@/components/ui/PagePagination";
 import RefreshButton from "@/components/ui/RefreshButton";
 import { getConfirmedPaymentByChampionshipId } from "@/lib/payment/paymentActions";
@@ -27,7 +27,7 @@ const page = async ({
         <RefreshButton />
       </div>
       <div className="bg-muted flex flex-col">
-        <UnconfirmedPaymentTable payments={confirmedPayments} />
+        <PaymentTable payments={confirmedPayments} />
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
         <p>Menampilkan per {confirmedPayments.length} pembayaran</p>

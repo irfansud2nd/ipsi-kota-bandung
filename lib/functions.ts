@@ -78,7 +78,7 @@ export const getSpecialUserLabel = (role: SpecialUserRole) => {
   return `Atlet ${label}`;
 };
 
-export const getStartEndOfDay = (date?: string) => {
+export const getStartEndOfDay = (date?: string | number) => {
   let start = date ? new Date(date) : new Date();
   start.setHours(0, 0, 1);
   let end = date ? new Date(date) : new Date();

@@ -32,7 +32,7 @@ type Props = {
   unconfirm?: boolean;
 };
 
-const ConfirmPaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
+const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
   const session = useSession();
   const userEmail = session.data?.user?.email;
 
@@ -154,4 +154,4 @@ const ConfirmPaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
     </Dialog>
   );
 };
-export default ConfirmPaymentForm;
+export default ManagePaymentForm;
