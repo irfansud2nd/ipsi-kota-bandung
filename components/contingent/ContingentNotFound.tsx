@@ -1,11 +1,19 @@
+"use client";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import ContingentForm from "./ContingentForm";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 
 const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
   const championship = getChampionship(championshipId);
   const disableRegister = championship?.status.editOnly;
+  const unregisteredContingent = useSelector(
+    (state: RootState) => state.contingent.unregistered
+  );
+
+  if (unregisteredContingent) return null;
 
   return (
     <div className="h-full w-full flex justify-center items-center text-center">

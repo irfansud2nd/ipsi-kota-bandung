@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "../ui/button";
 import { Championship } from "@/lib/event/eventConstants";
 import { useDispatch, useSelector } from "react-redux";

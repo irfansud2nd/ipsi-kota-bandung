@@ -1,14 +1,12 @@
 "use client";
+
 import Contingent from "@/components/contingent/ContingentInfo";
 import Loading from "@/components/ui/Loading";
-import PageInfo from "@/components/ui/PageInfo";
 import { getAthtleteAtEventsByContingentRegistrationId } from "@/lib/athlete/external/athleteActions";
 import { getAthletesByEmail } from "@/lib/athlete/external/athleteFunctions";
 import { getContingentInfoByEmail } from "@/lib/contingent/contingentFunctions";
-import { Championship } from "@/lib/event/eventConstants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
-import { formatDate } from "@/lib/functions";
 import { getOfficialsByEmail } from "@/lib/official/officialFuntions";
 import { getPaymentsByContingentRegistrationId } from "@/lib/payment/paymentActions";
 import {
@@ -32,10 +30,15 @@ type Props = {
   championshipId: string;
 };
 const ChampionshipRegister = ({ children, championshipId }: Props) => {
-  const [contingentFetched, setContingentFetched] = useState(false);
+  const [fetched, setFetched] = useState({
+    contingent: false,
+    athlete: false,
+    official: false,
+    payment: false,
+  });
+  // const [contingentFetched, setContingentFetched] = useState(false);
   const [readyToFetch, setReadyToFetch] = useState(false);
   const [returnWithoutFetch, setReturnWithoutFetch] = useState(false);
-  const [isNotOpenYet, setIsNotOpenYet] = useState(false);
 
   const registeredContingent = useSelector(
     (state: RootState) => state.contingent.registered
@@ -56,23 +59,30 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
 
   const fetchContingent = async () => {
     // console.log("fetchContingent");
-    setContingentFetched(true);
 
     try {
       const { contingent, contingentAtEvents } = await getContingentInfoByEmail(
         userEmail
       );
 
-      if (!contingent) return;
+      if (!contingent) {
+        setAllFetched();
+        return;
+      }
       dispatch(setUnregisteredContingent(contingent));
 
-      if (!contingentAtEvents.length) return;
+      if (!contingentAtEvents.length) {
+        setAllFetched();
+        return;
+      }
       dispatch(
         addContingentAtEventsRedux({
           contingentAtEvents,
           championshipId,
         })
       );
+
+      setFetched((prev) => ({ ...prev, contingent: true }));
     } catch (error) {
       toastError(error);
     }
@@ -83,11 +93,14 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     try {
       const athletes = await getAthletesByEmail(userEmail);
       dispatch(addAthletesRedux(athletes));
+
       const athleteAtEvents =
         await getAthtleteAtEventsByContingentRegistrationId(
           registeredContingent?.registration_id as number
         );
       dispatch(addAthletesAtEventsRedux(athleteAtEvents));
+
+      setFetched((prev) => ({ ...prev, athlete: true }));
     } catch (error) {
       toastError(error);
     }
@@ -98,6 +111,8 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     try {
       const officials = await getOfficialsByEmail(userEmail);
       dispatch(addOfficialsRedux(officials));
+
+      setFetched((prev) => ({ ...prev, official: true }));
     } catch (error) {
       toastError(error);
     }
@@ -111,6 +126,8 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
         registeredContingent.registration_id
       );
       dispatch(addPaymentsRedux(payments));
+
+      setFetched((prev) => ({ ...prev, payment: true }));
     } catch (error) {
       toastError(error);
     }
@@ -122,21 +139,35 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     if (lastPathname == "register") {
       router.push("register/contingent");
       return;
-    } else if (championship) {
+    }
+    if (championship) {
       setReadyToFetch(true);
     }
   }, [pathname, championship]);
 
   useEffect(() => {
-    if (readyToFetch && !contingentFetched && !returnWithoutFetch)
+    if (readyToFetch && !fetched.contingent && !returnWithoutFetch)
       fetchContingent();
   }, [readyToFetch, returnWithoutFetch]);
 
   useEffect(() => {
     if (registeredContingent) {
-      !athletes.length && fetchAthletes();
-      !officials.length && fetchOfficials();
-      !payments.length && fetchPayments();
+      // console.log("REGISTERED CONTINGENT", registeredContingent);
+      if (registeredContingent.athletes > 0 && !athletes.length) {
+        fetchAthletes();
+      } else {
+        setFetched((prev) => ({ ...prev, athlete: true }));
+      }
+      if (registeredContingent.officials > 0 && !officials.length) {
+        fetchOfficials();
+      } else {
+        setFetched((prev) => ({ ...prev, official: true }));
+      }
+      if (registeredContingent.payment_ids?.length > 0 && !payments.length) {
+        fetchPayments();
+      } else {
+        setFetched((prev) => ({ ...prev, payment: true }));
+      }
     }
   }, [registeredContingent]);
 
@@ -146,7 +177,24 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     );
   }, [pathname]);
 
-  if (!contingentFetched && !returnWithoutFetch) return <Loading full />;
+  const isAllFetched = () => {
+    return Object.values(fetched).every((value) => value == true);
+  };
+
+  const setAllFetched = () => {
+    setFetched({
+      contingent: true,
+      athlete: true,
+      official: true,
+      payment: true,
+    });
+  };
+
+  // useEffect(() => {
+  //   console.log("FETCHED", fetched);
+  // }, [fetched]);
+
+  if (!isAllFetched() && !returnWithoutFetch) return <Loading full />;
 
   if (!registeredContingent && !returnWithoutFetch) {
     return (

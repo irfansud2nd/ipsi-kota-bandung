@@ -1,4 +1,4 @@
-import { Championship } from "@/lib/event/eventConstants";
+"use client";
 import {
   Accordion,
   AccordionContent,
