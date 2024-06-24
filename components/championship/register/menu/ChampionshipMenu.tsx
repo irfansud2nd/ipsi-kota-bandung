@@ -60,7 +60,7 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
     },
   ];
 
-  if (Date.now() >= championship.dateStart) {
+  if (Date.now() >= championship.date_start) {
     menus = [
       ...menus,
       {

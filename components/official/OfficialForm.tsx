@@ -22,7 +22,7 @@ import InputText from "../inputs/InputText";
 import InputFile from "../inputs/InputFile";
 import InputSelect from "../inputs/InputSelect";
 import { adultGender } from "@/lib/form/formConstants";
-import { addOfficial, updateOfficial } from "@/lib/official/officialFuntions";
+import { addOfficial, updateOfficial } from "@/lib/official/officialFunctions";
 
 const OfficialForm = () => {
   const [open, setOpen] = useState(false);

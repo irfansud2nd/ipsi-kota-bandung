@@ -2,7 +2,7 @@
 import { apiProtect } from "../admin/adminActions";
 import supabase from "../database/supabase";
 import { OfficialSql } from "./officialContants";
-import { officialSqlToOfficial } from "./officialFuntions";
+import { officialSqlToOfficial } from "./officialFunctions";
 
 // OFFICIAL SQL
 // READ

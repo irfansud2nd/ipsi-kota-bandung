@@ -33,7 +33,7 @@ const NewsDisplay = ({ news, preview }: Props) => {
         {formatDate(Date.now(), { longMonth: true, withoutHour: true })}
         <span>|</span>
         <FaPenFancy />
-        {news.creatorName}
+        {news.writer}
       </p>
       {showImage ? (
         <img

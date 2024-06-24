@@ -16,7 +16,7 @@ const NewsItem = ({ news }: { news: News }) => {
         <div className="col-span-3">
           <h5 className="font-medium">{news.title}</h5>
           <p>
-            {formatDate(news.createdAt, {
+            {formatDate(news.created_at, {
               longMonth: true,
               withoutHour: true,
             })}

@@ -1,17 +1,19 @@
 import { v4 } from "uuid";
 import { sendFile, toastError } from "../form/formFunctions";
-import { News } from "./newsConstants";
+import { News, NewsSql } from "./newsConstants";
 import axios from "axios";
 import { toast } from "sonner";
 import { getFileUrl } from "../functions";
 import { deleteFile } from "../actions";
+import { addNewsSql, deleteNewsSql, updateNewsSql } from "./newsActions";
 
-// SEND BERITA
-export const sendNews = async (news: News) => {
+// NEWS
+// CREATE
+export const addNews = async (news: News) => {
   const toastId = toast.loading("Mengunggah berita");
   try {
     const id = v4();
-    let data: News = { ...news, id: id, createdAt: Date.now() };
+    let data: News = { ...news, id: id, created_at: Date.now() };
     const { imageUrl } = getFileUrl("news", data.id);
 
     // SEND GAMBAR
@@ -24,7 +26,7 @@ export const sendNews = async (news: News) => {
 
     // SEND BERITA
     toast.loading("Mengunggah berita", { id: toastId });
-    await axios.post("/api/news", data);
+    await addNewsSql(newsToNewsSql(data));
     toast.success("Berita berhasil diunggah", { id: toastId });
     return { result: data };
   } catch (error: any) {
@@ -33,7 +35,8 @@ export const sendNews = async (news: News) => {
   }
 };
 
-// UPDATE BERITA
+// READ
+// UPDATE
 export const updateNews = async (news: News) => {
   const toastId = toast.loading("Memperbaharui berita");
 
@@ -49,16 +52,15 @@ export const updateNews = async (news: News) => {
     }
     // UPDATE BERITA
     toast.loading("Memperbaharui berita", { id: toastId });
-    const res = await axios.patch("/api/news", data);
+    await updateNewsSql(newsToNewsSql(data));
     toast.success("Berita berhasil diperbaharui", { id: toastId });
-    return res.data.result;
   } catch (error: any) {
     toastError(error, toastId);
     throw error;
   }
 };
 
-// DELETE BERITAS
+// DELETE
 export const deleteNews = async (news: News) => {
   const toastId = toast.loading("Menghapus berita");
   const { imageUrl } = getFileUrl("news", news.id);
@@ -70,16 +72,15 @@ export const deleteNews = async (news: News) => {
 
     // DELETE BERITA
     toast.loading("Menghapus berita", { id: toastId });
-    const res = await axios.delete(`/api/news?id=${news.id}`);
+    await deleteNewsSql(newsToNewsSql(news));
     toast.success("Berita berhasil dihapus", { id: toastId });
-    return { response: res.data };
   } catch (error: any) {
     toastError(error, toastId);
     throw error;
   }
 };
 
-// REDUCE TEXT
+// OTHERS
 export const reduceText = (
   text: string,
   wordLimit: number = 30,
@@ -88,4 +89,22 @@ export const reduceText = (
   return (
     text.split(splitJoinBy).splice(0, wordLimit).join(splitJoinBy) + " ..."
   );
+};
+
+export const newsSqlToNews = (newsSql: NewsSql) => {
+  const result: News = {
+    ...newsSql,
+    image: {
+      downloadUrl: newsSql.image,
+    },
+  };
+  return result;
+};
+
+export const newsToNewsSql = (news: News) => {
+  const result: NewsSql = {
+    ...news,
+    image: news.image?.downloadUrl || "",
+  };
+  return result;
 };

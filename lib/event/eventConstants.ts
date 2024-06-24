@@ -5,23 +5,30 @@ import { dateToNumber } from "../functions";
 
 export type Bank = "BJB";
 
-export type Event = {
+export type EventBase = {
   id: string;
   title: string;
+  location_name: string;
+  location_url?: string;
+  date_start: number;
+  date_end?: number;
+  time_start: number;
+  time_end?: number;
+  organizer: string;
+  created_by: string;
+  created_at: number;
+  description: string;
+};
+
+export type Event = EventBase & {
   image: {
     file?: File;
     downloadUrl: string;
   };
-  locationName: string;
-  locationUrl?: string;
-  dateStart: number;
-  dateEnd?: number;
-  timeStart: number;
-  timeEnd?: number;
-  creatorName: string;
-  creatorEmail: string;
-  createdAt: number;
-  description: string;
+};
+
+export type EventSql = EventBase & {
+  image: string;
 };
 
 export const eventInitialValue: Event = {
@@ -31,12 +38,12 @@ export const eventInitialValue: Event = {
     file: undefined,
     downloadUrl: "",
   },
-  locationName: "",
-  dateStart: 0,
-  timeStart: 0,
-  creatorName: "IPSI Kota Bandung",
-  creatorEmail: "",
-  createdAt: 0,
+  location_name: "",
+  date_start: 0,
+  time_start: 0,
+  organizer: "IPSI Kota Bandung",
+  created_by: "",
+  created_at: 0,
   description: "",
 };
 
@@ -46,11 +53,11 @@ export const eventSchema = (ignoreImage: boolean = false) => {
       .string()
       .required("Tolong lengkapi judul event")
       .max(225, "Judul event terlalu panjang"),
-    locationName: yup.string().required("Tolong lengkapi nama lokasi"),
-    locationUrl: yup.string().url("Link tidak valid"),
-    dateStart: yup.number().min(1, "Tolong lengkapi tanggal mulai"),
-    timeStart: yup.number().min(1, "Tolong lengkapi jam mulai"),
-    creatorName: yup
+    location_name: yup.string().required("Tolong lengkapi nama lokasi"),
+    location_url: yup.string().url("Link tidak valid"),
+    date_start: yup.number().min(1, "Tolong lengkapi tanggal mulai"),
+    time_start: yup.number().min(1, "Tolong lengkapi jam mulai"),
+    organizer: yup
       .string()
       .required("Tolong lengkapi nama penyelenggara")
       .max(225, "Nama penyelenggara terlalu panjang"),
@@ -74,7 +81,7 @@ export type Championship = Event & {
     end: number;
   };
   athletes: number;
-  nomorPertandingan: number;
+  matchCount: number;
   techmeet: {
     date: number;
     location: {
@@ -123,14 +130,14 @@ export const getDummyEvents = (length: number, startNumber: number = 0) => {
       image: {
         downloadUrl: "url " + i,
       },
-      locationName: "Location " + i,
-      dateStart: Date.now() + i * 99999999,
-      dateEnd: Date.now() + i * 99999999 + 99999999,
-      timeStart: Date.now() + i * 99999999,
-      timeEnd: Date.now() + 50000 + i * 99999999,
-      creatorName: "IPSI Kota Bandung",
-      creatorEmail: "irfansud" + i + "gmail.com",
-      createdAt: Date.now() - i * 99999999,
+      location_name: "Location " + i,
+      date_start: Date.now() + i * 99999999,
+      date_end: Date.now() + i * 99999999 + 99999999,
+      time_start: Date.now() + i * 99999999,
+      time_end: Date.now() + 50000 + i * 99999999,
+      organizer: "IPSI Kota Bandung",
+      created_by: "irfansud" + i + "gmail.com",
+      created_at: Date.now() - i * 99999999,
       description: "Description " + i,
     });
   }
@@ -179,21 +186,21 @@ export const championships: Championship[] = [
     image: {
       downloadUrl: "/images/championships/bandung-open-24/thumbnail.png",
     },
-    locationName: "GOR KONI Kota Bandung",
-    locationUrl: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-    dateStart: dateToNumber("2024-08-06"),
-    dateEnd: dateToNumber("2024-08-10"),
-    timeStart: 0,
-    creatorName: "",
-    creatorEmail: "irfansud2nd@gmail.com",
-    createdAt: dateToNumber("2024-06-01"),
+    location_name: "GOR KONI Kota Bandung",
+    location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+    date_start: dateToNumber("2024-08-06"),
+    date_end: dateToNumber("2024-08-10"),
+    time_start: 0,
+    organizer: "",
+    created_by: "irfansud2nd@gmail.com",
+    created_at: dateToNumber("2024-06-01"),
     description: "",
     register: {
       start: dateToNumber("2024-06-10"),
       end: dateToNumber("2024-07-31"),
     },
     athletes: 0,
-    nomorPertandingan: 0,
+    matchCount: 0,
     techmeet: {
       date: dateToNumber("2024-08-03 10:00:00"),
       location: {

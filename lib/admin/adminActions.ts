@@ -4,14 +4,97 @@ import supabase from "../database/supabase";
 import {
   SpecialUser,
   SpecialUserRole,
+  SpecialUserSql,
   adminLinks,
   hideAdminLinksFrom,
 } from "./adminConstants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/authOptions";
-import { getPermittedRoles, isPermitted } from "./adminFunctions";
+import {
+  getPermittedRoles,
+  isPermitted,
+  specialUserSqlToSpecialUser,
+} from "./adminFunctions";
 import { decode, sign } from "jsonwebtoken";
 import { GroupedLinks, Links } from "../constants";
+
+// SPECIAL  USER
+// CREATE
+export const addSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+  try {
+    const response = await apiProtect({
+      roles: permittedRoles(specialUserSql.roles),
+    });
+    if (response) throw response;
+
+    const { error } = await supabase
+      .from("special_users")
+      .upsert(specialUserSql);
+
+    if (error) throw error;
+  } catch (error) {
+    throw error;
+  }
+};
+// READ
+export const getSpecialUserSqlByEmail = async (email: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("special_user")
+      .select()
+      .eq("email", email)
+      .returns<SpecialUser[]>();
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+// UPDATE
+export const updateSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+  try {
+    // const response = await apiProtect({
+    //   roles: permittedRoles(specialUserSql.roles),
+    // });
+    // if (response) throw response;
+
+    const { error } = await supabase
+      .from("special_users")
+      .update(specialUserSql)
+      .eq("email", specialUserSql.email);
+
+    if (error) throw error;
+  } catch (error) {
+    throw error;
+  }
+};
+// DELETE
+export const deleteSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+  try {
+    const response = await apiProtect({
+      roles: permittedRoles(specialUserSql.roles),
+    });
+    if (response) throw response;
+
+    const { error } = await supabase
+      .from("special_users")
+      .delete()
+      .eq("email", specialUserSql.email)
+      .contains("roles", specialUserSql.roles);
+
+    if (error) throw error;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// OTHERS
+const permittedRoles = (roleToEdit: SpecialUserRole[]) => {
+  let roles: SpecialUserRole[] = ["master"];
+  if (roleToEdit.find((item) => item.includes("athlete")))
+    roles.push("pelatih");
+  return roles;
+};
 
 export const getSpecialUsers = async (
   role: SpecialUserRole,
@@ -28,15 +111,18 @@ export const getSpecialUsers = async (
     const query = forClient ? "name, image" : "*";
 
     const { data, error } = await supabase
-      .from("specialUsers")
+      .from("special_users")
       .select(query)
       .order("name")
       .range(page * limit - limit, page * limit - 1)
-      .contains("roles", [role]);
+      .contains("roles", [role])
+      .returns<SpecialUserSql[]>();
 
     if (error) throw new Error(error.message);
-    const result: any = data;
-    return result as SpecialUser[];
+
+    const specialUsers = data.map((item) => specialUserSqlToSpecialUser(item));
+
+    return specialUsers;
   } catch (error) {
     throw error;
   }
@@ -52,7 +138,7 @@ export const isAuthorized = async (options?: {
     token: string;
     permitted: boolean;
     name?: string;
-    image?: { downloadUrl: string };
+    image?: string;
   };
 
   let result: Result = {
@@ -80,7 +166,7 @@ export const isAuthorized = async (options?: {
 
   // console.log("FETCH SPECIAL USERS");
   const { data, error } = await supabase
-    .from("specialUsers")
+    .from("special_users")
     .select()
     .eq("email", session?.user?.email);
 
@@ -113,30 +199,38 @@ export const apiProtect = async (options?: {
 
   const initialResult: {
     message?: string;
-    response?: NextResponse<any>;
+    code?: string;
+    status?: number;
   } = {
     message: undefined,
-    response: undefined,
+    code: undefined,
+    status: undefined,
   };
-  let result = initialResult;
 
-  if (!roles.length && options?.directory)
-    roles = getPermittedRoles(options.directory);
+  const notAuthorized = {
+    message: "Not authorized",
+    code: "not-authorized",
+    status: 403,
+  };
+
+  if (options?.directory)
+    roles = roles.concat(getPermittedRoles(options.directory));
 
   if (!userEmail) {
-    result.message = "Not logged in";
-    result.response = NextResponse.json(
-      { message: result.message, code: "not-authenticated" },
-      { status: 401 }
-    );
-
-    return result;
+    return {
+      message: "Not logged in",
+      code: "not-authenticated",
+      status: 401,
+    };
   }
 
   if (options?.loggedInOnly) return initialResult;
 
-  if (options?.permittedEmail && userEmail == options.permittedEmail)
-    return initialResult;
+  console.log({ options, userEmail });
+
+  if (options?.permittedEmail) {
+    return userEmail == options.permittedEmail ? initialResult : notAuthorized;
+  }
 
   if (!roles.length) return initialResult;
 
@@ -145,13 +239,7 @@ export const apiProtect = async (options?: {
   const { permitted } = await isAuthorized({ roles });
   if (permitted) return initialResult;
 
-  result.message = "Not authorized";
-  result.response = NextResponse.json(
-    { message: result.message, code: "not-authorized" },
-    { status: 403 }
-  );
-
-  return result;
+  return notAuthorized;
 };
 
 export const getAdminLinks = async () => {

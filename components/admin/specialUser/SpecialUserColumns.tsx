@@ -2,7 +2,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import useConfirmation from "@/hooks/useConfirmation";
-import { Button } from "@/components/ui/button";
 import { SpecialUser, SpecialUserRole } from "@/lib/admin/adminConstants";
 import { deleteSpecialUser } from "@/lib/admin/adminFunctions";
 import AdminManageButtons from "../AdminManageButtons";

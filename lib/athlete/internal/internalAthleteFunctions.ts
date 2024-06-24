@@ -1,4 +1,4 @@
-import { formatDate, getStartEndOfDay } from "@/lib/functions";
+import { formatDate } from "@/lib/functions";
 import {
   Attendance,
   AttendanceToken,
@@ -6,22 +6,12 @@ import {
   InternalAthleteRole,
   internalAthleteRoles,
 } from "./internalAthleteConstants";
-import axios from "axios";
-import { v4, v5 } from "uuid";
+import { v5 } from "uuid";
 import { createHash } from "crypto";
+import { addAttendanceSql, getAttendanceToken } from "./internalAthleteActions";
 
 export const isInternalAthleteRole = (role: InternalAthleteRole) => {
   return internalAthleteRoles.includes(role);
-};
-
-export const getAttendanceToken = async (role: InternalAthleteRole) => {
-  try {
-    const res = await axios.get(`/api/attendance/token?role=${role}`);
-
-    return res.data.result;
-  } catch (error) {
-    throw error;
-  }
 };
 
 export const getAttendanceId = (
@@ -40,32 +30,6 @@ export const getAttendanceId = (
   return uuid;
 };
 
-export const generateAttendanceToken = async (role: InternalAthleteRole) => {
-  try {
-    const data: AttendanceToken = {
-      id: getAttendanceId(role),
-      token: v4(),
-      date: Date.now(),
-      status: true,
-      role,
-    };
-
-    await axios.post("/api/attendance/token", data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const updateAttendanceToken = async (token: AttendanceToken) => {
-  try {
-    await axios.patch("/api/attendance/token", token);
-    return token;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const sendAttendance = async (
   tokenString: string,
   email: string,
@@ -80,7 +44,7 @@ export const sendAttendance = async (
       date: Date.now(),
       role,
     };
-    const token: AttendanceToken = await getAttendanceToken(role);
+    const token = await getAttendanceToken(role);
 
     if (!token || token.token != tokenString)
       throw {
@@ -94,7 +58,7 @@ export const sendAttendance = async (
         code: "invalid-qr-code",
       };
 
-    await axios.post("/api/attendance", data);
+    await addAttendanceSql(data);
   } catch (error) {
     throw error;
   }

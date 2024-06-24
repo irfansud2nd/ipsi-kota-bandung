@@ -1,9 +1,9 @@
 import { DataTable } from "@/components/ui/DataTable";
 import PagePagination from "@/components/ui/PagePagination";
 import { SearchPageParams } from "@/lib/constants";
-import { getEmployees } from "@/lib/actions";
-import { MemberColumns } from "@/components/member/MemberColumns";
-import MemberForm from "@/components/member/MemberForm";
+import { getEmployees } from "@/lib/employee/employeeActions";
+import { EmployeeColumns } from "@/components/employee/EmployeeColumns";
+import EmployeeForm from "@/components/employee/EmployeeForm";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;
@@ -13,9 +13,9 @@ const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
     <div className="p-2">
       <div className="flex w-full items-center justify-between mb-2">
         <h1 className="font-bold text-2xl mb-2 mr-2">Kelola Pengurus</h1>
-        <MemberForm />
+        <EmployeeForm />
       </div>
-      <DataTable columns={MemberColumns} data={employees} />
+      <DataTable columns={EmployeeColumns} data={employees} />
       <PagePagination
         page={page}
         limit={limit}

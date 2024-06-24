@@ -1,10 +1,10 @@
 import AttendanceBarcode from "@/components/admin/athlete/internal/attendance/AttendanceBarcode";
 import AttendanceMonthPicker from "@/components/admin/athlete/internal/attendance/AttendanceMonthPicker";
 import AttendanceTable from "@/components/admin/athlete/internal/attendance/AttendanceTable";
+import { getAttendances } from "@/lib/athlete/internal/internalAthleteActions";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
 import { isInternalAthleteRole } from "@/lib/athlete/internal/internalAthleteFunctions";
 import { getSpecialUserLabel } from "@/lib/functions";
-import { getAttendances } from "@/lib/actions";
 import { notFound } from "next/navigation";
 
 const page = async ({

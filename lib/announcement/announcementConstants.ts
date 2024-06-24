@@ -3,8 +3,8 @@ import * as yup from "yup";
 export type Announcement = {
   id: string;
   text: string;
-  updaterEmail: string;
-  updatedAt: number;
+  updater_email: string;
+  updated_at: number;
 };
 
 export const announcementSchema = yup.object({

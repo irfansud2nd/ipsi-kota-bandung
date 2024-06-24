@@ -58,5 +58,5 @@ export const imageSchema = (mb: number = 1) => {
 export const imageMaxSize = {
   news: 2,
   event: 2,
-  member: 1,
+  employee: 1,
 };

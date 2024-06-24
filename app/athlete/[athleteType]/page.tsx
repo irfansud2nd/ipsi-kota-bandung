@@ -1,5 +1,4 @@
-import MemberCard from "@/components/member/MemberCard";
-import MemberList from "@/components/member/MemberList";
+import EmployeeList from "@/components/employee/EmployeeList";
 import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
@@ -8,7 +7,7 @@ import { getSpecialUsers } from "@/lib/admin/adminActions";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
 import { isInternalAthleteRole } from "@/lib/athlete/internal/internalAthleteFunctions";
 import { getSpecialUserLabel } from "@/lib/functions";
-import { Member } from "@/lib/member/memberConstants";
+import { Employee } from "@/lib/employee/employeeConstants";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -37,7 +36,7 @@ const page = async ({ params, searchParams }: Props) => {
 
   const data = await getSpecialUsers(athleteType, page, limit, true);
   const athletes = data.map((data, i) => {
-    const athlete: Member = {
+    const athlete: Employee = {
       id: data.email,
       name: data.name,
       image: data.image,
@@ -57,7 +56,7 @@ const page = async ({ params, searchParams }: Props) => {
       />
       <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5  w-full">
         <Container className="px-5 md:px-10 h-full ">
-          <MemberList members={athletes} />
+          <EmployeeList employees={athletes} />
           <PagePagination
             page={page}
             limit={limit}

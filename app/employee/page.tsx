@@ -1,11 +1,8 @@
-import MemberCard from "@/components/member/MemberCard";
-import EmployeeCard from "@/components/member/MemberCard";
-import MemberList from "@/components/member/MemberList";
+import EmployeeList from "@/components/employee/EmployeeList";
 import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
-import { Member } from "@/lib/member/memberConstants";
-import { getEmployees } from "@/lib/actions";
+import { getEmployees } from "@/lib/employee/employeeActions";
 import { Metadata } from "next";
 
 type Props = {
@@ -33,7 +30,7 @@ const page = async ({ searchParams }: Props) => {
       />
       <div className="bg-white rounded-t-[50px] -mt-10 pt-10 pb-5 w-full">
         <Container className="px-5 md:px-10 h-full ">
-          <MemberList members={employees} />
+          <EmployeeList employees={employees} />
           <PagePagination
             page={page}
             limit={limit}

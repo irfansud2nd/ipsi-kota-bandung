@@ -1,4 +1,4 @@
-import MemberForm from "@/components/member/MemberForm";
+import EmployeeForm from "@/components/employee/EmployeeForm";
 import PageInfo from "@/components/ui/PageInfo";
 import { Button } from "@/components/ui/button";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
@@ -33,7 +33,7 @@ const page = async ({ params }: Props) => {
     <div className="w-full h-full flex flex-col justify-center items-center">
       <h1 className="font-bold text-3xl mb-2">Hai {session?.user?.name}!</h1>
       <div className="flex gap-2">
-        <MemberForm athlete />
+        <EmployeeForm athlete />
         <Button asChild>
           <Link href={athleteType + "/restricted"}>Absen</Link>
         </Button>

@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useConfirmation from "@/hooks/useConfirmation";
-import { deleteOfficial } from "@/lib/official/officialFuntions";
+import { deleteOfficial } from "@/lib/official/officialFunctions";
 import {
   deleteOfficialRedux,
   setOfficialToEditRedux,

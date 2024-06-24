@@ -1,17 +1,22 @@
 import { toast } from "sonner";
-import { Member } from "./memberConstants";
+import { Employee, EmployeeSql } from "./employeeConstants";
 import { v4 } from "uuid";
 import axios from "axios";
 import { sendFile, toastError } from "../form/formFunctions";
 import { getFileUrl } from "../functions";
+import { addEmployeeSql, updateEmployeeSql } from "./employeeActions";
 
-export const sendMember = async (member: Member) => {
+// EMPLOYEE
+// READ
+
+// CREATE
+export const addEmployee = async (employee: Employee) => {
   const toastId = toast.loading("Menambahkan pengurus");
 
   try {
-    let data: Member = member;
+    let data: Employee = employee;
     data.id = v4();
-    const { imageUrl } = getFileUrl("member", data.id);
+    const { imageUrl } = getFileUrl("employee", data.id);
 
     if (data.image?.file) {
       toast.loading("Mengunggah gambar", { id: toastId });
@@ -20,7 +25,7 @@ export const sendMember = async (member: Member) => {
     }
 
     toast.loading("Mengunggah pengurus", { id: toastId });
-    await axios.post("/api/employee", data);
+    await addEmployeeSql(employeeToEmployeeSql(data));
     toast.success("Pengurus berhasil diunggah", { id: toastId });
     return { result: data };
   } catch (error) {
@@ -29,11 +34,12 @@ export const sendMember = async (member: Member) => {
   }
 };
 
-export const updateMember = async (member: Member) => {
+// UPDATE
+export const updateEmployee = async (employee: Employee) => {
   const toastId = toast.loading("Memperbaharui pengurus");
   try {
-    let data: Member = member;
-    const { imageUrl } = getFileUrl("member", data.id);
+    let data: Employee = employee;
+    const { imageUrl } = getFileUrl("employee", data.id);
 
     if (data.image?.file) {
       toast.loading("Memperbaharui gambar", { id: toastId });
@@ -42,11 +48,30 @@ export const updateMember = async (member: Member) => {
     }
 
     toast.loading("Memperbaharui pengurus", { id: toastId });
-    await axios.patch("/api/employee", data);
+    await updateEmployeeSql(employeeToEmployeeSql(data));
     toast.success("Pengurus berhasil diperbaharui", { id: toastId });
     return { result: data };
   } catch (error) {
     toastError(error, toastId);
     throw error;
   }
+};
+
+// OTHERS
+export const employeeSqlToEmployee = (employeeSql: EmployeeSql) => {
+  const result: Employee = {
+    ...employeeSql,
+    image: {
+      downloadUrl: employeeSql.image,
+    },
+  };
+  return result;
+};
+
+export const employeeToEmployeeSql = (employee: Employee) => {
+  const result: EmployeeSql = {
+    ...employee,
+    image: employee.image?.downloadUrl || "",
+  };
+  return result;
 };

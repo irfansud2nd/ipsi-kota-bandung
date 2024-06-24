@@ -7,7 +7,7 @@ import { getAthletesByEmail } from "@/lib/athlete/external/athleteFunctions";
 import { getContingentInfoByEmail } from "@/lib/contingent/contingentFunctions";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
-import { getOfficialsByEmail } from "@/lib/official/officialFuntions";
+import { getOfficialsByEmail } from "@/lib/official/officialFunctions";
 import { getPaymentsByContingentRegistrationId } from "@/lib/payment/paymentActions";
 import {
   addAthletesAtEventsRedux,

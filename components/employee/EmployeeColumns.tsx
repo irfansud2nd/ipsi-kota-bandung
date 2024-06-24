@@ -1,20 +1,14 @@
 "use client";
-import { formatDate } from "@/lib/functions";
 import { ColumnDef } from "@tanstack/react-table";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Member } from "@/lib/member/memberConstants";
-import AdminManageButtons, {
-  EditButton,
-  ShowButton,
-} from "../admin/AdminManageButtons";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import MemberCard from "./MemberCard";
-import MemberForm from "./MemberForm";
+import { Employee } from "@/lib/employee/employeeConstants";
+import AdminManageButtons from "../admin/AdminManageButtons";
+import EmployeeCard from "./EmployeeCard";
+import EmployeeForm from "./EmployeeForm";
 import { Button } from "../ui/button";
 
-export const MemberColumns: ColumnDef<Member>[] = [
+export const EmployeeColumns: ColumnDef<Employee>[] = [
   {
     accessorKey: "name",
     header: "Nama",
@@ -27,7 +21,7 @@ export const MemberColumns: ColumnDef<Member>[] = [
     header: "Aksi",
     cell: ({ row, table }) => {
       const router = useRouter();
-      const member = row.original;
+      const employee = row.original;
       const rowsLength = table.getRowCount();
       const currentId = row.id;
 
@@ -47,10 +41,12 @@ export const MemberColumns: ColumnDef<Member>[] = [
           <AdminManageButtons
             show={{
               label: "Preview",
-              component: <MemberCard member={member} className="w-[250px]" />,
+              component: (
+                <EmployeeCard employee={employee} className="w-[250px]" />
+              ),
             }}
             edit={{
-              component: <MemberForm memberToEdit={member} noDialog />,
+              component: <EmployeeForm employeeToEdit={employee} noDialog />,
             }}
             handleDelete={handleDelete}
           />

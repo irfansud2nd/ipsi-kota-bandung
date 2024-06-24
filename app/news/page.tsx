@@ -1,10 +1,10 @@
 import NewsList from "@/components/news/NewsList";
 import { Metadata } from "next";
 import { News } from "@/lib/news/newsConstants";
-import { getNewsArr } from "@/lib/actions";
 import PagePagination from "@/components/ui/PagePagination";
 import PageBanner from "@/components/ui/PageBanner";
 import Container from "@/components/ui/Container";
+import { getNewsArr } from "@/lib/news/newsActions";
 
 export const metadata: Metadata = {
   title: "Berita",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const page = async ({ searchParams }: { searchParams: { page: string } }) => {
   let limit = 6;
   const page = Number(searchParams.page) || 1;
-  const newsArr: News[] = await getNewsArr(page, limit);
+  const newsArr = await getNewsArr(page, limit);
 
   return (
     <div>

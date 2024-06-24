@@ -5,9 +5,9 @@ import HomeBanner from "@/components/home/HomeBanner";
 import HomeMenu from "@/components/home/HomeMenu";
 import Announcement from "@/components/home/Announcement";
 import { championships } from "@/lib/event/eventConstants";
-import { getEvents, getNewsArr } from "@/lib/actions";
 import OngoingChampionships from "@/components/championship/OngoingChampionships";
-import HomeDialog from "@/components/home/HomeDialog";
+import { getNewsArr } from "@/lib/news/newsActions";
+import { getEvents } from "@/lib/event/eventActions";
 
 export default async function Home() {
   const events = await getEvents(1, 3);

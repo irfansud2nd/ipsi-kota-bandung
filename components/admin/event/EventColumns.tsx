@@ -21,15 +21,15 @@ export const EventColumns: ColumnDef<Event>[] = [
 
       return (
         <div>
-          {event.locationUrl ? (
+          {event.location_url ? (
             <Link
-              href={event.locationUrl}
+              href={event.location_url}
               className="hover:text-green- transition"
             >
-              {event.locationName}
+              {event.location_name}
             </Link>
           ) : (
-            event.locationName
+            event.location_name
           )}
         </div>
       );
@@ -43,13 +43,13 @@ export const EventColumns: ColumnDef<Event>[] = [
       return (
         <div>
           <p className="whitespace-nowrap">
-            {formatDate(event.dateStart, {
+            {formatDate(event.date_start, {
               longMonth: true,
               withoutHour: true,
-              withoutYear: event.dateEnd != 0,
+              withoutYear: event.date_end != 0,
             })}
-            {event.dateEnd
-              ? ` - ${formatDate(event.dateEnd, {
+            {event.date_end
+              ? ` - ${formatDate(event.date_end, {
                   longMonth: true,
                   withoutHour: true,
                 })}`
@@ -66,9 +66,9 @@ export const EventColumns: ColumnDef<Event>[] = [
       const event = row.original;
       return (
         <div>
-          {formatDate(event.timeStart, { hourOnly: true })}
-          {event.timeEnd
-            ? ` - ${formatDate(event.timeEnd, {
+          {formatDate(event.time_start, { hourOnly: true })}
+          {event.time_end
+            ? ` - ${formatDate(event.time_end, {
                 hourOnly: true,
               })} WIB`
             : " WIB - selesai"}
@@ -77,17 +77,17 @@ export const EventColumns: ColumnDef<Event>[] = [
     },
   },
   {
-    accessorKey: "creatorName",
+    accessorKey: "organizer",
     header: "Penyelenggara",
   },
   {
-    accessorKey: "creatorEmail",
+    accessorKey: "created_by",
     header: "Email Pembuat",
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Waktu Pembuatan",
-    cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
+    cell: ({ row }) => <div>{formatDate(row.original.created_at)}</div>,
   },
   {
     header: "Aksi",

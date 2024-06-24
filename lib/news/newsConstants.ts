@@ -2,17 +2,24 @@ import * as yup from "yup";
 import { imageMaxSize, imageSchema } from "../form/formConstants";
 import { v4 } from "uuid";
 
-export type News = {
+export type NewsBase = {
   id: string;
   title: string;
+  text: string;
+  created_by: string;
+  writer: string;
+  created_at: number;
+};
+
+export type NewsSql = NewsBase & {
+  image: string;
+};
+
+export type News = NewsBase & {
   image: {
     file?: File;
     downloadUrl: string;
   };
-  text: string;
-  creatorEmail: string;
-  creatorName: string;
-  createdAt: number;
 };
 
 export const newsInitialValue: News = {
@@ -23,9 +30,9 @@ export const newsInitialValue: News = {
     downloadUrl: "",
   },
   text: "",
-  creatorEmail: "",
-  creatorName: "IPSI Kota Bandung",
-  createdAt: 0,
+  created_by: "",
+  writer: "IPSI Kota Bandung",
+  created_at: 0,
 };
 
 export const newsSchema = (ignoreImage: boolean = false) => {
@@ -35,7 +42,7 @@ export const newsSchema = (ignoreImage: boolean = false) => {
       .required("Tolong lengkapi judul berita")
       .max(225, "Judul berita terlalu panjang"),
     text: yup.string().required("Tolong lengkapi isi berita"),
-    creatorName: yup.string().required("Tolong lengkapi nama penulis"),
+    writer: yup.string().required("Tolong lengkapi nama penulis"),
   });
   if (!ignoreImage)
     schema = schema.concat(
@@ -59,9 +66,9 @@ export const getDummyNews = (length: number, startNumber: number = 0) => {
         downloadUrl: `https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/news%2F7117670d-91d1-4a8e-ad73-5781291a17df?alt=media&token=51267911-66a7-454c-b6f3-dc784d395b94`,
       },
       text: `<h2>Konten ${i}</h2><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p><p></p><ul><li><p>item 1</p></li><li><p>item 2</p></li><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p></li></ul><ol><li><p>item 1</p></li><li><p>item 2</p><p></p></li></ol><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p>`,
-      creatorEmail: `irfansud${i}@gmail.com`,
-      creatorName: `IPSI Kota Bandung`,
-      createdAt: Date.now() + i * 99999999,
+      created_by: `irfansud${i}@gmail.com`,
+      writer: `IPSI Kota Bandung`,
+      created_at: Date.now() + i * 99999999,
     });
   }
   return result;

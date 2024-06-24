@@ -37,7 +37,7 @@ const IsAuthorized = ({ children }: Props) => {
             ...session?.user,
             name: name ?? session?.user?.name,
             authorizedToken: token,
-            image: image ? image.downloadUrl : session?.user?.image,
+            image: image ?? session?.user?.image,
           },
         });
       }

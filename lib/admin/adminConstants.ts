@@ -13,14 +13,21 @@ export type SpecialUserRole =
   | "adminEvent"
   | "pelatih";
 
-export type SpecialUser = {
+export type SpecialUserBase = {
   name: string;
   email: string;
   roles: SpecialUserRole[];
+};
+
+export type SpecialUser = SpecialUserBase & {
   image?: {
     file?: File;
     downloadUrl: string;
   };
+};
+
+export type SpecialUserSql = SpecialUserBase & {
+  image: string;
 };
 
 export const hideAdminLinksFrom = [

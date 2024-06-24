@@ -1,7 +1,8 @@
 import { baseUrl } from "@/lib/constants";
 import { championships } from "@/lib/event/eventConstants";
-import { getEvents, getNewsArr } from "@/lib/actions";
 import { MetadataRoute } from "next";
+import { getNewsArr } from "@/lib/news/newsActions";
+import { getEvents } from "@/lib/event/eventActions";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const events = await getEvents();

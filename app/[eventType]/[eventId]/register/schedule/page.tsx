@@ -6,7 +6,7 @@ const page = ({ params }: { params: { eventId: string } }) => {
   const championship = getChampionship(params.eventId);
   if (!championship) return notFound();
 
-  if (Date.now() <= championship.dateStart)
+  if (Date.now() <= championship.date_start)
     return (
       <PageInfo
         type="sorry"

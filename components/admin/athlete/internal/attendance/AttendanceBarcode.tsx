@@ -6,11 +6,6 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { QRCodeSVG } from "qrcode.react";
-import {
-  generateAttendanceToken,
-  getAttendanceToken,
-  updateAttendanceToken,
-} from "@/lib/athlete/internal/internalAthleteFunctions";
 import { useEffect, useState } from "react";
 import { toastError } from "@/lib/form/formFunctions";
 import Loading from "@/components/ui/Loading";
@@ -19,6 +14,11 @@ import { toast } from "sonner";
 import { getSpecialUserLabel } from "@/lib/functions";
 import { sign } from "jsonwebtoken";
 import { getToken } from "next-auth/jwt";
+import {
+  addAttendanceToken,
+  getAttendanceToken,
+  updateAttendanceToken,
+} from "@/lib/athlete/internal/internalAthleteActions";
 
 type Props = {
   athleteType: InternalAthleteRole;
@@ -42,7 +42,7 @@ const AttendanceBarcode = ({ athleteType }: Props) => {
 
   const handleGenerate = () => {
     setLoading(true);
-    generateAttendanceToken(athleteType)
+    addAttendanceToken(athleteType)
       .then((res) => setToken(res))
       .catch((error) => toastError(error))
       .finally(() => setLoading(false));

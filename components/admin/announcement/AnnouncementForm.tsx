@@ -3,15 +3,17 @@ import InputRichText from "@/components/inputs/InputRichText";
 import InputText from "@/components/inputs/InputText";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { updateAnnouncement } from "@/lib/announcement/announcementActions";
 import {
   Announcement,
   announcementSchema,
 } from "@/lib/announcement/announcementConstants";
-import { updateAnnouncement } from "@/lib/announcement/announcementFunctions";
+import { toastError } from "@/lib/form/formFunctions";
 import { Form, Formik, FormikProps } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const AnnouncementForm = ({ announcement }: { announcement: Announcement }) => {
   const [open, setOpen] = useState(false);
@@ -26,13 +28,19 @@ const AnnouncementForm = ({ announcement }: { announcement: Announcement }) => {
         <h2 className="text-xl font-semibold">Ubah Pengumuman</h2>
         <Formik
           initialValues={announcement}
-          onSubmit={(values, { setSubmitting }) => {
-            updateAnnouncement(values)
-              .then(() => {
-                setOpen(false);
-                router.refresh();
-              })
-              .catch(() => setSubmitting(false));
+          onSubmit={async (values, { setSubmitting }) => {
+            const toastId = toast.loading("Memperbaharui pengumuman");
+            try {
+              await updateAnnouncement(values);
+              setOpen(false);
+              router.refresh();
+              toast.success("Pengumuman berhasil diperbaharui", {
+                id: toastId,
+              });
+            } catch (error) {
+              toastError(error, toastId);
+              setSubmitting(false);
+            }
           }}
           validationSchema={announcementSchema}
         >
@@ -46,7 +54,7 @@ const AnnouncementForm = ({ announcement }: { announcement: Announcement }) => {
                 />
                 <InputText
                   label="Email Penulis"
-                  name="updaterEmail"
+                  name="updater_email"
                   formik={props}
                   forceDisabled
                   forceValue={session.data?.user?.email as string}

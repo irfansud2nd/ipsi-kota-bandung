@@ -1,18 +1,24 @@
 import * as yup from "yup";
 import { imageMaxSize, imageSchema } from "../form/formConstants";
 
-export type Member = {
+export type EmployeeBase = {
   id: string;
   name: string;
   position: string;
   order: number;
+};
+
+export type Employee = EmployeeBase & {
   image?: {
     file?: File;
     downloadUrl: string;
   };
 };
+export type EmployeeSql = EmployeeBase & {
+  image: string;
+};
 
-export const memberInitialValue: Member = {
+export const employeeInitialValue: Employee = {
   id: "",
   name: "",
   position: "",
@@ -22,7 +28,7 @@ export const memberInitialValue: Member = {
   },
 };
 
-export const memberSchema = (ignoreImage: boolean = false) => {
+export const employeeSchema = (ignoreImage: boolean = false) => {
   let schema = yup.object({
     name: yup
       .string()
@@ -37,7 +43,7 @@ export const memberSchema = (ignoreImage: boolean = false) => {
     schema = schema.concat(
       yup.object({
         image: yup.object({
-          file: imageSchema(imageMaxSize.member),
+          file: imageSchema(imageMaxSize.employee),
         }),
       })
     );

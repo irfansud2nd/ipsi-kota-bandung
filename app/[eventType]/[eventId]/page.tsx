@@ -1,6 +1,5 @@
 import EventDisplay from "@/components/Event/EventDisplay";
 import Container from "@/components/ui/Container";
-import { getEvent, getEvents } from "@/lib/actions";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -15,6 +14,7 @@ import { getChampionship, getChampionships } from "@/lib/event/eventFunctions";
 import Link from "next/link";
 import EventCard from "@/components/Event/EventCard";
 import { baseUrl } from "@/lib/constants";
+import { getEvent, getEvents } from "@/lib/event/eventActions";
 
 type Props = {
   params: { eventId: string; eventType: string };

@@ -18,12 +18,30 @@ export const sendFile = async (file: File, directory: string) => {
 };
 
 export const toastError = (error: any, id?: string | number) => {
-  const message = error.response?.data
-    ? error.response.data.message
-    : error.message ?? error ?? "Something went wrong";
-  const code = error.response?.data
-    ? error.response.data.code
-    : error.code ?? "unkonwn-code";
+  const getNestedProperty = (obj: any, property: string): any => {
+    if (obj == null) return undefined;
+
+    if (obj.hasOwnProperty(property)) {
+      return obj[property];
+    }
+
+    for (const key in obj) {
+      if (obj[key] && typeof obj[key] === "object") {
+        const result = getNestedProperty(obj[key], property);
+        if (result !== undefined) {
+          return result;
+        }
+      }
+    }
+
+    return undefined;
+  };
+  const message = getNestedProperty(error, "message") ?? "Something went wrong";
+  const code = getNestedProperty(error, "code") ?? "unkonwn-code";
+
+  console.log({ error });
+  console.log({ message });
+  console.log({ code });
 
   toast.error(`${message} | ${code || "no-code"}`, { id });
 };

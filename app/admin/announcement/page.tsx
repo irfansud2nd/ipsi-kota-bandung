@@ -1,8 +1,8 @@
 import AnnouncementForm from "@/components/admin/announcement/AnnouncementForm";
 import Container from "@/components/ui/Container";
 import RichTextDisplay from "@/components/ui/RichTextDisplay";
+import { getAnnouncement } from "@/lib/announcement/announcementActions";
 import { formatDate } from "@/lib/functions";
-import { getAnnouncement } from "@/lib/actions";
 
 const page = async () => {
   const announcement = await getAnnouncement();
@@ -15,8 +15,8 @@ const page = async () => {
         className="border-2 p-2 text-justify rounded"
       />
       <p>
-        Terakhir diperbaharui pada <b>{formatDate(announcement.updatedAt)}</b>{" "}
-        oleh <b>{announcement.updaterEmail}</b>
+        Terakhir diperbaharui pada <b>{formatDate(announcement.updated_at)}</b>{" "}
+        oleh <b>{announcement.updater_email}</b>
       </p>
       <AnnouncementForm announcement={announcement} />
     </Container>

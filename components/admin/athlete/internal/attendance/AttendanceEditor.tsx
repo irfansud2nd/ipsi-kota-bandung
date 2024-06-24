@@ -28,6 +28,11 @@ import { toastError } from "@/lib/form/formFunctions";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { getStartEndOfDay } from "@/lib/functions";
+import {
+  addAttendanceSql,
+  deleteAttendanceSql,
+  updateAttendanceSql,
+} from "@/lib/athlete/internal/internalAthleteActions";
 
 type Props = {
   data: AttendanceReport[];
@@ -71,10 +76,7 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
     const toastId = toast.loading("Menyimpan kehadiran");
     try {
       if (attendance.id) {
-        await axios.patch("/api/attendance", {
-          id: attendance.id,
-          type: attendance.type,
-        });
+        await updateAttendanceSql(attendance.id, attendance.type);
       } else {
         const formattedDate = new Date(date).getTime();
 
@@ -85,7 +87,7 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
           type: attendance.type,
           role,
         };
-        await axios.post("/api/attendance", data);
+        await addAttendanceSql(data);
       }
       setIsSubmitting(false);
       toast.success("Kehadiran berhasil disimpan", { id: toastId });
@@ -101,7 +103,7 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
     try {
       if (!attendance?.id)
         throw { messsage: "Tidak ada kehadiran yang dipilih" };
-      await axios.delete(`/api/attendance?id=${attendance.id}`);
+      await deleteAttendanceSql(attendance.id);
       toast.success("Kehadirean berhasil dihapus", { id: toastId });
       router.refresh();
     } catch (error) {

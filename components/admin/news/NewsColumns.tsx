@@ -13,17 +13,17 @@ export const NewsColumns: ColumnDef<News>[] = [
     header: "Judul Berita",
   },
   {
-    accessorKey: "creatorName",
+    accessorKey: "writer",
     header: "Penulis",
   },
   {
-    accessorKey: "creatorEmail",
+    accessorKey: "created_by",
     header: "Email Penulis",
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: "Waktu Pembuatan",
-    cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
+    cell: ({ row }) => <div>{formatDate(row.original.created_at)}</div>,
   },
   {
     header: "Aksi",
@@ -34,7 +34,7 @@ export const NewsColumns: ColumnDef<News>[] = [
       const handleDelete = async () => {
         const result = await confirm("Hapus Berita");
         if (result) {
-          deleteNews(row.original).then((res) => router.refresh());
+          deleteNews(row.original).then(() => router.refresh());
         }
       };
       return (

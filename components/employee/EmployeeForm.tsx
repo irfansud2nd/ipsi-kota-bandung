@@ -1,9 +1,9 @@
 "use client";
 import {
-  Member,
-  memberInitialValue,
-  memberSchema,
-} from "@/lib/member/memberConstants";
+  Employee,
+  employeeInitialValue,
+  employeeSchema,
+} from "@/lib/employee/employeeConstants";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { EditButton } from "../admin/AdminManageButtons";
 import { Button } from "../ui/button";
@@ -11,25 +11,25 @@ import { SpecialUser, SpecialUserRole } from "@/lib/admin/adminConstants";
 import { Form, Formik, FormikProps } from "formik";
 import InputText from "../inputs/InputText";
 import InputFile from "../inputs/InputFile";
-import MemberCard from "./MemberCard";
+import EmployeeCard from "./EmployeeCard";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { decode } from "jsonwebtoken";
 import { updateSpecialUser } from "@/lib/admin/adminFunctions";
-import { sendMember, updateMember } from "@/lib/member/memberFunctions";
+import { addEmployee, updateEmployee } from "@/lib/employee/employeeFunctions";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  memberToEdit?: Member;
+  employeeToEdit?: Employee;
   athlete?: boolean;
   noDialog?: boolean;
 };
 
-const FormComponent = ({ memberToEdit, athlete }: Props) => {
+const FormComponent = ({ employeeToEdit, athlete }: Props) => {
   const [changeImage, setChangeImage] = useState(false);
   const session = useSession();
 
-  const athletToEdit: Member | undefined = athlete
+  const athletToEdit: Employee | undefined = athlete
     ? {
         name: session.data?.user?.name || "",
         image: {
@@ -47,7 +47,7 @@ const FormComponent = ({ memberToEdit, athlete }: Props) => {
 
   return (
     <Formik
-      initialValues={memberToEdit ?? athletToEdit ?? memberInitialValue}
+      initialValues={employeeToEdit ?? athletToEdit ?? employeeInitialValue}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
           if (athlete) {
@@ -62,12 +62,12 @@ const FormComponent = ({ memberToEdit, athlete }: Props) => {
               roles,
             };
             await updateSpecialUser(data);
-          } else if (memberToEdit) {
-            // UPDATE MEMBER
-            await updateMember(values);
+          } else if (employeeToEdit) {
+            // UPDATE EMPLOYEE
+            await updateEmployee(values);
           } else {
-            // SEND MEMBER
-            await sendMember(values);
+            // SEND EMPLOYEE
+            await addEmployee(values);
           }
           router.refresh();
           resetForm();
@@ -75,9 +75,9 @@ const FormComponent = ({ memberToEdit, athlete }: Props) => {
           setSubmitting(false);
         }
       }}
-      validationSchema={memberSchema(changeImage)}
+      validationSchema={employeeSchema(changeImage)}
     >
-      {(props: FormikProps<Member>) => {
+      {(props: FormikProps<Employee>) => {
         return (
           <Form>
             <div className="flex flex-col gap-2">
@@ -98,7 +98,7 @@ const FormComponent = ({ memberToEdit, athlete }: Props) => {
                   <Button type="button">Lihat Preview</Button>
                 </DialogTrigger>
                 <DialogContent className="w-[250px]">
-                  <MemberCard member={props.values} />
+                  <EmployeeCard employee={props.values} />
                 </DialogContent>
               </Dialog>
               <Button type="submit" disabled={props.isSubmitting}>
@@ -112,13 +112,13 @@ const FormComponent = ({ memberToEdit, athlete }: Props) => {
   );
 };
 
-const MemberForm = ({ memberToEdit, athlete, noDialog }: Props) => {
+const EmployeeForm = ({ employeeToEdit, athlete, noDialog }: Props) => {
   if (noDialog)
-    return <FormComponent memberToEdit={memberToEdit} athlete={athlete} />;
+    return <FormComponent employeeToEdit={employeeToEdit} athlete={athlete} />;
   return (
     <Dialog>
-      <DialogTrigger asChild={!memberToEdit}>
-        {memberToEdit ? (
+      <DialogTrigger asChild={!employeeToEdit}>
+        {employeeToEdit ? (
           <EditButton />
         ) : (
           <Button>{athlete ? "Ubah Data" : "Tambah"}</Button>
@@ -130,4 +130,4 @@ const MemberForm = ({ memberToEdit, athlete, noDialog }: Props) => {
     </Dialog>
   );
 };
-export default MemberForm;
+export default EmployeeForm;

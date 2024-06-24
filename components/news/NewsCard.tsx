@@ -20,8 +20,8 @@ const NewsCard = ({ news }: Props) => {
       </Link>
       <div className="p-3 h-full flex flex-col">
         <p>
-          {news.creatorName} |{" "}
-          {formatDate(news.createdAt, {
+          {news.writer} |{" "}
+          {formatDate(news.created_at, {
             withoutHour: true,
             longMonth: true,
           })}

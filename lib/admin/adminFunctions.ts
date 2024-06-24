@@ -1,12 +1,23 @@
 import axios from "axios";
-import { SpecialUserRole, SpecialUser, roleAccess } from "./adminConstants";
+import {
+  SpecialUserRole,
+  SpecialUser,
+  roleAccess,
+  SpecialUserSql,
+} from "./adminConstants";
 import { toast } from "sonner";
 import { sendFile, toastError } from "../form/formFunctions";
 import {
   InternalAthleteRole,
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
-import { apiProtect } from "./adminActions";
+import {
+  addSpecialUserSql,
+  apiProtect,
+  deleteSpecialUserSql,
+  getSpecialUserSqlByEmail,
+  updateSpecialUserSql,
+} from "./adminActions";
 
 // IS PERMITTED
 export const isPermitted = (
@@ -48,15 +59,15 @@ export const addSepecialUser = async (specialUser: SpecialUser) => {
   let data: SpecialUser = specialUser;
   const toastId = toast.loading(`Menambahkan Akun`);
   try {
-    const res = await axios.get(`/api/specialUser?email=${data.email}`);
-    if (res.data.result.length) {
-      const registeredRoles: SpecialUserRole[] = res.data.result[0].roles;
+    const res = await getSpecialUserSqlByEmail(data.email);
+    if (res.length) {
+      const registeredRoles: SpecialUserRole[] = res[0].roles;
       if (registeredRoles.includes(data.roles[0]))
         throw { message: "Akun sudah didaftarkan" };
       data.roles.push(...registeredRoles);
-      data.name = res.data.result[0].name;
+      data.name = res[0].name;
     }
-    await axios.post("/api/specialUser", data);
+    await addSpecialUserSql(specialUserToSpecialUserSql(data));
     toast.success(`Akun berihasil ditambahkan`, { id: toastId });
   } catch (error) {
     toastError(error, toastId);
@@ -80,7 +91,7 @@ export const updateSpecialUser = async (specialUser: SpecialUser) => {
     }
     // UPDATE ATHLETE
     toast.loading("Memperbaharui akun", { id: toastId });
-    await axios.patch("/api/specialUser", data);
+    await updateSpecialUserSql(specialUserToSpecialUserSql(data));
     toast.success("Akun berhasil diperbaharui", { id: toastId });
   } catch (error) {
     toastError(error, toastId);
@@ -103,11 +114,9 @@ export const deleteSpecialUser = async (
 
       let data: SpecialUser = { ...specialUser };
       data.roles = data.roles.filter((assignedRole) => assignedRole != role);
-      await axios.patch("/api/specialUser", data);
+      await updateSpecialUserSql(specialUserToSpecialUserSql(data));
     } else {
-      await axios.delete(
-        `/api/specialUser?email=${specialUser.email}&role=${role}`
-      );
+      await deleteSpecialUserSql(specialUserToSpecialUserSql(specialUser));
     }
     toast.success("Akun berhasil dihapus", { id: toastId });
   } catch (error) {
@@ -126,4 +135,22 @@ export const isSpecialRole = (role: SpecialUserRole) => {
   ];
 
   return roles.includes(role);
+};
+
+export const specialUserSqlToSpecialUser = (specialUserSql: SpecialUserSql) => {
+  const result: SpecialUser = {
+    ...specialUserSql,
+    image: {
+      downloadUrl: specialUserSql.image,
+    },
+  };
+  return result;
+};
+
+export const specialUserToSpecialUserSql = (specialUser: SpecialUser) => {
+  const result: SpecialUserSql = {
+    ...specialUser,
+    image: specialUser.image?.downloadUrl || "",
+  };
+  return result;
 };

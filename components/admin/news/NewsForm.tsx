@@ -5,7 +5,7 @@ import { Form, Formik, FormikProps } from "formik";
 import InputText from "@/components/inputs/InputText";
 import { useSession } from "next-auth/react";
 import InputRichText from "@/components/inputs/InputRichText";
-import { sendNews, updateNews } from "@/lib/news/newsFunctions";
+import { addNews, updateNews } from "@/lib/news/newsFunctions";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import NewsDisplay from "@/components/news/NewsDisplay";
@@ -22,8 +22,8 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
         if (newsToEdit) {
           updateNews(values).finally(() => setSubmitting(false));
         } else {
-          sendNews(values)
-            .then((res) => {
+          addNews(values)
+            .then(() => {
               resetForm();
             })
             .finally(() => setSubmitting(false));
@@ -35,7 +35,7 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
         return (
           <Form>
             <InputText label="Judul Berita" name="title" formik={props} />
-            <InputText label="Penulis" name="creatorName" formik={props} />
+            <InputText label="Penulis" name="writer" formik={props} />
             <InputFile
               label="Gambar"
               name="image"
@@ -46,12 +46,11 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
             <InputRichText label="Konten" name="text" formik={props} />
             <InputText
               label="Email Penulis"
-              name="creatorEmail"
+              name="created_by"
               formik={props}
               forceDisabled
               forceValue={
-                newsToEdit?.creatorEmail ??
-                (session.data?.user?.email as string)
+                newsToEdit?.created_by ?? (session.data?.user?.email as string)
               }
               className={`${!newsToEdit?.id && "hidden"}`}
             />
