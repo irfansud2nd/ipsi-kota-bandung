@@ -1,3 +1,4 @@
+"use server";
 import { apiProtect } from "@/lib/admin/adminActions";
 import {
   Attendance,
