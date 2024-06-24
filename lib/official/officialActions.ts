@@ -8,8 +8,8 @@ import { officialSqlToOfficial } from "./officialFunctions";
 // READ
 export const getOfficialsSqlByEmail = async (email: string) => {
   try {
-    const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
 
     const { data, error } = await supabase
       .from("officials")
@@ -31,8 +31,8 @@ export const getOfficialsSql = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "official" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "official" });
+    if (response) throw response;
 
     let getData = supabase.from("officials").select().returns<OfficialSql[]>();
 
@@ -52,10 +52,10 @@ export const getOfficialsSql = async (
 // CREATE
 export const addOfficialSql = async (officialSql: OfficialSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase.from("officials").insert(officialSql);
 
@@ -70,10 +70,10 @@ export const addOfficialSql = async (officialSql: OfficialSql) => {
 // UPDATE
 export const updateOfficialSql = async (officialSql: OfficialSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("officials")
@@ -91,10 +91,10 @@ export const updateOfficialSql = async (officialSql: OfficialSql) => {
 // DELETE
 export const deleteOfficialSql = async (officialSql: OfficialSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("officials")
@@ -115,8 +115,8 @@ export const getOfficials = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "official" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "official" });
+    if (response) throw response;
 
     const officialsSql = await getOfficialsSql(page, limit, showAll);
     const officials = officialsSql.map((officialSql) =>

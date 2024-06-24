@@ -30,8 +30,8 @@ import { deleteFile } from "@/lib/actions";
 // ATHLETE
 export const getAthletesByEmail = async (email: string) => {
   try {
-    const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
 
     const athletesSql = await getAthletesSqlByEmail(email);
     const athletes = athletesSql.map((athleteSql) =>
@@ -64,10 +64,10 @@ export const addAthlete = async (athleteData: Athlete) => {
     if (!athlete.image.file) throw { message: "Pas foto tidak ditemukan" };
     if (!athlete.kk.file) throw { message: "KK tidak ditemukan" };
 
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athlete.created_by,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // SEND IMAGE
     toast.loading("Mengunggah pas foto atlet", { id: toastId });
@@ -97,10 +97,10 @@ export const updateAthlete = async (athlete: Athlete) => {
   const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
 
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athlete.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     if (athlete.image.file) {
       // UPDATE IMAGE
@@ -135,10 +135,10 @@ export const deleteAthlete = async (athlete: Athlete) => {
   const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
 
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athlete.created_by,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // DELETE IMAGE
     toast.loading("Menghapus pas foto atlet", { id: toastId });
@@ -163,10 +163,10 @@ export const deleteAthlete = async (athlete: Athlete) => {
 // ATHLETE AT EVENT
 export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     const athleteAtEventSql = await addAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
@@ -183,10 +183,10 @@ export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
 
 export const updateAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     await updateAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
@@ -200,10 +200,10 @@ export const updateAthleteAtEvents = async (
   athleteAtEvents: AthleteAtEvent[]
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     await updateAthleteAtEventsSql(
       athleteAtEvents.map((item) => athleteAtEventToAhthleteAtEventSql(item))
@@ -215,10 +215,10 @@ export const updateAthleteAtEvents = async (
 
 export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     await deleteAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)

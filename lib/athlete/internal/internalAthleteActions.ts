@@ -137,11 +137,11 @@ export const getAttendances = cache(
     end.setHours(23, 59, 59);
 
     try {
-      const { message } = await apiProtect({
+      const response = await apiProtect({
         directory: `admin/${role}`,
         throwError: true,
       });
-      if (message) throw new Error(message);
+      if (response) throw response;
 
       const { data, error } = await supabase
         .from("special_users")

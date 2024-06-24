@@ -31,8 +31,8 @@ export const deleteFile = async (directory: string) => {
     if (acessedByGuest.some((item) => directory.split("/").includes(item)))
       params = { loggedInOnly: true };
 
-    const { message } = await apiProtect(params);
-    if (message) throw { message };
+    const response = await apiProtect(params);
+    if (response) throw response;
 
     await deleteObject(ref(storage, directory));
   } catch (error) {
@@ -54,8 +54,8 @@ export const uploadFile = async (formData: FormData) => {
     if (acessedByGuest.some((item) => directory.split("/").includes(item)))
       params = { loggedInOnly: true };
 
-    const { message } = await apiProtect(params);
-    if (message) throw { message };
+    const response = await apiProtect(params);
+    if (response) throw response;
 
     if (
       !imageSchema(Math.max(...Object.values(imageMaxSize))).isValidSync(file)

@@ -109,8 +109,8 @@ export const deleteSpecialUser = async (
       let permittedRoles: SpecialUserRole[] = ["master"];
       if (role.includes("athlete")) permittedRoles.push("pelatih");
 
-      const { message } = await apiProtect({ roles: permittedRoles });
-      if (message) throw { message };
+      const response = await apiProtect({ roles: permittedRoles });
+      if (response) throw response;
 
       let data: SpecialUser = { ...specialUser };
       data.roles = data.roles.filter((assignedRole) => assignedRole != role);

@@ -39,9 +39,9 @@ export const toastError = (error: any, id?: string | number) => {
   const message = getNestedProperty(error, "message") ?? "Something went wrong";
   const code = getNestedProperty(error, "code") ?? "unkonwn-code";
 
-  console.log({ error });
-  console.log({ message });
-  console.log({ code });
+  // console.log({ error });
+  // console.log({ message });
+  // console.log({ code });
 
   toast.error(`${message} | ${code || "no-code"}`, { id });
 };

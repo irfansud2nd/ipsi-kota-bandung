@@ -27,10 +27,10 @@ export const addPayment = async (paymentData: Payment) => {
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!payment.image.file) throw { message: "Bukti tidak ditemukan" };
 
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // SEND IMAGE
     toast.loading("Mengunggah bukti pembayaran", { id: toastId });
@@ -56,10 +56,10 @@ export const deletePayment = async (payment: Payment) => {
   const { imageUrl } = getFileUrl("payment", payment.id);
 
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // SEND IMAGE
     toast.loading("Menghapus bukti pembayaran", { id: toastId });

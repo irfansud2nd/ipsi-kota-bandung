@@ -104,8 +104,8 @@ export const getSpecialUsers = async (
 ) => {
   try {
     if (!forClient) {
-      const { message } = await apiProtect({ directory: `admin/${role}` });
-      if (message) throw new Error(message);
+      const response = await apiProtect({ directory: `admin/${role}` });
+      if (response) throw response;
     }
 
     const query = forClient ? "name, image" : "*";
@@ -197,15 +197,13 @@ export const apiProtect = async (options?: {
   const userEmail = session?.user?.email;
   let roles = options?.roles || [];
 
-  const initialResult: {
-    message?: string;
-    code?: string;
-    status?: number;
-  } = {
-    message: undefined,
-    code: undefined,
-    status: undefined,
-  };
+  const initialResult:
+    | {
+        message: string;
+        code: string;
+        status: number;
+      }
+    | undefined = undefined;
 
   const notAuthorized = {
     message: "Not authorized",
@@ -225,8 +223,6 @@ export const apiProtect = async (options?: {
   }
 
   if (options?.loggedInOnly) return initialResult;
-
-  console.log({ options, userEmail });
 
   if (options?.permittedEmail) {
     return userEmail == options.permittedEmail ? initialResult : notAuthorized;

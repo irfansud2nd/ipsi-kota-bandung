@@ -15,8 +15,8 @@ import { deleteFile } from "../actions";
 // OFFICIAL
 export const getOfficialsByEmail = async (email: string) => {
   try {
-    const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
 
     const officialsSql = await getOfficialsSqlByEmail(email);
     const officials = officialsSql.map((officialSql) =>
@@ -48,10 +48,10 @@ export const addOfficial = async (officialData: Official) => {
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!official.image.file) throw { message: "Pas foto tidak ditemukan" };
 
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: official.created_by,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // SEND IMAGE
     toast.loading("Mengunggah pas foto official", { id: toastId });
@@ -76,10 +76,10 @@ export const updateOfficial = async (official: Official) => {
   const { imageUrl } = getFileUrl("official", official.id);
 
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: official.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     if (official.image.file) {
       // UPDATE IMAGE
@@ -110,10 +110,10 @@ export const deleteOfficial = async (official: Official) => {
   const { imageUrl } = getFileUrl("official", official.id);
 
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: official.created_by,
     });
-    if (message) throw { message };
+    if (response) throw response;
 
     // DELETE IMAGE
     toast.loading("Menghapus pas foto official", { id: toastId });

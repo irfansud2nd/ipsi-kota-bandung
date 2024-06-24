@@ -14,8 +14,8 @@ import { athleteSqlToAthlete } from "./athleteFunctions";
 // GET
 export const getAthletesSqlByEmail = async (email: string) => {
   try {
-    const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
 
     const { data, error } = await supabase
       .from("athletes")
@@ -37,8 +37,8 @@ export const getAthletesSql = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "athlete" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw response;
 
     let getData = supabase.from("athletes").select().returns<AthleteSql[]>();
 
@@ -58,10 +58,10 @@ export const getAthletesSql = async (
 // CREATE
 export const addAthleteSql = async (athleteSql: AthleteSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athleteSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase.from("athletes").insert(athleteSql);
 
@@ -76,10 +76,10 @@ export const addAthleteSql = async (athleteSql: AthleteSql) => {
 // UPDATE
 export const updateAthleteSql = async (athleteSql: AthleteSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athleteSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("athletes")
@@ -97,10 +97,10 @@ export const updateAthleteSql = async (athleteSql: AthleteSql) => {
 // UPDATE
 export const deleteAthleteSql = async (athleteSql: AthleteSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: athleteSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("athletes")
@@ -121,8 +121,8 @@ export const getAthletes = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "athlete" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw response;
 
     const athletesSql = await getAthletesSql(page, limit, showAll);
     const athletes = athletesSql.map((athleteSql) =>
@@ -144,8 +144,8 @@ export const getMatchBaseds = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "championship" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw response;
 
     let params = {
       champ_id: championshipId,
@@ -181,8 +181,8 @@ export const getMatchBasedsByCategory = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "championship" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw response;
 
     let params = {
       champ_id: championshipId,
@@ -218,8 +218,8 @@ export const getAthtleteAtEventsByContingentRegistrationId = async (
   contingentRegistrationId: number
 ) => {
   try {
-    const { message } = await apiProtect({ loggedInOnly: true });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ loggedInOnly: true });
+    if (response) throw response;
 
     const { data: athleteAtEvents } = await supabase
       .rpc("get_athlete_at_events_by_contingent_registration_id", {
@@ -238,10 +238,10 @@ export const addAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const dataToSend: any = athletAtEventSql;
     delete dataToSend.registration_id;
@@ -264,10 +264,10 @@ export const updateAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("athlete_at_events")
@@ -301,10 +301,10 @@ export const deleteAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("athlete_at_events")

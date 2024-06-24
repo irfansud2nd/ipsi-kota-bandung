@@ -94,10 +94,10 @@ export const RegisteredAthleteColumns = (
           if (!result) return;
           const toastId = toast.loading("Menghapus pertandingan");
           try {
-            const { message } = await apiProtect({
+            const response = await apiProtect({
               permittedEmail: matchBased.created_by,
             });
-            if (message) throw { message };
+            if (response) throw response;
 
             const athleteAtEvent = matchBasedToAthleteAtEvent(matchBased);
             await deleteAthleteAtEvent(athleteAtEvent);

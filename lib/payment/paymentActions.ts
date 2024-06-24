@@ -9,10 +9,10 @@ import { Payment, PaymentSql } from "./paymentConstants";
 // CREATE
 export const addPaymentSql = async (paymentSql: PaymentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase.from("payments").insert(paymentSql);
 
@@ -27,10 +27,10 @@ export const addPaymentSql = async (paymentSql: PaymentSql) => {
 // UPDATE
 export const updatePaymentSql = async (paymentSql: PaymentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       directory: "payment",
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("payments")
@@ -48,10 +48,10 @@ export const updatePaymentSql = async (paymentSql: PaymentSql) => {
 // CREATE
 export const deletePaymentSql = async (paymentSql: PaymentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("payments")
@@ -72,10 +72,10 @@ export const getPaymentsByContingentRegistrationId = async (
   contingentRegsitrationId: number
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("get_payment_by_contingent_registration_id", {
@@ -97,10 +97,10 @@ export const getConfirmedPaymentByChampionshipId = async (
   limit: number
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       directory: "championship",
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("get_confirmed_payment_by_championship_id", {
@@ -124,10 +124,10 @@ export const getUnconfirmedPaymentByChampionshipId = async (
   limit: number
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       directory: "championship",
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("get_unconfirmed_payment_by_championship_id", {
@@ -166,10 +166,10 @@ export const sumPaymentBillByChampionshipId = async (
   championshipId: string
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("sum_payment_bill_by_championship_id", {
@@ -189,10 +189,10 @@ export const sumPaymentTotalByChampionshipId = async (
   championshipId: string
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("sum_payment_total_by_championship_id", {
@@ -212,10 +212,10 @@ export const sumConfirmedPaymentByChampionshipId = async (
   championshipId: string
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("sum_confirmed_payment_by_championship_id", {
@@ -235,10 +235,10 @@ export const sumUnconfirmedPaymentByChampionshipId = async (
   championshipId: string
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("sum_unconfirmed_payment_by_championship_id", {

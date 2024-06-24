@@ -20,10 +20,10 @@ import { apiProtect } from "../admin/adminActions";
 // CONTINGENT
 export const updateContingent = async (contingent: Contingent) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: contingent.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     await updateContingentSql(contingentToContingenSql(contingent));
 
@@ -35,10 +35,10 @@ export const updateContingent = async (contingent: Contingent) => {
 
 export const deleteContingent = async (contingent: Contingent) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: contingent.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     // DELETE CONTINGENT SQL
     await deleteContingentSql(contingentToContingenSql(contingent));
@@ -84,8 +84,8 @@ export const deleteContingentAtEvent = async (
   contingentAtEvent: ContingentAtEvent
 ) => {
   try {
-    const { message } = await apiProtect({ loggedInOnly: true });
-    if (message) throw { message };
+    const response = await apiProtect({ loggedInOnly: true });
+    if (response) throw response;
 
     await deleteContingentAtEventSql(
       contingentAtEventToContingentAtEventSql(contingentAtEvent)

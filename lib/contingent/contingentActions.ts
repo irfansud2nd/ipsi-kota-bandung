@@ -14,8 +14,8 @@ import {
 // GET
 export const getContingentByEmail = async (email: string) => {
   try {
-    const { message } = await apiProtect({ permittedEmail: email });
-    if (message) throw { message };
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
 
     const { data, error } = await supabase
       .rpc("get_contingent_by_email", {
@@ -39,8 +39,8 @@ export const getContingents = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "contingent" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "contingent" });
+    if (response) throw response;
 
     let params = {
       pg: page,
@@ -82,10 +82,10 @@ export const countContingent = async () => {
 // CONTINGENT SQL
 export const addContingentSql = async (contingentSql: ContingentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: contingentSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
     const { data } = await supabase
       .from("contingents")
       .select("created_by")
@@ -111,10 +111,10 @@ export const addContingentSql = async (contingentSql: ContingentSql) => {
 };
 export const updateContingentSql = async (contingentSql: ContingentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: contingentSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("contingents")
@@ -131,10 +131,10 @@ export const updateContingentSql = async (contingentSql: ContingentSql) => {
 
 export const deleteContingentSql = async (contingentSql: ContingentSql) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       permittedEmail: contingentSql.created_by,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("contingents")
@@ -151,8 +151,8 @@ export const deleteContingentSql = async (contingentSql: ContingentSql) => {
 // READ
 export const getContingenAtEvents = async (contingentId: string) => {
   try {
-    const { message } = await apiProtect({ loggedInOnly: true });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ loggedInOnly: true });
+    if (response) throw response;
 
     const { data, error } = await supabase.rpc(
       "get_contingent_at_events_by_contingent_id",
@@ -192,10 +192,10 @@ export const addContingentAtEventSql = async (
     const dataToSend: any = contingentAtEventSql;
     delete dataToSend.registration_id;
 
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error, data } = await supabase
       .from("contingent_at_events")
@@ -215,10 +215,10 @@ export const deleteContingentAtEventSql = async (
   contingentAtEventSql: ContingentAtEventSql
 ) => {
   try {
-    const { message } = await apiProtect({
+    const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (message) throw new Error(message);
+    if (response) throw response;
 
     const { error } = await supabase
       .from("contingent_at_events")
@@ -240,8 +240,8 @@ export const getRegisteredContingents = async (
   showAll: boolean = false
 ) => {
   try {
-    const { message } = await apiProtect({ directory: "championship" });
-    if (message) throw new Error(message);
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw response;
 
     let params = {
       champ_id: championshipId,
