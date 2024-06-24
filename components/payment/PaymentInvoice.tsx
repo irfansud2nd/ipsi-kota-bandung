@@ -215,6 +215,8 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
     return result;
   };
 
+  const datas = splitData();
+
   const generatePdf = async () => {
     const element: any = printRef.current;
     const canvas = await html2canvas(element);
@@ -232,10 +234,8 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
       doc.addImage(canvas, "PNG", 0, position, imgWidth, imgHeight, "", "FAST");
       pageLength -= 1;
     }
-    doc.save(`${invoiceId}.pdf`);
+    doc.save(`${datas[0].contingentName} - ${invoiceId}.pdf`);
   };
-
-  const datas = splitData();
 
   return (
     <div className="flex justify-center items-center">
