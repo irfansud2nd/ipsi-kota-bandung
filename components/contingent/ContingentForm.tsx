@@ -50,7 +50,9 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{contingentToEdit ? "Edit" : "Tambah"} Kontingen</Button>
+        <Button className="w-fit mx-auto">
+          {contingentToEdit ? "Edit" : "Tambah"} Kontingen
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-fit">
         <Formik
