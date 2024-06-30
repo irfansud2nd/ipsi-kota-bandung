@@ -37,7 +37,7 @@ const MobileMenu = async () => {
               menu={adminLinks}
               onSheet
             />
-            <AdminChampionshipMenu />
+            <AdminChampionshipMenu onSheet />
           </div>
         )}
       </SheetContent>
