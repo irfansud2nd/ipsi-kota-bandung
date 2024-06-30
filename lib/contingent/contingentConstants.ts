@@ -30,6 +30,13 @@ export type ContingentAtEvent = ContingentAtEventSql & {
 
 export type RegisteredContingent = Contingent & ContingentAtEvent;
 
+export type RegisteredContingentAdmin = RegisteredContingent & {
+  rookie_fight: number;
+  rookie_art: number;
+  professional_fight: number;
+  professional_art: number;
+};
+
 export const contingentInitialValue: Contingent = {
   id: "",
   name: "",

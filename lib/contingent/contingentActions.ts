@@ -8,6 +8,7 @@ import {
   ContingentAtEventSql,
   ContingentSql,
   RegisteredContingent,
+  RegisteredContingentAdmin,
 } from "./contingentConstants";
 
 // CONTINGENT
@@ -255,8 +256,8 @@ export const getRegisteredContingents = async (
     }
 
     const { data, error } = await supabase
-      .rpc("get_registered_contingent_by_championship_id", params)
-      .returns<RegisteredContingent[]>();
+      .rpc("get_registered_contingent_admin_by_championship_id", params)
+      .returns<RegisteredContingentAdmin[]>();
 
     if (error) throw error;
 
