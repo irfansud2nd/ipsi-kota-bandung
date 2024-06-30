@@ -37,7 +37,7 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
         <CountDisplay
           title="Terkonfirmasi"
           count={formatToRupiah(confirmedPayment)}
-          className="w-fit h-fit"
+          className="w-fit h-fit hover:-translate-y-1 transition-all"
         />
       </Link>
       <Link href={"payment/unconfirmed"}>

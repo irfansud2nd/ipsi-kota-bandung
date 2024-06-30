@@ -19,15 +19,18 @@ const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
     <div className="h-full w-full flex justify-center items-center text-center">
       <div className="flex flex-col gap-1">
         <h1 className="text-3xl font-semibold">
-          Tidak ada kontingen terdaftar
-        </h1>
-        <p className="text-muted-foreground">
+          {/* Tidak ada Kontingen terdaftar */}
           {disableRegister
             ? "Maaf, pendaftaran telah ditutup"
             : "Daftarkan kontingen terlebih dahulu untuk melanjutkan"}
-        </p>
+        </h1>
+        {/* <p className="text-muted-foreground">
+          {disableRegister
+            ? "Maaf, pendaftaran telah ditutup"
+            : "Daftarkan kontingen terlebih dahulu untuk melanjutkan"}
+        </p> */}
         {disableRegister ? (
-          <Button asChild>
+          <Button asChild className="w-fit">
             <Link href={"/"}>Kembali ke halaman awal</Link>
           </Button>
         ) : (
