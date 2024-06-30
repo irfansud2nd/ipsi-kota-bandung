@@ -155,7 +155,7 @@ const EventDisplay = ({ event, preview }: Props) => {
 
   return (
     <div className="border-b-2 pb-2">
-      <div className="w-full grid grid-cols-1 md:grid-cols-3 grid-rows-1 max-md:grid-rows-[auto_1fr]">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 grid-rows-1 max-md:grid-rows-[auto_1fr] gap-x-5">
         {showImage ? (
           <img
             src={imageUrl}
@@ -166,7 +166,7 @@ const EventDisplay = ({ event, preview }: Props) => {
             IMAGE
           </div>
         )}
-        <div className="md:ml-5 flex flex-col w-full">
+        <div className="flex flex-col w-full">
           <h1 className="text-3xl font-bold border-b-2 pb-3 mb-3">
             {event.title}
           </h1>

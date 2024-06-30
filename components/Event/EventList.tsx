@@ -8,9 +8,10 @@ type Props = {
   events: (Event | Championship)[];
   onHome?: boolean;
   championship?: boolean;
+  onAdmin?: boolean;
 };
 
-const EventList = ({ onHome, events, championship }: Props) => {
+const EventList = ({ onHome, events, championship, onAdmin }: Props) => {
   return (
     <Container
       className={`h-fit transition
@@ -31,7 +32,7 @@ const EventList = ({ onHome, events, championship }: Props) => {
       {events.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {events?.map((event) => (
-            <EventCard event={event} key={event.id} />
+            <EventCard event={event} key={event.id} onAdmin={onAdmin} />
           ))}
         </div>
       ) : (

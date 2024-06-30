@@ -3,8 +3,16 @@ import { IoMenuSharp } from "react-icons/io5";
 import { Button } from "../ui/button";
 import ProfileButton from "./ProfileButton";
 import MobileMenuLinks from "./MobileMenuLinks";
+import SideMenuLinks from "../ui/SideMenuLinks";
+import { getAdminLinks } from "@/lib/admin/adminActions";
+import { clientLinks } from "@/lib/constants";
+import AdminChampionshipMenu from "../admin/AdminChampionshipMenu";
 
-const MobileMenu = () => {
+const MobileMenu = async () => {
+  const adminLinks = await getAdminLinks();
+
+  const showAdminMenu =
+    adminLinks.links.filter((item) => item.restricted == true).length > 0;
   return (
     <Sheet>
       <SheetTrigger className="lg:hidden" asChild>
@@ -14,7 +22,24 @@ const MobileMenu = () => {
       </SheetTrigger>
       <SheetContent className="w-fit min-w-40 lg:hidden">
         <ProfileButton mobile />
-        <MobileMenuLinks />
+        <SideMenuLinks className="flex flex-col gap-1" menu={clientLinks} />
+        {showAdminMenu && (
+          <div className="mt-2">
+            <div className="border-y-2 py-1 flex items-center gap-1">
+              <span className="border-t-2 w-full" />
+              <h2 className="text-lg font-semibold whitespace-nowrap">
+                ADMIN MENU
+              </h2>
+              <span className="border-t-2 w-full" />
+            </div>
+            <SideMenuLinks
+              className="flex flex-col gap-1"
+              menu={adminLinks}
+              onSheet
+            />
+            <AdminChampionshipMenu />
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );

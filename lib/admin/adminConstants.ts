@@ -114,43 +114,75 @@ const links: Links = [
     label: "Pengurus",
     restricted: true,
   },
+  {
+    href: "/admin/championship",
+    label: "Kejuaraan",
+    restricted: true,
+  },
 ];
 
-const championshipAdminLinks = championships.map((championship) => ({
-  title: championship.title,
-  prefix: `/admin/championship/${championship.id}`,
-  restricted: true,
-  links: [
+export const championshipAdminLinks: {
+  links: Links;
+  groupedLinks: GroupedLinks;
+} = {
+  links: [],
+  groupedLinks: [
     {
-      href: "/contingent",
-      label: "Daftar Kontingen",
+      title: "Kontingen",
+      prefix: "contingent",
+      links: [
+        {
+          href: "/",
+          label: "Daftar",
+        },
+        {
+          href: "/count",
+          label: "Jumlah",
+        },
+      ],
     },
     {
-      href: "/contingent/count",
-      label: "Jumlah Kontingen",
+      title: "Atlet",
+      prefix: "athlete",
+      links: [
+        {
+          href: "/",
+          label: "Daftar",
+        },
+        {
+          href: "/count",
+          label: "Jumlah Pertandingan",
+        },
+        {
+          href: "/categorized",
+          label: "Filter Kategori",
+        },
+        {
+          href: "/categorized/count",
+          label: "Kuota Pertandingan Pertasi",
+        },
+      ],
     },
     {
-      href: "/athlete",
-      label: "Daftar Atlet",
-    },
-    {
-      href: "/athlete/count",
-      label: "Jumlah Pertandingan",
-    },
-    {
-      href: "/athlete/categorized",
-      label: "Filter Kategori",
-    },
-    {
-      href: "/athlete/categorized/count",
-      label: "Kuota Pertandingan Prestasi",
-    },
-    {
-      href: "/payment",
-      label: "Pembayaran",
+      title: "Pembayaran",
+      prefix: "payment",
+      links: [
+        {
+          href: "/",
+          label: "Jumlah",
+        },
+        {
+          href: "/confirmed",
+          label: "Dikonfirmasi",
+        },
+        {
+          href: "/unconfirmed",
+          label: "Menunggu Konfirmasi",
+        },
+      ],
     },
   ],
-}));
+};
 
 const groupedLinks: GroupedLinks = [
   {
@@ -273,7 +305,6 @@ const groupedLinks: GroupedLinks = [
       },
     ],
   },
-  ...championshipAdminLinks,
 ];
 
 export const adminLinks = { links, groupedLinks };

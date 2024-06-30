@@ -7,13 +7,16 @@ import { FaClock } from "react-icons/fa6";
 
 type Props = {
   event: Event | Championship;
+  onAdmin?: boolean;
 };
-const EventCard = ({ event }: Props) => {
+const EventCard = ({ event, onAdmin }: Props) => {
   const championship =
     (event as Championship).register !== undefined
       ? (event as Championship)
       : undefined;
-  const link = `/${championship ? "championship" : "event"}/${event.id}`;
+  const link = `${onAdmin ? "/admin/" : "/"}${
+    championship ? "championship" : "event"
+  }/${event.id}`;
 
   return (
     <div className="rounded-lg bg-muted overflow-hidden hover:drop-shadow-lg hover:-translate-y-1 transition-all">

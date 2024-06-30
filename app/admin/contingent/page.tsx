@@ -1,3 +1,4 @@
+import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
 import ContingentTable from "@/components/admin/contingent/ContingentTable";
 import PagePagination from "@/components/ui/PagePagination";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,14 @@ const page = async ({
 
   return (
     <div className="p-2">
-      <h1 className="font-semibold text-3xl">Daftar Kontingen</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="font-semibold text-3xl">Daftar Kontingen</h1>
+        <TableDownloadButton
+          fileName="Daftar Kontingen"
+          needShowAll
+          isShowAll={showAll}
+        />
+      </div>
       <div className="bg-muted flex flex-col">
         <ContingentTable contingents={contingents} />
       </div>
