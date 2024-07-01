@@ -45,8 +45,9 @@ const PaymentForm = ({
 }: {
   selectedMatchBaseds: MatchBased[];
 }) => {
+  const test = useSelector((state: RootState) => state.payment.all[0]);
   const [open, setOpen] = useState(false);
-  const [isSent, setIsSent] = useState<Payment | undefined>();
+  const [isSent, setIsSent] = useState<Payment | undefined>(test);
 
   const dispatch = useDispatch();
 
@@ -117,7 +118,8 @@ Terimakasih.`,
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild disabled={!selectedMatchBaseds.length}>
+      {/* <DialogTrigger asChild disabled={!selectedMatchBaseds.length}> */}
+      <DialogTrigger asChild>
         <Button>Bayar</Button>
       </DialogTrigger>
       <DialogContent>
@@ -125,15 +127,17 @@ Terimakasih.`,
           <div className="w-fit">
             <p>Konfirmasi pembayaran ke</p>
             <div className="flex flex-col md:flex-row gap-x-3 gap-y-1">
-              <div className="flex flex-col gap-1 items-center border rounded p-2">
-                <p className="font-semibold">
-                  {championship.payment.contact.name}
-                </p>
-                <div className="flex gap-1 items-center">
-                  <p>{championship.payment.contact.phoneNumber}</p>
-                  <CopyButton text={championship.payment.contact.phoneNumber} />
-                </div>
-                <div className="flex-1 flex flex-col justify-around items-center">
+              <div className="flex flex-col gap-1 items-center ">
+                <div className="border rounded p-2 flex flex-col gap-2 items-center">
+                  <p className="font-semibold">
+                    {championship.payment.contact.name}
+                  </p>
+                  <div className="flex gap-1 items-center">
+                    <p>{championship.payment.contact.phoneNumber}</p>
+                    <CopyButton
+                      text={championship.payment.contact.phoneNumber}
+                    />
+                  </div>
                   <p className="text-center ">
                     Ikuti format pesan atau klik tombol dibawah ini
                   </p>
@@ -144,7 +148,20 @@ Terimakasih.`,
                       className="flex items-center gap-2"
                     >
                       <FaWhatsapp className="size-6" />
-                      Whatsapp
+                      Konfirmasi
+                    </Link>
+                  </Button>
+                </div>
+                <div className="w-full h-full flex flex-col justify-around items-center border rounded">
+                  <p className="font-semibold">Grup Official</p>
+                  <Button asChild>
+                    <Link
+                      href={championship.officialGroupLink}
+                      target="_blank"
+                      className="flex items-center gap-2"
+                    >
+                      <FaWhatsapp className="size-6" />
+                      Grup Official
                     </Link>
                   </Button>
                 </div>

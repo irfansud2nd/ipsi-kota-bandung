@@ -115,6 +115,7 @@ export type Championship = Event & {
     ganda: number;
     regu: number;
   };
+  officialGroupLink: string;
   showOnHome?: boolean;
   dialogOnHome?: boolean;
   testerEmail?: string[];
@@ -289,6 +290,7 @@ export const championships: Championship[] = [
       ganda: 350000,
       regu: 350000,
     },
+    officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
     showOnHome: true,
     dialogOnHome: true,
     testerEmail: [
