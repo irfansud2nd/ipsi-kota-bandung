@@ -123,7 +123,7 @@ Terimakasih.`,
       </DialogTrigger>
       <DialogContent>
         {isSent ? (
-          <div className="w-fit">
+          <div className="w-fit mx-auto">
             <p>Konfirmasi pembayaran ke</p>
             <div className="flex flex-col md:flex-row gap-x-3 gap-y-1">
               <div className="flex flex-col gap-1 items-center ">
@@ -170,7 +170,7 @@ Terimakasih.`,
                   <p className="font-semibold">Format Pesan</p>
                   <CopyButton text={genereteText(isSent).text} />
                 </div>
-                <p>
+                <p className="break-words max-w-[75vw]">
                   Halo Admin,
                   <br />
                   Saya perwakilan dari kontingen {isSent.contingent_name}, ingin
