@@ -391,6 +391,20 @@ export const countMatchByChampionshipId = async (championshipId: string) => {
   }
 };
 
+export const countAthleteByChampionshipId = async (championshipId: string) => {
+  try {
+    const { data, error } = await supabase
+      .rpc("count_athlete_by_championship_id", { champ_id: championshipId })
+      .returns<number>();
+
+    if (error) throw error;
+
+    return data || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const countProfessionalMatches = async (
   matches: {
     championshipId: string;

@@ -151,6 +151,10 @@ export const championshipAdminLinks: {
         },
         {
           href: "/count",
+          label: "Jumlah Atlet",
+        },
+        {
+          href: "/count/match",
           label: "Jumlah Pertandingan",
         },
         {
