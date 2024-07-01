@@ -89,17 +89,17 @@ export const addContingentSql = async (contingentSql: ContingentSql) => {
     if (response) throw response;
     const { data } = await supabase
       .from("contingents")
-      .select("created_by")
+      .select("created_by, name")
       .ilike("name", `%${contingentSql.name}%`);
 
     if (data?.length) {
-      const emailList = data.map((item) => item.created_by);
+      const infos = data.map((item) => `${item.name} -> ${item.created_by}`);
       throw {
         message: `Nama kontingen ${
           contingentSql.name
-        } telah digunakan, hubungi pendaftar dengan nama kontingen yang sama (${emailList.join(
-          " "
-        )})`,
+        } telah digunakan, hubungi pendaftar dengan nama kontingen yang sama. ( ${infos.join(
+          " | "
+        )} )`,
       };
     }
 

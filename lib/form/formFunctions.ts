@@ -37,13 +37,15 @@ export const toastError = (error: any, id?: string | number) => {
     return undefined;
   };
   const message = getNestedProperty(error, "message") ?? "Something went wrong";
-  const code = getNestedProperty(error, "code") ?? "unkonwn-code";
+  const code = getNestedProperty(error, "code") ?? undefined;
 
   // console.log({ error });
   // console.log({ message });
   // console.log({ code });
+  let string = message;
+  if (code) string += ` | ${code}`;
 
-  toast.error(`${message} | ${code || "no-code"}`, { id });
+  toast.error(string, { id });
 };
 
 export const testFunc = async () => {
