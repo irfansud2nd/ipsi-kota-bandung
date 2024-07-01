@@ -157,7 +157,6 @@ export const addContingentAndRegister = async (
 
     return { contingent, contingentAtEvents };
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
