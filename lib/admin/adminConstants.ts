@@ -142,6 +142,20 @@ export const championshipAdminLinks: {
       ],
     },
     {
+      title: "Official",
+      prefix: "official",
+      links: [
+        {
+          href: "/",
+          label: "Daftar",
+        },
+        {
+          href: "/count",
+          label: "Jumlah",
+        },
+      ],
+    },
+    {
       title: "Atlet",
       prefix: "athlete",
       links: [
