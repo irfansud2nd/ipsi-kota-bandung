@@ -45,9 +45,8 @@ const PaymentForm = ({
 }: {
   selectedMatchBaseds: MatchBased[];
 }) => {
-  const test = useSelector((state: RootState) => state.payment.all[0]);
   const [open, setOpen] = useState(false);
-  const [isSent, setIsSent] = useState<Payment | undefined>(test);
+  const [isSent, setIsSent] = useState<Payment | undefined>();
 
   const dispatch = useDispatch();
 
