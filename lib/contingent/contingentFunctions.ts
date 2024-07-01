@@ -148,12 +148,16 @@ export const addContingentAndRegister = async (
     if (!contingent.created_by)
       throw { message: "Email pendaftar tidak ditemukan" };
 
-    await addContingentSql(contingentToContingenSql(contingent));
+    const { result, error } = await addContingentSql(
+      contingentToContingenSql(contingent)
+    );
+    if (error) throw error;
 
     const contingentAtEvents = await addContingentAtEvent(contingent, eventId);
 
     return { contingent, contingentAtEvents };
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

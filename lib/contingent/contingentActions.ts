@@ -94,21 +94,22 @@ export const addContingentSql = async (contingentSql: ContingentSql) => {
 
     if (data?.length) {
       const emailList = data.map((item) => item.created_by);
-      throw new Error(`Nama kontingen telah digunakan`);
-      // throw new Error(
-      //   `Nama kontingen ${
-      //     contingentSql.name
-      //   } telah digunakan, hubungi pendaftar dengan nama kontingen yang sama (${emailList.join(
-      //     " "
-      //   )})`
-      // );
+      throw {
+        message: `Nama kontingen ${
+          contingentSql.name
+        } telah digunakan, hubungi pendaftar dengan nama kontingen yang sama (${emailList.join(
+          " "
+        )})`,
+      };
     }
 
     const { error } = await supabase.from("contingents").insert(contingentSql);
 
     if (error) throw error;
+
+    return { result: contingentSql };
   } catch (error) {
-    throw error;
+    return { error };
   }
 };
 export const updateContingentSql = async (contingentSql: ContingentSql) => {
