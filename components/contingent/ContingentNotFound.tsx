@@ -17,7 +17,7 @@ const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
 
   return (
     <div className="h-full w-full flex justify-center items-center text-center">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 items-center">
         <h1 className="text-3xl font-semibold">
           {/* Tidak ada Kontingen terdaftar */}
           {disableRegister
