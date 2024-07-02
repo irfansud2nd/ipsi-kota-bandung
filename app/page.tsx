@@ -6,8 +6,8 @@ import HomeMenu from "@/components/home/HomeMenu";
 import Announcement from "@/components/home/Announcement";
 import { championships } from "@/lib/event/eventConstants";
 import OngoingChampionships from "@/components/championship/OngoingChampionships";
-import { getNewsArr } from "@/lib/news/newsActions";
-import { getEvents } from "@/lib/event/eventActions";
+import { getNewsArr } from "@/lib/news/newsFunctions";
+import { getEvents } from "@/lib/event/eventFunctions";
 
 export default async function Home() {
   const events = await getEvents(1, 3);

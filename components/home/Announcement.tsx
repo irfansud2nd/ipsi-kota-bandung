@@ -1,9 +1,10 @@
 import { getAnnouncement } from "@/lib/announcement/announcementActions";
 import Container from "../ui/Container";
 import RichTextDisplay from "../ui/RichTextDisplay";
+import { fetchData } from "@/lib/functions";
 
 const Announcement = async () => {
-  const announcement = await getAnnouncement();
+  const announcement = await fetchData(() => getAnnouncement());
   return (
     <Container className="h-fit px-5 md:px-10">
       <div className="p-5 rounded-3xl bg-gradient-to-br from-yellow-400 to-yellow-100">

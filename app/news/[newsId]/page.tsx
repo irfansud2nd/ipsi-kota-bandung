@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import NewsItem from "@/components/news/NewsItem";
 import NewsDisplay from "@/components/news/NewsDisplay";
-import { getNews, getNewsArr } from "@/lib/news/newsActions";
+import { getNews, getNewsArr } from "@/lib/news/newsFunctions";
 
 type Props = {
   params: { newsId: string };
@@ -38,9 +38,9 @@ const page = async ({ params }: Props) => {
         <h3 className="font-semibold text-xl border-b-2 pb-2 mb-2">
           Berita Lainnya
         </h3>
-        {otherNews.map((news) => (
-          <NewsItem news={news} key={news.id} />
-        ))}
+        {otherNews.length
+          ? otherNews.map((news) => <NewsItem news={news} key={news.id} />)
+          : "Tidak ada berita lainnya."}
       </div>
     </Container>
   );

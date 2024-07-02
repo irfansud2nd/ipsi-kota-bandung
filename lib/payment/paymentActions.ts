@@ -1,68 +1,75 @@
 "use server";
 
 import { apiProtect } from "../admin/adminActions";
+import { ServerAction } from "../constants";
 import supabase from "../database/supabase";
-import { getStartEndOfDay } from "../functions";
+import { action, getStartEndOfDay } from "../functions";
 import { Payment, PaymentSql } from "./paymentConstants";
 
 // PAYMENT SQL
 // CREATE
-export const addPaymentSql = async (paymentSql: PaymentSql) => {
+export const addPaymentSql = async (
+  paymentSql: PaymentSql
+): Promise<ServerAction<PaymentSql>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("payments").insert(paymentSql);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return paymentSql;
+    return action.success(paymentSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // UPDATE
-export const updatePaymentSql = async (paymentSql: PaymentSql) => {
+export const updatePaymentSql = async (
+  paymentSql: PaymentSql
+): Promise<ServerAction<PaymentSql>> => {
   try {
     const response = await apiProtect({
       directory: "payment",
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("payments")
       .update(paymentSql)
       .eq("id", paymentSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return paymentSql;
+    return action.success(paymentSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // CREATE
-export const deletePaymentSql = async (paymentSql: PaymentSql) => {
+export const deletePaymentSql = async (
+  paymentSql: PaymentSql
+): Promise<ServerAction<PaymentSql>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("payments")
       .delete()
       .eq("id", paymentSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return paymentSql;
+    return action.success(paymentSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -70,12 +77,12 @@ export const deletePaymentSql = async (paymentSql: PaymentSql) => {
 // READ
 export const getPaymentsByContingentRegistrationId = async (
   contingentRegsitrationId: number
-) => {
+): Promise<ServerAction<Payment[]>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("get_payment_by_contingent_registration_id", {
@@ -83,11 +90,11 @@ export const getPaymentsByContingentRegistrationId = async (
       })
       .returns<Payment[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -95,12 +102,12 @@ export const getConfirmedPaymentByChampionshipId = async (
   championshipId: string,
   page: number,
   limit: number
-) => {
+): Promise<ServerAction<Payment[]>> => {
   try {
     const response = await apiProtect({
       directory: "championship",
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("get_confirmed_payment_by_championship_id", {
@@ -110,11 +117,11 @@ export const getConfirmedPaymentByChampionshipId = async (
       })
       .returns<Payment[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -122,12 +129,12 @@ export const getUnconfirmedPaymentByChampionshipId = async (
   championshipId: string,
   page: number,
   limit: number
-) => {
+): Promise<ServerAction<Payment[]>> => {
   try {
     const response = await apiProtect({
       directory: "championship",
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("get_unconfirmed_payment_by_championship_id", {
@@ -137,16 +144,18 @@ export const getUnconfirmedPaymentByChampionshipId = async (
       })
       .returns<Payment[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // OTHERS
-export const countPaymentSqlBefore = async (time: number) => {
+export const countPaymentSqlBefore = async (
+  time: number
+): Promise<ServerAction<number>> => {
   const { start } = getStartEndOfDay(time);
   try {
     const { count, error } = await supabase
@@ -155,21 +164,21 @@ export const countPaymentSqlBefore = async (time: number) => {
       .gt("created_at", start)
       .lt("created_at", time);
 
-    if (error) throw error;
-    return (count || 0) + 1;
+    if (error) throw new Error(error.message);
+    return action.success((count || 0) + 1);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const sumPaymentBillByChampionshipId = async (
   championshipId: string
-) => {
+): Promise<ServerAction<number>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("sum_payment_bill_by_championship_id", {
@@ -177,22 +186,22 @@ export const sumPaymentBillByChampionshipId = async (
       })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const sumPaymentTotalByChampionshipId = async (
   championshipId: string
-) => {
+): Promise<ServerAction<number>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("sum_payment_total_by_championship_id", {
@@ -200,22 +209,22 @@ export const sumPaymentTotalByChampionshipId = async (
       })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const sumConfirmedPaymentByChampionshipId = async (
   championshipId: string
-) => {
+): Promise<ServerAction<number>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("sum_confirmed_payment_by_championship_id", {
@@ -223,22 +232,22 @@ export const sumConfirmedPaymentByChampionshipId = async (
       })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const sumUnconfirmedPaymentByChampionshipId = async (
   championshipId: string
-) => {
+): Promise<ServerAction<number>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .rpc("sum_unconfirmed_payment_by_championship_id", {
@@ -246,10 +255,10 @@ export const sumUnconfirmedPaymentByChampionshipId = async (
       })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };

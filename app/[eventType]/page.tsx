@@ -2,8 +2,7 @@ import EventList from "@/components/Event/EventList";
 import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
-import { getEvents } from "@/lib/event/eventActions";
-import { getChampionships } from "@/lib/event/eventFunctions";
+import { getChampionships, getEvents } from "@/lib/event/eventFunctions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -34,10 +33,12 @@ const page = async ({ searchParams, params }: Props) => {
 
   const limit = 6;
   const page = Number(searchParams.page) || 1;
+
   const events =
     eventType == "event"
       ? await getEvents(page, limit)
       : getChampionships(page, limit);
+
   return (
     <div>
       <PageBanner

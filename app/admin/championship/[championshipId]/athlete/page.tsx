@@ -3,6 +3,7 @@ import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
 import MatchBasedTable from "@/components/admin/athlete/external/MatchBasedTable";
 import { getMatchBaseds } from "@/lib/athlete/external/athleteActions";
+import { fetchData } from "@/lib/functions";
 
 const page = async ({
   params,
@@ -15,11 +16,8 @@ const page = async ({
   const limit = 10;
   const showAll = searchParams.showAll == "true";
 
-  const matchBaseds = await getMatchBaseds(
-    params.championshipId,
-    page,
-    limit,
-    showAll
+  const matchBaseds = await fetchData(() =>
+    getMatchBaseds(params.championshipId, page, limit, showAll)
   );
 
   return (

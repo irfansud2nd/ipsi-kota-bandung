@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
-import { internalAthleteRoles } from "./athlete/internal/internalAthleteConstants";
-import { getSpecialUserLabel } from "./functions";
+import { PostgrestError } from "@supabase/supabase-js";
+
+export type ServerAction<T> =
+  | { result: T; error: null }
+  | { result: null; error: PostgrestError };
 
 export type Links = {
   href: string;

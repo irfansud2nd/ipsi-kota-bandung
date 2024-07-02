@@ -10,11 +10,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getChampionship, getChampionships } from "@/lib/event/eventFunctions";
+import {
+  getChampionship,
+  getChampionships,
+  getEvent,
+  getEvents,
+} from "@/lib/event/eventFunctions";
 import Link from "next/link";
 import EventCard from "@/components/Event/EventCard";
 import { baseUrl } from "@/lib/constants";
-import { getEvent, getEvents } from "@/lib/event/eventActions";
 
 type Props = {
   params: { eventId: string; eventType: string };

@@ -1,5 +1,4 @@
 "use server";
-import { NextResponse } from "next/server";
 import supabase from "../database/supabase";
 import {
   SpecialUser,
@@ -10,71 +9,118 @@ import {
 } from "./adminConstants";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/authOptions";
-import {
-  getPermittedRoles,
-  isPermitted,
-  specialUserSqlToSpecialUser,
-} from "./adminFunctions";
+import { getPermittedRoles, isPermitted } from "./adminFunctions";
 import { decode, sign } from "jsonwebtoken";
-import { GroupedLinks, Links } from "../constants";
+import { GroupedLinks, Links, ServerAction } from "../constants";
+import { cache } from "react";
+import { action } from "../functions";
 
 // SPECIAL  USER
 // CREATE
-export const addSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+export const addSpecialUserSql = async (
+  specialUserSql: SpecialUserSql
+): Promise<ServerAction<SpecialUserSql>> => {
   try {
     const response = await apiProtect({
       roles: permittedRoles(specialUserSql.roles),
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("special_users")
       .upsert(specialUserSql);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(specialUserSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
+
 // READ
-export const getSpecialUserSqlByEmail = async (email: string) => {
+export const getSpecialUserSqlByEmail = async (
+  email: string
+): Promise<ServerAction<SpecialUserSql>> => {
   try {
     const { data, error } = await supabase
       .from("special_user")
       .select()
       .eq("email", email)
-      .returns<SpecialUser[]>();
-    if (error) throw error;
-    return data;
+      .returns<SpecialUserSql[]>();
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data[0]);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
+
+export const getSpecialUsersSql = cache(
+  async (
+    role: SpecialUserRole,
+    page: number,
+    limit: number,
+    forClient: boolean = false
+  ): Promise<ServerAction<SpecialUserSql[]>> => {
+    try {
+      if (!forClient) {
+        const response = await apiProtect({ directory: `admin/${role}` });
+        if (response) throw new Error(response.message);
+      }
+
+      const query = forClient ? "name, image" : "*";
+
+      const { data, error } = await supabase
+        .from("special_users")
+        .select(query)
+        .order("name")
+        .range(page * limit - limit, page * limit - 1)
+        .contains("roles", [role])
+        .returns<SpecialUserSql[]>();
+
+      if (error) throw new Error(error.message);
+
+      return action.success(data);
+    } catch (error) {
+      return action.error(error);
+    }
+  }
+);
+
 // UPDATE
-export const updateSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+export const updateSpecialUserSql = async (
+  specialUserSql: SpecialUserSql
+): Promise<ServerAction<SpecialUserSql>> => {
   try {
     // const response = await apiProtect({
     //   roles: permittedRoles(specialUserSql.roles),
     // });
-    // if (response) throw response;
+    //  if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("special_users")
       .update(specialUserSql)
       .eq("email", specialUserSql.email);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(specialUserSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
+
 // DELETE
-export const deleteSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
+export const deleteSpecialUserSql = async (
+  specialUserSql: SpecialUserSql
+): Promise<ServerAction<SpecialUserSql>> => {
   try {
     const response = await apiProtect({
       roles: permittedRoles(specialUserSql.roles),
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("special_users")
@@ -82,52 +128,15 @@ export const deleteSpecialUserSql = async (specialUserSql: SpecialUserSql) => {
       .eq("email", specialUserSql.email)
       .contains("roles", specialUserSql.roles);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(specialUserSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // OTHERS
-const permittedRoles = (roleToEdit: SpecialUserRole[]) => {
-  let roles: SpecialUserRole[] = ["master"];
-  if (roleToEdit.find((item) => item.includes("athlete")))
-    roles.push("pelatih");
-  return roles;
-};
-
-export const getSpecialUsers = async (
-  role: SpecialUserRole,
-  page: number,
-  limit: number,
-  forClient: boolean = false
-) => {
-  try {
-    if (!forClient) {
-      const response = await apiProtect({ directory: `admin/${role}` });
-      if (response) throw response;
-    }
-
-    const query = forClient ? "name, image" : "*";
-
-    const { data, error } = await supabase
-      .from("special_users")
-      .select(query)
-      .order("name")
-      .range(page * limit - limit, page * limit - 1)
-      .contains("roles", [role])
-      .returns<SpecialUserSql[]>();
-
-    if (error) throw new Error(error.message);
-
-    const specialUsers = data.map((item) => specialUserSqlToSpecialUser(item));
-
-    return specialUsers;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const isAuthorized = async (options?: {
   ignoreJwt?: boolean;
   roles?: SpecialUserRole[];
@@ -185,7 +194,6 @@ export const isAuthorized = async (options?: {
   return result;
 };
 
-// API PROTECT
 export const apiProtect = async (options?: {
   loggedInOnly?: boolean;
   directory?: string;
@@ -236,6 +244,12 @@ export const apiProtect = async (options?: {
   if (permitted) return initialResult;
 
   return notAuthorized;
+};
+
+const permittedRoles = (roleToEdit: SpecialUserRole[]) => {
+  let roles: SpecialUserRole[] = ["master"];
+  if (roleToEdit.find((item) => item.includes("athlete"))) roles.push("coach");
+  return roles;
 };
 
 export const getAdminLinks = async () => {

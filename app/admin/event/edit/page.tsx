@@ -3,7 +3,7 @@ import Container from "@/components/ui/Container";
 import PageInfo from "@/components/ui/PageInfo";
 import { Event } from "@/lib/event/eventConstants";
 import { SearchPageParams } from "@/lib/constants";
-import { getEvent } from "@/lib/event/eventActions";
+import { getEvent } from "@/lib/event/eventFunctions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const id = searchParams.id;

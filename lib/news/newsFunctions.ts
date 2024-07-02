@@ -5,7 +5,14 @@ import axios from "axios";
 import { toast } from "sonner";
 import { getFileUrl } from "../functions";
 import { deleteFile } from "../actions";
-import { addNewsSql, deleteNewsSql, updateNewsSql } from "./newsActions";
+import {
+  addNewsSql,
+  deleteNewsSql,
+  getNewsArrSql,
+  getNewsSql,
+  updateNewsSql,
+} from "./newsActions";
+import { cache } from "react";
 
 // NEWS
 // CREATE
@@ -26,7 +33,9 @@ export const addNews = async (news: News) => {
 
     // SEND BERITA
     toast.loading("Mengunggah berita", { id: toastId });
-    await addNewsSql(newsToNewsSql(data));
+    const { error } = await addNewsSql(newsToNewsSql(data));
+    if (error) throw error;
+
     toast.success("Berita berhasil diunggah", { id: toastId });
     return { result: data };
   } catch (error: any) {
@@ -36,6 +45,22 @@ export const addNews = async (news: News) => {
 };
 
 // READ
+export const getNews = cache(async (id: string) => {
+  try {
+    const { result, error } = await getNewsSql(id);
+
+    if (error) throw error;
+
+    if (!result) throw new Error("Berita tidak dapat ditemukan");
+
+    const news = newsSqlToNews(result);
+
+    return news;
+  } catch (error) {
+    throw error;
+  }
+});
+
 // UPDATE
 export const updateNews = async (news: News) => {
   const toastId = toast.loading("Memperbaharui berita");
@@ -52,7 +77,9 @@ export const updateNews = async (news: News) => {
     }
     // UPDATE BERITA
     toast.loading("Memperbaharui berita", { id: toastId });
-    await updateNewsSql(newsToNewsSql(data));
+    const { error } = await updateNewsSql(newsToNewsSql(data));
+    if (error) throw error;
+
     toast.success("Berita berhasil diperbaharui", { id: toastId });
   } catch (error: any) {
     toastError(error, toastId);
@@ -68,17 +95,38 @@ export const deleteNews = async (news: News) => {
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await deleteFile(imageUrl);
+    const { error: deleteFileError } = await deleteFile(imageUrl);
+    if (deleteFileError) throw deleteFileError;
 
     // DELETE BERITA
     toast.loading("Menghapus berita", { id: toastId });
-    await deleteNewsSql(newsToNewsSql(news));
+    const { error: deleteNewsError } = await deleteNewsSql(newsToNewsSql(news));
+    if (deleteNewsError) throw deleteNewsError;
+
     toast.success("Berita berhasil dihapus", { id: toastId });
   } catch (error: any) {
     toastError(error, toastId);
     throw error;
   }
 };
+
+// NEWS ARR
+// READ
+export const getNewsArr = cache(
+  async (page?: number, limit?: number, exception?: News) => {
+    try {
+      const { result, error } = await getNewsArrSql(page, limit, exception);
+
+      if (error) throw error;
+
+      const news = result.map((item) => newsSqlToNews(item));
+
+      return news;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 // OTHERS
 export const reduceText = (

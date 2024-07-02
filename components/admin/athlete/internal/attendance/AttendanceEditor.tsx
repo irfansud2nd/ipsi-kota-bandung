@@ -76,7 +76,12 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
     const toastId = toast.loading("Menyimpan kehadiran");
     try {
       if (attendance.id) {
-        await updateAttendanceSql(attendance.id, attendance.type);
+        const { error } = await updateAttendanceSql(
+          attendance.id,
+          attendance.type
+        );
+
+        if (error) throw error;
       } else {
         const formattedDate = new Date(date).getTime();
 
@@ -87,7 +92,8 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
           type: attendance.type,
           role,
         };
-        await addAttendanceSql(data);
+        const { error } = await addAttendanceSql(data);
+        if (error) throw error;
       }
       setIsSubmitting(false);
       toast.success("Kehadiran berhasil disimpan", { id: toastId });
@@ -103,7 +109,10 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
     try {
       if (!attendance?.id)
         throw { messsage: "Tidak ada kehadiran yang dipilih" };
-      await deleteAttendanceSql(attendance.id);
+
+      const { error } = await deleteAttendanceSql(attendance.id);
+      if (error) throw error;
+
       toast.success("Kehadirean berhasil dihapus", { id: toastId });
       router.refresh();
     } catch (error) {

@@ -4,6 +4,7 @@ import PagePagination from "@/components/ui/PagePagination";
 import { Button } from "@/components/ui/button";
 import { getMatchBasedsByCategory } from "@/lib/athlete/external/athleteActions";
 import { MatchBased } from "@/lib/athlete/external/athleteConstants";
+import { fetchData } from "@/lib/functions";
 import Link from "next/link";
 
 type Props = {
@@ -30,16 +31,18 @@ const page = async ({ params, searchParams }: Props) => {
   let matchBaseds: MatchBased[] = [];
 
   if (schema && type && level && category && gender)
-    matchBaseds = await getMatchBasedsByCategory(
-      params.championshipId,
-      schema,
-      type,
-      level,
-      category,
-      gender,
-      page,
-      limit,
-      showAll
+    matchBaseds = await fetchData(() =>
+      getMatchBasedsByCategory(
+        params.championshipId,
+        schema,
+        type,
+        level,
+        category,
+        gender,
+        page,
+        limit,
+        showAll
+      )
     );
 
   return (

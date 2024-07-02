@@ -3,6 +3,7 @@ import { apiProtect } from "../admin/adminActions";
 import {
   addOfficialSql,
   deleteOfficialSql,
+  getOfficialsSql,
   getOfficialsSqlByEmail,
   updateOfficialSql,
 } from "./officialActions";
@@ -13,22 +14,7 @@ import { sendFile, toastError } from "../form/formFunctions";
 import { deleteFile } from "../actions";
 
 // OFFICIAL
-export const getOfficialsByEmail = async (email: string) => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
-
-    const officialsSql = await getOfficialsSqlByEmail(email);
-    const officials = officialsSql.map((officialSql) =>
-      officialSqlToOfficial(officialSql)
-    );
-
-    return officials;
-  } catch (error) {
-    throw error;
-  }
-};
-
+// CREATE
 export const addOfficial = async (officialData: Official) => {
   const toastId = toast.loading("Mendaftarkan Official");
   const id = v4();
@@ -60,7 +46,8 @@ export const addOfficial = async (officialData: Official) => {
 
     // SEND ATHLETE
     toast.loading("Mendaftarkan official", { id: toastId });
-    await addOfficialSql(officialToOfficialSql(official));
+    const { error } = await addOfficialSql(officialToOfficialSql(official));
+    if (error) throw error;
 
     // FINISH
     toast.success("Official berhasil didaftarkan", { id: toastId });
@@ -71,6 +58,52 @@ export const addOfficial = async (officialData: Official) => {
   }
 };
 
+// READ
+export const getOfficials = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const response = await apiProtect({ directory: "official" });
+    if (response) throw response;
+
+    const { result: officialsSql, error } = await getOfficialsSql(
+      page,
+      limit,
+      showAll
+    );
+    if (error) throw error;
+
+    const officials = officialsSql.map((officialSql) =>
+      officialSqlToOfficial(officialSql)
+    );
+
+    return officials;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOfficialsByEmail = async (email: string) => {
+  try {
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
+
+    const { result: officialsSql, error } = await getOfficialsSqlByEmail(email);
+    if (error) throw error;
+
+    const officials = officialsSql.map((officialSql) =>
+      officialSqlToOfficial(officialSql)
+    );
+
+    return officials;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// UPDATE
 export const updateOfficial = async (official: Official) => {
   const toastId = toast.loading("Memperbahrui official");
   const { imageUrl } = getFileUrl("official", official.id);
@@ -93,7 +126,8 @@ export const updateOfficial = async (official: Official) => {
 
     // UPDATE ATHLETE
     toast.loading("Memperbaharui official", { id: toastId });
-    await updateOfficialSql(officialToOfficialSql(official));
+    const { error } = await updateOfficialSql(officialToOfficialSql(official));
+    if (error) throw error;
 
     // FINISH
     toast.success("Official berhasil diperbaharui", { id: toastId });
@@ -103,7 +137,7 @@ export const updateOfficial = async (official: Official) => {
     throw error;
   }
 };
-
+// DELETE
 export const deleteOfficial = async (official: Official) => {
   const toastId = toast.loading("Menghapus Official");
 
@@ -117,11 +151,15 @@ export const deleteOfficial = async (official: Official) => {
 
     // DELETE IMAGE
     toast.loading("Menghapus pas foto official", { id: toastId });
-    await deleteFile(imageUrl);
+    const { error: deleteFileError } = await deleteFile(imageUrl);
+    if (deleteFileError) throw deleteFileError;
 
     // DELETE ATHLETE
     toast.loading("Menghapus official", { id: toastId });
-    await deleteOfficialSql(officialToOfficialSql(official));
+    const { error: deleteOfficialSqlError } = await deleteOfficialSql(
+      officialToOfficialSql(official)
+    );
+    if (deleteFileError) throw deleteOfficialSqlError;
 
     // FINISH
     toast.success("Official berhasil dihapus", { id: toastId });

@@ -1,12 +1,20 @@
-import axios from "axios";
 import { toast } from "sonner";
 import { v4 } from "uuid";
 import { Championship, Event, EventSql, championships } from "./eventConstants";
 import { sendFile, toastError } from "../form/formFunctions";
 import { compare, getFileUrl } from "../functions";
 import { deleteFile } from "../actions";
-import { addEventSql, deleteEventSql, updateEventSql } from "./eventActions";
+import {
+  addEventSql,
+  deleteEventSql,
+  getEventSql,
+  getEventsSql,
+  updateEventSql,
+} from "./eventActions";
+import { cache } from "react";
 
+// EVENT
+// CREATE
 export const sendEvent = async (event: Event) => {
   const toastId = toast.loading("Mengunggah event");
 
@@ -24,7 +32,10 @@ export const sendEvent = async (event: Event) => {
 
     // SEND EVENT
     toast.loading("Mengunggah event", { id: toastId });
-    await addEventSql(eventToEventSql(data));
+
+    const { error } = await addEventSql(eventToEventSql(data));
+    if (error) throw error;
+
     toast.success("Event berhasil diunggah", { id: toastId });
     return { result: data };
   } catch (error) {
@@ -33,7 +44,22 @@ export const sendEvent = async (event: Event) => {
   }
 };
 
-// UPDATE EVENT
+// READ
+export const getEvent = cache(async (id: string) => {
+  try {
+    const { result, error } = await getEventSql(id);
+
+    if (error) throw error;
+
+    const event = eventSqlToEvent(result);
+
+    return event;
+  } catch (error) {
+    throw error;
+  }
+});
+
+// UPDATE
 export const updateEvent = async (event: Event) => {
   const toastId = toast.loading("Memperbaharui event");
   try {
@@ -49,7 +75,10 @@ export const updateEvent = async (event: Event) => {
     }
     // UPDATE EVENT
     toast.loading("Memperbaharui event", { id: toastId });
-    await updateEventSql(eventToEventSql(data));
+
+    const { error } = await updateEventSql(eventToEventSql(data));
+    if (error) throw error;
+
     toast.success("Event berhasil diperbaharui", { id: toastId });
   } catch (error: any) {
     toastError(error, toastId);
@@ -57,7 +86,7 @@ export const updateEvent = async (event: Event) => {
   }
 };
 
-// DELETE EVENTS
+// DELETE
 export const deleteEvent = async (event: Event) => {
   const toastId = toast.loading("Menghapus event");
   const { imageUrl } = getFileUrl("event", event.id);
@@ -65,11 +94,17 @@ export const deleteEvent = async (event: Event) => {
   try {
     // DELETE GAMBAR
     toast.loading("Menghapus gambar", { id: toastId });
-    await deleteFile(imageUrl);
+    const { error: deleteFileError } = await deleteFile(imageUrl);
+    if (deleteFileError) throw deleteFileError;
 
     // DELETE EVENT
     toast.loading("Menghapus event", { id: toastId });
-    await deleteEventSql(eventToEventSql(event));
+
+    const { error: deleteEventSqlError } = await deleteEventSql(
+      eventToEventSql(event)
+    );
+    if (deleteEventSqlError) throw deleteEventSqlError;
+
     toast.success("Event berhasil dihapus", { id: toastId });
   } catch (error: any) {
     toastError(error, toastId);
@@ -77,6 +112,32 @@ export const deleteEvent = async (event: Event) => {
   }
 };
 
+// EVENTS
+// READ
+export const getEvents = cache(
+  async (page?: number, limit?: number, exception?: Event) => {
+    try {
+      const { result, error } = await getEventsSql(page, limit, exception);
+
+      if (error) throw error;
+
+      const events = result.map((eventSql) => eventSqlToEvent(eventSql));
+
+      return events;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+// CHAMPIONSHIP
+// READ
+export const getChampionship = (id: string) => {
+  return championships.find((item) => item.id == id);
+};
+
+// CHAMPIONSHIPS
+// READ
 export const getChampionships = (
   page: number,
   limit: number,
@@ -90,10 +151,7 @@ export const getChampionships = (
     .slice(page * limit - limit, page * limit);
 };
 
-export const getChampionship = (id: string) => {
-  return championships.find((item) => item.id == id);
-};
-
+// OTHERS
 export const isLevelRookieOnly = (
   level: string,
   championship: Championship
@@ -105,7 +163,6 @@ export const isLevelRookieOnly = (
   return false;
 };
 
-// OTHERS
 export const eventSqlToEvent = (eventSql: EventSql) => {
   const result: Event = {
     ...eventSql,

@@ -9,13 +9,38 @@ import {
   matchType,
 } from "./athleteConstants";
 import { athleteSqlToAthlete } from "./athleteFunctions";
+import { ServerAction } from "@/lib/constants";
+import { action } from "@/lib/functions";
+import { cache } from "react";
 
 // ATHLETE SQL
-// GET
-export const getAthletesSqlByEmail = async (email: string) => {
+// CREATE
+export const addAthleteSql = async (
+  athleteSql: AthleteSql
+): Promise<ServerAction<AthleteSql>> => {
+  try {
+    const response = await apiProtect({
+      permittedEmail: athleteSql.created_by,
+    });
+    if (response) throw new Error(response.message);
+
+    const { error } = await supabase.from("athletes").insert(athleteSql);
+
+    if (error) throw new Error(error.message);
+
+    return action.success(athleteSql);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+// READ
+export const getAthletesSqlByEmail = async (
+  email: string
+): Promise<ServerAction<AthleteSql[]>> => {
   try {
     const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .from("athletes")
@@ -23,11 +48,11 @@ export const getAthletesSqlByEmail = async (email: string) => {
       .eq("created_by", email)
       .returns<AthleteSql[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -35,10 +60,10 @@ export const getAthletesSql = async (
   page: number,
   limit: number,
   showAll: boolean = false
-) => {
+): Promise<ServerAction<AthleteSql[]>> => {
   try {
     const response = await apiProtect({ directory: "athlete" });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     let getData = supabase.from("athletes").select().returns<AthleteSql[]>();
 
@@ -47,201 +72,151 @@ export const getAthletesSql = async (
 
     const { data, error } = await getData;
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
-  }
-};
-
-// CREATE
-export const addAthleteSql = async (athleteSql: AthleteSql) => {
-  try {
-    const response = await apiProtect({
-      permittedEmail: athleteSql.created_by,
-    });
-    if (response) throw response;
-
-    const { error } = await supabase.from("athletes").insert(athleteSql);
-
-    if (error) throw error;
-
-    return athleteSql;
-  } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // UPDATE
-export const updateAthleteSql = async (athleteSql: AthleteSql) => {
+export const updateAthleteSql = async (
+  athleteSql: AthleteSql
+): Promise<ServerAction<AthleteSql>> => {
   try {
     const response = await apiProtect({
       permittedEmail: athleteSql.created_by,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("athletes")
       .update(athleteSql)
       .eq("id", athleteSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return athleteSql;
+    return action.success(athleteSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-// UPDATE
-export const deleteAthleteSql = async (athleteSql: AthleteSql) => {
+// DELETE
+export const deleteAthleteSql = async (
+  athleteSql: AthleteSql
+): Promise<ServerAction<AthleteSql>> => {
   try {
     const response = await apiProtect({
       permittedEmail: athleteSql.created_by,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("athletes")
       .delete()
       .eq("id", athleteSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(athleteSql);
   } catch (error) {
-    throw error;
-  }
-};
-
-// ATHLETE
-// READ
-export const getAthletes = async (
-  page: number,
-  limit: number,
-  showAll: boolean = false
-) => {
-  try {
-    const response = await apiProtect({ directory: "athlete" });
-    if (response) throw response;
-
-    const athletesSql = await getAthletesSql(page, limit, showAll);
-    const athletes = athletesSql.map((athleteSql) =>
-      athleteSqlToAthlete(athleteSql)
-    );
-
-    return athletes;
-  } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // MATCH BASED
 // READ
-export const getMatchBaseds = async (
-  championshipId: string,
-  page: number,
-  limit: number,
-  showAll: boolean = false
-) => {
-  try {
-    const response = await apiProtect({ directory: "championship" });
-    if (response) throw response;
+export const getMatchBaseds = cache(
+  async (
+    championshipId: string,
+    page: number,
+    limit: number,
+    showAll: boolean = false
+  ): Promise<ServerAction<MatchBased[]>> => {
+    try {
+      const response = await apiProtect({ directory: "championship" });
+      if (response) throw new Error(response.message);
 
-    let params = {
-      champ_id: championshipId,
-      pg: page,
-      lmt: limit,
-    };
+      let params = {
+        champ_id: championshipId,
+        pg: page,
+        lmt: limit,
+      };
 
-    if (showAll) {
-      params.pg = 1;
-      params.lmt = 4000;
+      if (showAll) {
+        params.pg = 1;
+        params.lmt = 4000;
+      }
+
+      const { data, error } = await supabase
+        .rpc("get_match_based_by_championship_id", params)
+        .returns<MatchBased[]>();
+
+      if (error) throw new Error(error.message);
+
+      return action.success(data);
+    } catch (error) {
+      return action.error(error);
     }
-
-    const { data, error } = await supabase
-      .rpc("get_match_based_by_championship_id", params)
-      .returns<MatchBased[]>();
-
-    if (error) throw error;
-
-    return data;
-  } catch (error) {
-    throw error;
   }
-};
-export const getMatchBasedsByCategory = async (
-  championshipId: string,
-  schema: string,
-  type: string,
-  level: string,
-  category: string,
-  gender: string,
-  page: number,
-  limit: number,
-  showAll: boolean = false
-) => {
-  try {
-    const response = await apiProtect({ directory: "championship" });
-    if (response) throw response;
+);
+export const getMatchBasedsByCategory = cache(
+  async (
+    championshipId: string,
+    schema: string,
+    type: string,
+    level: string,
+    category: string,
+    gender: string,
+    page: number,
+    limit: number,
+    showAll: boolean = false
+  ): Promise<ServerAction<MatchBased[]>> => {
+    try {
+      const response = await apiProtect({ directory: "championship" });
+      if (response) throw new Error(response.message);
 
-    let params = {
-      champ_id: championshipId,
-      scm: schema,
-      tp: type,
-      lvl: level,
-      ctgr: category,
-      gdr: gender,
-      pg: page,
-      lmt: limit,
-    };
+      let params = {
+        champ_id: championshipId,
+        scm: schema,
+        tp: type,
+        lvl: level,
+        ctgr: category,
+        gdr: gender,
+        pg: page,
+        lmt: limit,
+      };
 
-    if (showAll) {
-      params.pg = 1;
-      params.lmt = 4000;
+      if (showAll) {
+        params.pg = 1;
+        params.lmt = 4000;
+      }
+
+      const { data, error } = await supabase
+        .rpc("get_match_based_by_category", params)
+        .returns<MatchBased[]>();
+
+      if (error) throw new Error(error.message);
+
+      return action.success(data);
+    } catch (error) {
+      return action.error(error);
     }
-
-    const { data, error } = await supabase
-      .rpc("get_match_based_by_category", params)
-      .returns<MatchBased[]>();
-
-    if (error) throw error;
-
-    return data;
-  } catch (error) {
-    throw error;
   }
-};
+);
 
 // ATHLETE AT EVENTS
-// READ
-export const getAthtleteAtEventsByContingentRegistrationId = async (
-  contingentRegistrationId: number
-) => {
-  try {
-    const response = await apiProtect({ loggedInOnly: true });
-    if (response) throw response;
-
-    const { data: athleteAtEvents } = await supabase
-      .rpc("get_athlete_at_events_by_contingent_registration_id", {
-        cont_reg_id: contingentRegistrationId,
-      })
-      .returns<AthleteAtEvent[]>();
-
-    return athleteAtEvents || [];
-  } catch (error) {
-    throw error;
-  }
-};
-
 // CREATE
 export const addAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
-) => {
+): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const dataToSend: any = athletAtEventSql;
     delete dataToSend.registration_id;
@@ -252,105 +227,116 @@ export const addAthleteAtEventSql = async (
       .select()
       .returns<AthleteAtEventSql[]>();
 
-    if (error) throw error;
-    return data[0];
+    if (error) throw new Error(error.message);
+    return action.success(data[0]);
   } catch (error) {
-    throw error;
+    return action.error(error);
+  }
+};
+
+// READ
+export const getAthtleteAtEventsByContingentRegistrationId = async (
+  contingentRegistrationId: number
+): Promise<ServerAction<AthleteAtEvent[]>> => {
+  try {
+    const response = await apiProtect({ loggedInOnly: true });
+    if (response) throw new Error(response.message);
+
+    const { data: athleteAtEvents } = await supabase
+      .rpc("get_athlete_at_events_by_contingent_registration_id", {
+        cont_reg_id: contingentRegistrationId,
+      })
+      .returns<AthleteAtEvent[]>();
+
+    return action.success(athleteAtEvents || []);
+  } catch (error) {
+    return action.error(error);
   }
 };
 
 // UPDATE
 export const updateAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
-) => {
+): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("athlete_at_events")
       .update(athletAtEventSql)
       .eq("registration_id", athletAtEventSql.registration_id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(athletAtEventSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const updateAthleteAtEventsSql = async (
   athletAtEventsSql: AthleteAtEventSql[]
-) => {
+): Promise<ServerAction<string>> => {
   try {
-    if (!athletAtEventsSql.length) return;
+    if (athletAtEventsSql.length) {
+      const updatePromises = athletAtEventsSql.map(async (item) => {
+        const { error } = await updateAthleteAtEventSql(item);
+        if (error) throw error;
+      });
 
-    const updatePromises = athletAtEventsSql.map((item) =>
-      updateAthleteAtEventSql(item)
-    );
-
-    await Promise.all(updatePromises);
+      await Promise.all(updatePromises);
+    }
+    return action.success("success");
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // DELETE
 export const deleteAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
-) => {
+): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
     const response = await apiProtect({
       loggedInOnly: true,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("athlete_at_events")
       .delete()
       .eq("registration_id", athletAtEventSql.registration_id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(athletAtEventSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // OTHERS
-export const countAthleteByContingentId = async (contingentId: string) => {
-  try {
-    const { count, error } = await supabase
-      .from("athletes")
-      .select("id", { count: "exact", head: true })
-      .eq("contingent_id", contingentId);
-
-    if (error) throw new Error(error.message);
-
-    return count || 0;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const countAthlete = async () => {
+export const countAthlete = async (): Promise<ServerAction<number>> => {
   try {
     const { count, error } = await supabase
       .from("athletes")
       .select("id", { count: "exact", head: true });
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return count || 0;
+    return action.success(count || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 export const countDuplicateMatch = async (
   matchBased: MatchBased,
   paid: boolean
-) => {
+): Promise<ServerAction<number>> => {
   try {
     let func = "count_duplicate_art_match_by_championship_id";
     if (
@@ -369,39 +355,45 @@ export const countDuplicateMatch = async (
       pd: paid,
     });
 
-    const { data } = await getCount;
+    const { data, error } = await getCount.returns<number>();
 
-    return data as number;
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-export const countMatchByChampionshipId = async (championshipId: string) => {
+export const countMatchByChampionshipId = async (
+  championshipId: string
+): Promise<ServerAction<number>> => {
   try {
     const { data, error } = await supabase
       .rpc("count_match_by_championship_id", { champ_id: championshipId })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-export const countAthleteByChampionshipId = async (championshipId: string) => {
+export const countAthleteByChampionshipId = async (
+  championshipId: string
+): Promise<ServerAction<number>> => {
   try {
     const { data, error } = await supabase
       .rpc("count_athlete_by_championship_id", { champ_id: championshipId })
       .returns<number>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data || 0;
+    return action.success(data || 0);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -415,9 +407,22 @@ export const countProfessionalMatches = async (
     gender: string;
     paid: boolean;
   }[]
-) => {
+): Promise<
+  ServerAction<
+    {
+      count: number;
+      championshipId: string;
+      schema: string;
+      type: string;
+      level: string;
+      category: string;
+      gender: string;
+      paid: boolean;
+    }[]
+  >
+> => {
   try {
-    if (!matches.length) return [];
+    if (!matches.length) return action.success([]);
 
     const countPromises = matches.map(async (match) => {
       let func = "count_duplicate_art_match_by_championship_id";
@@ -436,7 +441,7 @@ export const countProfessionalMatches = async (
         })
         .returns<number>();
 
-      if (error) throw error;
+      if (error) throw new Error(error.message);
       return {
         ...match,
         count: data || 0,
@@ -444,8 +449,8 @@ export const countProfessionalMatches = async (
     });
 
     const counts = await Promise.all(countPromises);
-    return counts;
+    return action.success(counts);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };

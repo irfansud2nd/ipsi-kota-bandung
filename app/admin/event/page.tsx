@@ -3,7 +3,7 @@ import PagePagination from "@/components/ui/PagePagination";
 import { Event } from "@/lib/event/eventConstants";
 import { SearchPageParams } from "@/lib/constants";
 import { EventColumns } from "@/components/admin/event/EventColumns";
-import { getEvents } from "@/lib/event/eventActions";
+import { getEvents } from "@/lib/event/eventFunctions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;

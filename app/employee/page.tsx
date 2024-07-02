@@ -2,7 +2,7 @@ import EmployeeList from "@/components/employee/EmployeeList";
 import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
-import { getEmployees } from "@/lib/employee/employeeActions";
+import { getEmployees } from "@/lib/employee/employeeFunctions";
 import { Metadata } from "next";
 
 type Props = {

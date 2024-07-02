@@ -3,7 +3,6 @@ import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
 import { Button } from "@/components/ui/button";
-import { getSpecialUsers } from "@/lib/admin/adminActions";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
 import { isInternalAthleteRole } from "@/lib/athlete/internal/internalAthleteFunctions";
 import { getSpecialUserLabel } from "@/lib/functions";
@@ -11,6 +10,7 @@ import { Employee } from "@/lib/employee/employeeConstants";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getSpecialUsers } from "@/lib/admin/adminFunctions";
 
 type Props = {
   params: { athleteType: InternalAthleteRole };

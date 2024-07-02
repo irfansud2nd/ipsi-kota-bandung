@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
-import { getOfficials } from "@/lib/official/officialActions";
 import OfficialTable from "@/components/admin/official/OfficialTable";
+import { getOfficials } from "@/lib/official/officialFunctions";
 
 type Props = {
   page: number;

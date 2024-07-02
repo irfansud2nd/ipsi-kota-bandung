@@ -56,7 +56,21 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
   };
 
   const professionalMatchIds = getProfessionalMatchIds();
-  const rawData = await countProfessionalMatches(professionalMatchIds);
+
+  const fetchRawData = async () => {
+    try {
+      const { result, error } = await countProfessionalMatches(
+        professionalMatchIds
+      );
+      if (error) throw error;
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const rawData = await fetchRawData();
 
   const reduceData = (data: typeof rawData) => {
     let result: {

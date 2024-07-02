@@ -4,7 +4,6 @@ import InputSelect from "@/components/inputs/InputSelect";
 import InputText from "@/components/inputs/InputText";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { countDuplicateMatch } from "@/lib/athlete/external/athleteActions";
 import {
   Athlete,
   AthleteAtEvent,

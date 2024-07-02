@@ -4,6 +4,7 @@ import PagePagination from "@/components/ui/PagePagination";
 import { Button } from "@/components/ui/button";
 import { getContingents } from "@/lib/contingent/contingentActions";
 import { Contingent } from "@/lib/contingent/contingentConstants";
+import { fetchData } from "@/lib/functions";
 import Link from "next/link";
 
 const page = async ({
@@ -15,7 +16,9 @@ const page = async ({
   const limit = 10;
   const showAll = searchParams.showAll == "true";
 
-  const contingents = await getContingents(page, limit, showAll);
+  const contingents = await fetchData(() =>
+    getContingents(page, limit, showAll)
+  );
 
   return (
     <div className="p-2">

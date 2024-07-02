@@ -79,9 +79,22 @@ const UnregisteredContingentInfo = ({
       const officialFileUrls = officials.map(
         (official) => getFileUrl("official", official.id).imageUrl
       );
-      await deleteFiles(athleteFileUrls.map((item) => item.imageUrl));
-      await deleteFiles(athleteFileUrls.map((item) => item.kkUrl));
-      await deleteFiles(officialFileUrls);
+
+      const { error: athleteImagesError } = await deleteFiles(
+        athleteFileUrls.map((item) => item.imageUrl)
+      );
+      if (athleteImagesError) throw athleteImagesError;
+
+      const { error: athleteKksError } = await deleteFiles(
+        athleteFileUrls.map((item) => item.kkUrl)
+      );
+      if (athleteKksError) throw athleteKksError;
+
+      const { error: officialImagesError } = await deleteFiles(
+        officialFileUrls
+      );
+      if (officialImagesError) throw officialImagesError;
+
       dispatch(deleteContingentRedux());
       dispatch(deleteAllAthletesRedux());
       dispatch(deleteAllOficialsRedux());

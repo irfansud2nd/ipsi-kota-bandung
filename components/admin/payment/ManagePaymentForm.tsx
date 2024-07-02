@@ -49,7 +49,10 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
     try {
       if (!data.confirmed_by)
         throw { message: "email pengguna tidak ditemukan" };
-      await updatePaymentSql(paymentToPaymentSql(data));
+
+      const { error } = await updatePaymentSql(paymentToPaymentSql(data));
+      if (error) throw error;
+
       toast.success("Pembayaran berhasil dikonfirmasi", { id: toastId });
       router.refresh();
     } catch (error) {
@@ -64,7 +67,9 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
     let data = payment;
     data.confirmed_by = "";
     try {
-      await updatePaymentSql(paymentToPaymentSql(data));
+      const { error } = await updatePaymentSql(paymentToPaymentSql(data));
+      if (error) throw error;
+
       toast.success("Konfirmasi berhasil dibatalkan", { id: toastId });
       router.refresh();
     } catch (error) {

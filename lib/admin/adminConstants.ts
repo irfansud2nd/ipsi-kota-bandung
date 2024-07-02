@@ -10,8 +10,8 @@ export type SpecialUserRole =
   | InternalAthleteRole
   | "master"
   | "admin"
-  | "adminEvent"
-  | "pelatih";
+  | "eventAdmin"
+  | "coach";
 
 export type SpecialUserBase = {
   name: string;
@@ -79,11 +79,11 @@ export const roleAccess: {
     dir: ["admin", "master", "adminEvent"],
   },
   {
-    role: "pelatih",
+    role: "coach",
     dir: [...internalAthleteRoles],
   },
   {
-    role: "adminEvent",
+    role: "eventAdmin",
     dir: ["championship", "contingent", "athlete", "payment"],
   },
   ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),

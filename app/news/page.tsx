@@ -4,7 +4,7 @@ import { News } from "@/lib/news/newsConstants";
 import PagePagination from "@/components/ui/PagePagination";
 import PageBanner from "@/components/ui/PageBanner";
 import Container from "@/components/ui/Container";
-import { getNewsArr } from "@/lib/news/newsActions";
+import { getNewsArr } from "@/lib/news/newsFunctions";
 
 export const metadata: Metadata = {
   title: "Berita",

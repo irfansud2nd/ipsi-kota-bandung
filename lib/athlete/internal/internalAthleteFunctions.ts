@@ -44,7 +44,8 @@ export const sendAttendance = async (
       date: Date.now(),
       role,
     };
-    const token = await getAttendanceToken(role);
+    const { result: token, error: tokenError } = await getAttendanceToken(role);
+    if (tokenError) throw tokenError;
 
     if (!token || token.token != tokenString)
       throw {
@@ -58,7 +59,8 @@ export const sendAttendance = async (
         code: "invalid-qr-code",
       };
 
-    await addAttendanceSql(data);
+    const { error } = await addAttendanceSql(data);
+    if (error) throw error;
   } catch (error) {
     throw error;
   }

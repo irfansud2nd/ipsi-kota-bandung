@@ -4,7 +4,7 @@ import AttendanceTable from "@/components/admin/athlete/internal/attendance/Atte
 import { getAttendances } from "@/lib/athlete/internal/internalAthleteActions";
 import { InternalAthleteRole } from "@/lib/athlete/internal/internalAthleteConstants";
 import { isInternalAthleteRole } from "@/lib/athlete/internal/internalAthleteFunctions";
-import { getSpecialUserLabel } from "@/lib/functions";
+import { fetchData, getSpecialUserLabel } from "@/lib/functions";
 import { notFound } from "next/navigation";
 
 const page = async ({
@@ -18,7 +18,7 @@ const page = async ({
   const { month } = searchParams;
   if (!isInternalAthleteRole(role)) return notFound();
 
-  const data = month ? await getAttendances(role, month) : [];
+  const data = month ? await fetchData(() => getAttendances(role, month)) : [];
 
   return (
     <div className="p-2">

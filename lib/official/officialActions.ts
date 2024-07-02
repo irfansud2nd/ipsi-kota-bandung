@@ -1,15 +1,19 @@
 "use server";
 import { apiProtect } from "../admin/adminActions";
+import { ServerAction } from "../constants";
 import supabase from "../database/supabase";
+import { action } from "../functions";
 import { OfficialSql } from "./officialContants";
 import { officialSqlToOfficial } from "./officialFunctions";
 
 // OFFICIAL SQL
 // READ
-export const getOfficialsSqlByEmail = async (email: string) => {
+export const getOfficialsSqlByEmail = async (
+  email: string
+): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
       .from("officials")
@@ -17,11 +21,11 @@ export const getOfficialsSqlByEmail = async (email: string) => {
       .eq("created_by", email)
       .returns<OfficialSql[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
@@ -29,10 +33,10 @@ export const getOfficialsSql = async (
   page: number,
   limit: number,
   showAll: boolean = false
-) => {
+): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect({ directory: "official" });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     let getData = supabase.from("officials").select().returns<OfficialSql[]>();
 
@@ -41,120 +45,91 @@ export const getOfficialsSql = async (
 
     const { data, error } = await getData;
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data;
+    return action.success(data);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // CREATE
-export const addOfficialSql = async (officialSql: OfficialSql) => {
+export const addOfficialSql = async (
+  officialSql: OfficialSql
+): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("officials").insert(officialSql);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return officialSql;
+    return action.success(officialSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // UPDATE
-export const updateOfficialSql = async (officialSql: OfficialSql) => {
+export const updateOfficialSql = async (
+  officialSql: OfficialSql
+): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("officials")
       .update(officialSql)
       .eq("id", officialSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return officialSql;
+    return action.success(officialSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // DELETE
-export const deleteOfficialSql = async (officialSql: OfficialSql) => {
+export const deleteOfficialSql = async (
+  officialSql: OfficialSql
+): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect({
       permittedEmail: officialSql.created_by,
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("officials")
       .delete()
       .eq("id", officialSql.id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(officialSql);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-// OFFICIAL
-// READ
-export const getOfficials = async (
-  page: number,
-  limit: number,
-  showAll: boolean = false
-) => {
-  try {
-    const response = await apiProtect({ directory: "official" });
-    if (response) throw response;
-
-    const officialsSql = await getOfficialsSql(page, limit, showAll);
-    const officials = officialsSql.map((officialSql) =>
-      officialSqlToOfficial(officialSql)
-    );
-
-    return officials;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const countOfficial = async () => {
+// OTHERS
+export const countOfficial = async (): Promise<ServerAction<number>> => {
   try {
     const { count, error } = await supabase
       .from("officials")
       .select("id", { count: "exact", head: true });
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return count || 0;
+    return action.success(count || 0);
   } catch (error) {
-    throw error;
-  }
-};
-
-// OTHERS
-export const countOfficialByContingentId = async (contingentId: string) => {
-  try {
-    const { count, error } = await supabase
-      .from("officials")
-      .select("id", { count: "exact", head: true })
-      .eq("contingent_id", contingentId);
-
-    if (error) throw error;
-
-    return count || 0;
-  } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };

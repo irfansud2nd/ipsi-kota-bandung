@@ -2,9 +2,8 @@ import SpecialUserForm from "@/components/admin/specialUser/SpecialUserForm";
 import SpecialUserTable from "@/components/admin/specialUser/SpecialUserTable";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { getSpecialUsers } from "@/lib/admin/adminActions";
 import { SpecialUserRole } from "@/lib/admin/adminConstants";
-import { isSpecialRole } from "@/lib/admin/adminFunctions";
+import { getSpecialUsers, isSpecialRole } from "@/lib/admin/adminFunctions";
 import { getSpecialUserLabel } from "@/lib/functions";
 import { notFound } from "next/navigation";
 

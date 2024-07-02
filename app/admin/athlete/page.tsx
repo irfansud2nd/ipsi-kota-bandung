@@ -1,8 +1,8 @@
-import { getAthletes } from "@/lib/athlete/external/athleteActions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
 import AthleteTable from "@/components/admin/athlete/external/AthleteTable";
+import { getAthletes } from "@/lib/athlete/external/athleteFunctions";
 
 const page = async ({
   searchParams,

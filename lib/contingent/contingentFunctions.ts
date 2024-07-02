@@ -18,6 +18,7 @@ import {
 import { apiProtect } from "../admin/adminActions";
 
 // CONTINGENT
+// UPDATE
 export const updateContingent = async (contingent: Contingent) => {
   try {
     const response = await apiProtect({
@@ -25,7 +26,10 @@ export const updateContingent = async (contingent: Contingent) => {
     });
     if (response) throw response;
 
-    await updateContingentSql(contingentToContingenSql(contingent));
+    const { error } = await updateContingentSql(
+      contingentToContingenSql(contingent)
+    );
+    if (error) throw error;
 
     return contingent;
   } catch (error) {
@@ -33,6 +37,7 @@ export const updateContingent = async (contingent: Contingent) => {
   }
 };
 
+// DELETE
 export const deleteContingent = async (contingent: Contingent) => {
   try {
     const response = await apiProtect({
@@ -40,14 +45,18 @@ export const deleteContingent = async (contingent: Contingent) => {
     });
     if (response) throw response;
 
-    // DELETE CONTINGENT SQL
-    await deleteContingentSql(contingentToContingenSql(contingent));
+    const { error } = await deleteContingentSql(
+      contingentToContingenSql(contingent)
+    );
+
+    if (error) throw error;
   } catch (error) {
     throw error;
   }
 };
 
 // CONTINGENT AT EVENT
+// CREATE
 export const addContingentAtEvent = async (
   contingent: Contingent,
   championshipId: string
@@ -66,12 +75,13 @@ export const addContingentAtEvent = async (
   };
 
   try {
-    const response = await addContingentAtEventSql(
+    const { result, error } = await addContingentAtEventSql(
       contingentAtEventToContingentAtEventSql(contingentAtEvent)
     );
+    if (error) throw error;
 
     const contingentAtEvents: ContingentAtEvent[] = [
-      { ...contingentAtEvent, ...response },
+      { ...contingentAtEvent, ...result },
     ];
 
     return contingentAtEvents;
@@ -80,6 +90,7 @@ export const addContingentAtEvent = async (
   }
 };
 
+// DELETE
 export const deleteContingentAtEvent = async (
   contingentAtEvent: ContingentAtEvent
 ) => {
@@ -87,52 +98,17 @@ export const deleteContingentAtEvent = async (
     const response = await apiProtect({ loggedInOnly: true });
     if (response) throw response;
 
-    await deleteContingentAtEventSql(
+    const { error } = await deleteContingentAtEventSql(
       contingentAtEventToContingentAtEventSql(contingentAtEvent)
     );
+    if (error) throw error;
   } catch (error) {
     throw error;
   }
 };
 
 // CONTINGENT AND CONTINGENT AT EVENT
-export const getContingentAtEventByChampionshipId = (
-  contingentAtEvents: ContingentAtEvent[],
-  championshipId: string
-) => {
-  if (!contingentAtEvents.length || !championshipId) return undefined;
-  return contingentAtEvents.find(
-    (item) => item.championship_id == championshipId
-  );
-};
-export const getContingentInfoByEmail = async (email: string) => {
-  try {
-    const response = await apiProtect({
-      permittedEmail: email,
-    });
-    if (response) throw response;
-
-    let result: {
-      contingent: Contingent | undefined;
-      contingentAtEvents: ContingentAtEvent[];
-    } = {
-      contingent: undefined,
-      contingentAtEvents: [],
-    };
-
-    result.contingent = await getContingentByEmail(email);
-    if (!result.contingent) return result;
-
-    result.contingentAtEvents = await getContingenAtEvents(
-      result.contingent.id
-    );
-
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
-
+// CREATE
 export const addContingentAndRegister = async (
   contingentData: Contingent,
   eventId: string
@@ -148,7 +124,7 @@ export const addContingentAndRegister = async (
     if (!contingent.created_by)
       throw { message: "Email pendaftar tidak ditemukan" };
 
-    const { result, error } = await addContingentSql(
+    const { error } = await addContingentSql(
       contingentToContingenSql(contingent)
     );
     if (error) throw error;
@@ -156,6 +132,51 @@ export const addContingentAndRegister = async (
     const contingentAtEvents = await addContingentAtEvent(contingent, eventId);
 
     return { contingent, contingentAtEvents };
+  } catch (error) {
+    throw error;
+  }
+};
+
+// READ
+export const getContingentAtEventByChampionshipId = (
+  contingentAtEvents: ContingentAtEvent[],
+  championshipId: string
+) => {
+  if (!contingentAtEvents.length || !championshipId) return undefined;
+  return contingentAtEvents.find(
+    (item) => item.championship_id == championshipId
+  );
+};
+
+export const getContingentInfoByEmail = async (email: string) => {
+  try {
+    const response = await apiProtect({
+      permittedEmail: email,
+    });
+    if (response) throw response;
+
+    let result: {
+      contingent: Contingent | undefined;
+      contingentAtEvents: ContingentAtEvent[];
+    } = {
+      contingent: undefined,
+      contingentAtEvents: [],
+    };
+
+    const { result: contingent, error: contingentError } =
+      await getContingentByEmail(email);
+    if (contingentError) throw contingentError;
+
+    result.contingent = contingent;
+    if (!result.contingent) return result;
+
+    const { result: contingentAtEvents, error: contingentAtEventsError } =
+      await getContingenAtEvents(result.contingent.id);
+    if (contingentAtEventsError) throw contingentAtEventsError;
+
+    result.contingentAtEvents = contingentAtEvents;
+
+    return result;
   } catch (error) {
     throw error;
   }

@@ -1,4 +1,6 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import { SpecialUserRole } from "./admin/adminConstants";
+import { ServerAction } from "./constants";
 
 // FORMAT TANGGAL
 export const formatDate = (
@@ -71,7 +73,7 @@ export const compare = (query: string, type: "asc" | "desc") => {
 
 export const getSpecialUserLabel = (role: SpecialUserRole) => {
   let label: string = role;
-  if (role == "adminEvent") return "Admin Event";
+  if (role == "eventAdmin") return "Admin Event";
   if (!role.includes("Athlete")) return label;
   label = label.replace("Athlete", "");
   label = label.toUpperCase();
@@ -116,4 +118,27 @@ export const formatToRupiah = (input: string | number, rerverse?: boolean) => {
   return `${Number(input) < 0 ? "- " : ""} Rp ${Math.abs(
     Number(input)
   ).toLocaleString("id")}`;
+};
+
+export const action = {
+  success: <T>(result: T): ServerAction<T> => {
+    return { result, error: null };
+  },
+  error: <T>(error: any): ServerAction<T> => {
+    return { result: null, error: error as PostgrestError };
+  },
+};
+
+export const fetchData = async <T>(
+  asyncFunction: () => Promise<ServerAction<T>>
+): Promise<T> => {
+  try {
+    const { result, error } = await asyncFunction();
+
+    if (error) throw error;
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };

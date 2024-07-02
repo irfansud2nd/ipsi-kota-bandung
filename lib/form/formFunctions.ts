@@ -10,7 +10,10 @@ export const sendFile = async (file: File, directory: string) => {
   formData.append("file", file);
   formData.append("directory", directory);
   try {
-    const downloadUrl = await uploadFile(formData);
+    const { result: downloadUrl, error } = await uploadFile(formData);
+
+    if (error) throw error;
+
     return downloadUrl;
   } catch (error) {
     throw error;

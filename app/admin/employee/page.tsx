@@ -1,9 +1,9 @@
 import { DataTable } from "@/components/ui/DataTable";
 import PagePagination from "@/components/ui/PagePagination";
 import { SearchPageParams } from "@/lib/constants";
-import { getEmployees } from "@/lib/employee/employeeActions";
 import { EmployeeColumns } from "@/components/employee/EmployeeColumns";
 import EmployeeForm from "@/components/employee/EmployeeForm";
+import { getEmployees } from "@/lib/employee/employeeFunctions";
 
 const page = async ({ searchParams }: { searchParams: SearchPageParams }) => {
   const page = Number(searchParams.page) || 1;

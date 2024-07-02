@@ -3,6 +3,7 @@ import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
 import { getRegisteredContingents } from "@/lib/contingent/contingentActions";
 import RegisteredContingentAdminTable from "@/components/admin/contingent/RegisteredContingentAdminTable";
+import { fetchData } from "@/lib/functions";
 
 const page = async ({
   params,
@@ -15,11 +16,8 @@ const page = async ({
   const limit = 10;
   const showAll = searchParams.showAll == "true";
 
-  const registeredContingentAdmins = await getRegisteredContingents(
-    params.championshipId,
-    page,
-    limit,
-    showAll
+  const registeredContingentAdmins = await fetchData(() =>
+    getRegisteredContingents(params.championshipId, page, limit, showAll)
   );
 
   return (

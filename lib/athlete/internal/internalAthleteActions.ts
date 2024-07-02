@@ -11,58 +11,105 @@ import supabase from "@/lib/database/supabase";
 import { getAttendanceId } from "./internalAthleteFunctions";
 import { v4 } from "uuid";
 import { cache } from "react";
+import { action } from "@/lib/functions";
+import { ServerAction } from "@/lib/constants";
 
-export const addAttendanceSql = async (attendance: Attendance) => {
+// ATTENDANCE SQL
+// CREATE
+export const addAttendanceSql = async (
+  attendance: Attendance
+): Promise<ServerAction<Attendance>> => {
   try {
     const response = await apiProtect({
       permittedEmail: attendance.email,
-      roles: ["pelatih"],
+      roles: ["coach"],
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("attendances").insert(attendance);
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success(attendance);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-export const updateAttendanceSql = async (id: string, type: AttendanceType) => {
+// UPDATE
+export const updateAttendanceSql = async (
+  id: string,
+  type: AttendanceType
+): Promise<ServerAction<string>> => {
   try {
     const response = await apiProtect({
-      roles: ["pelatih"],
+      roles: ["coach"],
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("attendances")
       .update({ type: type })
       .eq("id", id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success("success");
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
-export const deleteAttendanceSql = async (id: string) => {
+// DELETE
+export const deleteAttendanceSql = async (
+  id: string
+): Promise<ServerAction<string>> => {
   try {
     const response = await apiProtect({
-      roles: ["pelatih"],
+      roles: ["coach"],
     });
-    if (response) throw response;
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("attendances").delete().eq("id", id);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
+
+    return action.success("success");
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // ATTENDANCE TOKEN
+// CREATE
+export const addAttendanceToken = async (
+  role: InternalAthleteRole
+): Promise<ServerAction<AttendanceToken>> => {
+  try {
+    const data: AttendanceToken = {
+      id: getAttendanceId(role),
+      token: v4(),
+      date: Date.now(),
+      status: true,
+      role,
+    };
+
+    const response = await apiProtect({ roles: ["coach"] });
+    if (response) throw new Error(response.message);
+
+    const { error } = await supabase.from("attendance_tokens").insert(data);
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // READ
-export const getAttendanceToken = async (role: InternalAthleteRole) => {
+export const getAttendanceToken = async (
+  role: InternalAthleteRole
+): Promise<ServerAction<AttendanceToken | undefined>> => {
   try {
     const id = getAttendanceId(role);
 
@@ -73,61 +120,42 @@ export const getAttendanceToken = async (role: InternalAthleteRole) => {
       .eq("id", id)
       .returns<AttendanceToken[]>();
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return data.length ? data[0] : undefined;
+    return action.success(data.length ? data[0] : undefined);
   } catch (error) {
-    throw error;
-  }
-};
-
-// CREATE
-export const addAttendanceToken = async (role: InternalAthleteRole) => {
-  try {
-    const data: AttendanceToken = {
-      id: getAttendanceId(role),
-      token: v4(),
-      date: Date.now(),
-      status: true,
-      role,
-    };
-
-    const response = await apiProtect({ roles: ["pelatih"] });
-    if (response) throw response;
-
-    const { error } = await supabase.from("attendance_tokens").insert(data);
-
-    if (error) throw error;
-
-    return data;
-  } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // UPDATE
-export const updateAttendanceToken = async (token: AttendanceToken) => {
+export const updateAttendanceToken = async (
+  token: AttendanceToken
+): Promise<ServerAction<AttendanceToken>> => {
   try {
-    const response = await apiProtect({ roles: ["pelatih"] });
-    if (response) throw response;
+    const response = await apiProtect({ roles: ["coach"] });
+    if (response) throw new Error(response.message);
 
     const { error } = await supabase
       .from("attendanceTokens")
       .update({ status: token.status })
       .eq("token", token.token);
 
-    if (error) throw error;
+    if (error) throw new Error(error.message);
 
-    return token;
+    return action.success(token);
   } catch (error) {
-    throw error;
+    return action.error(error);
   }
 };
 
 // ATTENDANCE
 // READ
 export const getAttendances = cache(
-  async (role: InternalAthleteRole, month: string) => {
+  async (
+    role: InternalAthleteRole,
+    month: string
+  ): Promise<ServerAction<AttendanceReport[]>> => {
     let start = new Date(month);
     start.setDate(1);
     start.setHours(0, 0, 1);
@@ -141,7 +169,7 @@ export const getAttendances = cache(
         directory: `admin/${role}`,
         throwError: true,
       });
-      if (response) throw response;
+      if (response) throw new Error(response.message);
 
       const { data, error } = await supabase
         .from("special_users")
@@ -153,9 +181,10 @@ export const getAttendances = cache(
         .returns<AttendanceReport[]>();
 
       if (error) throw new Error(error.message);
-      return data;
+
+      return action.success(data);
     } catch (error) {
-      throw error;
+      return action.error(error);
     }
   }
 );

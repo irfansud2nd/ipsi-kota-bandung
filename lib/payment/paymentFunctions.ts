@@ -39,7 +39,8 @@ export const addPayment = async (paymentData: Payment) => {
 
     // SEND PAYMENT
     toast.loading("Mendaftarkan pembayaran", { id: toastId });
-    await addPaymentSql(paymentToPaymentSql(payment));
+    const { error } = await addPaymentSql(paymentToPaymentSql(payment));
+    if (error) throw error;
 
     // FINISH
     toast.success("Pembayaran berhasil didaftarkan", { id: toastId });
@@ -63,11 +64,15 @@ export const deletePayment = async (payment: Payment) => {
 
     // SEND IMAGE
     toast.loading("Menghapus bukti pembayaran", { id: toastId });
-    await deleteFile(imageUrl);
+    const { error: deleteFileError } = await deleteFile(imageUrl);
+    if (deleteFileError) throw deleteFileError;
 
     // SEND PAYMENT
     toast.loading("Menghapus pembayaran", { id: toastId });
-    await deletePaymentSql(paymentToPaymentSql(payment));
+    const { error: deletePaymentSqlError } = await deletePaymentSql(
+      paymentToPaymentSql(payment)
+    );
+    if (deletePaymentSqlError) throw deletePaymentSqlError;
 
     // FINISH
     toast.success("Pembayaran berhasil dihapus", { id: toastId });

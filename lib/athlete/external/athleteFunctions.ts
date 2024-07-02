@@ -19,6 +19,7 @@ import {
   countDuplicateMatch,
   deleteAthleteAtEventSql,
   deleteAthleteSql,
+  getAthletesSql,
   getAthletesSqlByEmail,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
@@ -28,22 +29,7 @@ import { apiProtect } from "@/lib/admin/adminActions";
 import { deleteFile } from "@/lib/actions";
 
 // ATHLETE
-export const getAthletesByEmail = async (email: string) => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
-
-    const athletesSql = await getAthletesSqlByEmail(email);
-    const athletes = athletesSql.map((athleteSql) =>
-      athleteSqlToAthlete(athleteSql)
-    );
-
-    return athletes;
-  } catch (error) {
-    throw error;
-  }
-};
-
+// CREATE
 export const addAthlete = async (athleteData: Athlete) => {
   const toastId = toast.loading("Mendaftarkan Atlet");
   const id = v4();
@@ -81,7 +67,8 @@ export const addAthlete = async (athleteData: Athlete) => {
 
     // SEND ATHLETE
     toast.loading("Mendaftarkan atlet", { id: toastId });
-    await addAthleteSql(athleteToAthleteSql(athlete));
+    const { error } = await addAthleteSql(athleteToAthleteSql(athlete));
+    if (error) throw error;
 
     // FINISH
     toast.success("Atlet berhasil didaftarkan", { id: toastId });
@@ -92,6 +79,52 @@ export const addAthlete = async (athleteData: Athlete) => {
   }
 };
 
+// READ
+export const getAthletes = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw new Error(response.message);
+
+    const { result: athletesSql, error } = await getAthletesSql(
+      page,
+      limit,
+      showAll
+    );
+    if (error) throw error;
+
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAthletesByEmail = async (email: string) => {
+  try {
+    const response = await apiProtect({ permittedEmail: email });
+    if (response) throw response;
+
+    const { result: athletesSql, error } = await getAthletesSqlByEmail(email);
+    if (error) throw error;
+
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// UPDATE
 export const updateAthlete = async (athlete: Athlete) => {
   const toastId = toast.loading("Memperbahrui atlet");
   const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
@@ -118,7 +151,8 @@ export const updateAthlete = async (athlete: Athlete) => {
 
     // UPDATE ATHLETE
     toast.loading("Memperbaharui atlet", { id: toastId });
-    await updateAthleteSql(athleteToAthleteSql(athlete));
+    const { error } = await updateAthleteSql(athleteToAthleteSql(athlete));
+    if (error) throw error;
 
     // FINISH
     toast.success("Atlet berhasil diperbaharui", { id: toastId });
@@ -129,6 +163,7 @@ export const updateAthlete = async (athlete: Athlete) => {
   }
 };
 
+// DELETE
 export const deleteAthlete = async (athlete: Athlete) => {
   const toastId = toast.loading("Menghapus Atlet");
 
@@ -142,15 +177,20 @@ export const deleteAthlete = async (athlete: Athlete) => {
 
     // DELETE IMAGE
     toast.loading("Menghapus pas foto atlet", { id: toastId });
-    await deleteFile(imageUrl);
+    const { error: deleteImageError } = await deleteFile(imageUrl);
+    if (deleteImageError) throw deleteImageError;
 
     // DELETE KK
     toast.loading("Menghapus KK", { id: toastId });
-    await deleteFile(kkUrl);
+    const { error: deleteKkError } = await deleteFile(kkUrl);
+    if (deleteKkError) throw deleteKkError;
 
     // DELETE ATHLETE
     toast.loading("Menghapus atlet", { id: toastId });
-    await deleteAthleteSql(athleteToAthleteSql(athlete));
+    const { error: deleteAthleteSqlError } = await deleteAthleteSql(
+      athleteToAthleteSql(athlete)
+    );
+    if (deleteAthleteSqlError) throw deleteAthleteSqlError;
 
     // FINISH
     toast.success("Atlet berhasil dihapus", { id: toastId });
@@ -161,6 +201,7 @@ export const deleteAthlete = async (athlete: Athlete) => {
 };
 
 // ATHLETE AT EVENT
+// CREATE
 export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
     const response = await apiProtect({
@@ -168,9 +209,11 @@ export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
     });
     if (response) throw response;
 
-    const athleteAtEventSql = await addAthleteAtEventSql(
+    const { result: athleteAtEventSql, error } = await addAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
+    if (error) throw error;
+
     const result: AthleteAtEvent = {
       ...athleteAtEventSql,
       championship_id: athleteAtEvent.championship_id,
@@ -181,6 +224,7 @@ export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   }
 };
 
+// UPDATE
 export const updateAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
     const response = await apiProtect({
@@ -188,9 +232,12 @@ export const updateAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
     });
     if (response) throw response;
 
-    await updateAthleteAtEventSql(
+    const { error } = await updateAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
+    if (error) throw error;
+
+    return athleteAtEvent;
   } catch (error) {
     throw error;
   }
@@ -205,14 +252,16 @@ export const updateAthleteAtEvents = async (
     });
     if (response) throw response;
 
-    await updateAthleteAtEventsSql(
+    const { error } = await updateAthleteAtEventsSql(
       athleteAtEvents.map((item) => athleteAtEventToAhthleteAtEventSql(item))
     );
+    if (error) throw error;
   } catch (error) {
     throw error;
   }
 };
 
+// DELETE
 export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
     const response = await apiProtect({
@@ -220,9 +269,10 @@ export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
     });
     if (response) throw response;
 
-    await deleteAthleteAtEventSql(
+    const { error } = await deleteAthleteAtEventSql(
       athleteAtEventToAhthleteAtEventSql(athleteAtEvent)
     );
+    if (error) throw error;
   } catch (error) {
     throw error;
   }
@@ -412,7 +462,11 @@ export const checkMatchBasedLimited = async (
   countLimit -= 1;
 
   try {
-    const count = await countDuplicateMatch(matchBased, limit.paid);
+    const { result: count, error } = await countDuplicateMatch(
+      matchBased,
+      limit.paid
+    );
+    if (error) throw error;
 
     // console.log({ count, countLimit });
     if (count < countLimit) return;

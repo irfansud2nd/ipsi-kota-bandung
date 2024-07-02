@@ -2,6 +2,7 @@ import PagePagination from "@/components/ui/PagePagination";
 import { getUnconfirmedPaymentByChampionshipId } from "@/lib/payment/paymentActions";
 import RefreshButton from "@/components/ui/RefreshButton";
 import PaymentTable from "@/components/admin/payment/PaymentTable";
+import { fetchData } from "@/lib/functions";
 
 const page = async ({
   params,
@@ -14,10 +15,8 @@ const page = async ({
   const limit = 5;
   const showAll = searchParams.showAll == "true";
 
-  const unconfirmedPayments = await getUnconfirmedPaymentByChampionshipId(
-    params.championshipId,
-    page,
-    limit
+  const unconfirmedPayments = await fetchData(() =>
+    getUnconfirmedPaymentByChampionshipId(params.championshipId, page, limit)
   );
 
   return (

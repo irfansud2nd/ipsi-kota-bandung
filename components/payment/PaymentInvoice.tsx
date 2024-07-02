@@ -28,6 +28,7 @@ import "@/app/invoice.css";
 import { Payment } from "@/lib/payment/paymentConstants";
 import { countPaymentSqlBefore } from "@/lib/payment/paymentActions";
 import Loading from "../ui/Loading";
+import { toastError } from "@/lib/form/formFunctions";
 
 const anton = Anton({
   weight: ["400"],
@@ -57,12 +58,19 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
 
   useEffect(() => {
     const getInvoiceId = async () => {
-      const number = await countPaymentSqlBefore(payment.created_at);
-      // const number = 1;
-      const id = `BOPST-${today.replaceAll(" ", "")}-${number
-        ?.toString()
-        .padStart(3, "0")}`;
-      setInvoiceId(id);
+      try {
+        const { result: number, error } = await countPaymentSqlBefore(
+          payment.created_at
+        );
+        if (error) throw error;
+        // const number = 1;
+        const id = `BOPST-${today.replaceAll(" ", "")}-${number
+          ?.toString()
+          .padStart(3, "0")}`;
+        setInvoiceId(id);
+      } catch (error) {
+        toastError(error);
+      }
     };
     if (!invoiceId) getInvoiceId();
   }, []);

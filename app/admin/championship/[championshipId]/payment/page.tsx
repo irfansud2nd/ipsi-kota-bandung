@@ -1,5 +1,5 @@
 import CountDisplay from "@/components/ui/CountDisplay";
-import { formatToRupiah } from "@/lib/functions";
+import { fetchData, formatToRupiah } from "@/lib/functions";
 import {
   sumConfirmedPaymentByChampionshipId,
   sumPaymentBillByChampionshipId,
@@ -9,18 +9,19 @@ import {
 import Link from "next/link";
 
 const page = async ({ params }: { params: { championshipId: string } }) => {
-  const paymentTotal = await sumPaymentTotalByChampionshipId(
-    params.championshipId
+  const paymentTotal = await fetchData(() =>
+    sumPaymentTotalByChampionshipId(params.championshipId)
   );
-  const paymentBill = await sumPaymentBillByChampionshipId(
-    params.championshipId
+  const paymentBill = await fetchData(() =>
+    sumPaymentBillByChampionshipId(params.championshipId)
   );
-  const confirmedPayment = await sumConfirmedPaymentByChampionshipId(
-    params.championshipId
+  const confirmedPayment = await fetchData(() =>
+    sumConfirmedPaymentByChampionshipId(params.championshipId)
   );
-  const unconfirmedPayment = await sumUnconfirmedPaymentByChampionshipId(
-    params.championshipId
+  const unconfirmedPayment = await fetchData(() =>
+    sumUnconfirmedPaymentByChampionshipId(params.championshipId)
   );
+
   return (
     <div className="flex justify-center items-center gap-2 flex-wrap">
       <CountDisplay

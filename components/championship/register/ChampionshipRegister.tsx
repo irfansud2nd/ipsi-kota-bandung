@@ -94,10 +94,13 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
       const athletes = await getAthletesByEmail(userEmail);
       dispatch(addAthletesRedux(athletes));
 
-      const athleteAtEvents =
+      const { result: athleteAtEvents, error } =
         await getAthtleteAtEventsByContingentRegistrationId(
           registeredContingent?.registration_id as number
         );
+
+      if (error) throw error;
+
       dispatch(addAthletesAtEventsRedux(athleteAtEvents));
 
       setFetched((prev) => ({ ...prev, athlete: true }));
@@ -122,9 +125,12 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     // console.log("fetchPayments");
     if (!registeredContingent) return;
     try {
-      const payments = await getPaymentsByContingentRegistrationId(
-        registeredContingent.registration_id
-      );
+      const { result: payments, error } =
+        await getPaymentsByContingentRegistrationId(
+          registeredContingent.registration_id
+        );
+      if (error) throw error;
+
       dispatch(addPaymentsRedux(payments));
 
       setFetched((prev) => ({ ...prev, payment: true }));

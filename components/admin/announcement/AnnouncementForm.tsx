@@ -31,7 +31,9 @@ const AnnouncementForm = ({ announcement }: { announcement: Announcement }) => {
           onSubmit={async (values, { setSubmitting }) => {
             const toastId = toast.loading("Memperbaharui pengumuman");
             try {
-              await updateAnnouncement(values);
+              const { error } = await updateAnnouncement(values);
+              if (error) throw error;
+
               setOpen(false);
               router.refresh();
               toast.success("Pengumuman berhasil diperbaharui", {

@@ -28,36 +28,57 @@ const AttendanceBarcode = ({ athleteType }: Props) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<AttendanceToken | undefined>();
 
-  const getToken = () => {
+  const getToken = async () => {
     setLoading(true);
-    getAttendanceToken(athleteType)
-      .then((data) => {
-        if (data) {
-          setToken(data);
-        }
-      })
-      .catch((error) => toastError(error))
-      .finally(() => setLoading(false));
-  };
+    try {
+      const { result, error } = await getAttendanceToken(athleteType);
+      if (error) throw error;
 
-  const handleGenerate = () => {
-    setLoading(true);
-    addAttendanceToken(athleteType)
-      .then((res) => setToken(res))
-      .catch((error) => toastError(error))
-      .finally(() => setLoading(false));
-  };
-
-  const toggleStatus = (state: boolean) => {
-    if (!token) {
-      toast.error("Token not found!");
-      return;
+      setToken(result);
+    } catch (error) {
+      toastError(error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleGenerate = async () => {
     setLoading(true);
-    updateAttendanceToken({ ...token, status: state })
-      .then((res) => setToken(res))
-      .catch((error) => toastError(error))
-      .finally(() => setLoading(false));
+    try {
+      const { result, error } = await addAttendanceToken(athleteType);
+      if (error) throw error;
+
+      setToken(result);
+    } catch (error) {
+      toastError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleStatus = async (state: boolean) => {
+    setLoading(true);
+
+    try {
+      if (!token) {
+        throw { message: "Token not found!" };
+      }
+
+      const { result, error } = await updateAttendanceToken({
+        ...token,
+        status: state,
+      });
+      if (error) throw error;
+
+      setToken(result);
+    } catch (error) {
+      toastError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
