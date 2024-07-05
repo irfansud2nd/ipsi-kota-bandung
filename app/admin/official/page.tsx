@@ -1,4 +1,4 @@
-import OfficialPage from "@/components/admin/official/OfficalPage";
+import OfficialPage from "@/components/admin/official/OfficialPage";
 
 const page = ({
   searchParams,

@@ -1,3 +1,4 @@
+import ShowAllButton from "@/components/admin/ShowAllButton";
 import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
 import ContingentTable from "@/components/admin/contingent/ContingentTable";
 import PagePagination from "@/components/ui/PagePagination";
@@ -23,9 +24,9 @@ const page = async ({
   return (
     <div className="p-2">
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-3xl">Daftar Kontingen</h1>
+        <h1 className="font-semibold text-3xl">Daftar Semua Kontingen</h1>
         <TableDownloadButton
-          fileName="Daftar Kontingen"
+          fileName="Daftar Semua Kontingen"
           needShowAll
           isShowAll={showAll}
         />
@@ -35,11 +36,7 @@ const page = async ({
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
         <p>Menampilkan per {contingents.length} kontingen</p>
-        <Button asChild>
-          <Link href={"contingent?showAll=true"}>
-            Tampilkan Semua Kontingen
-          </Link>
-        </Button>
+        <ShowAllButton href="contingent" showAll={showAll} />
         <PagePagination
           page={page}
           limit={limit}

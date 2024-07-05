@@ -4,6 +4,9 @@ import PagePagination from "@/components/ui/PagePagination";
 import { getRegisteredContingents } from "@/lib/contingent/contingentActions";
 import RegisteredContingentAdminTable from "@/components/admin/contingent/RegisteredContingentAdminTable";
 import { fetchData } from "@/lib/functions";
+import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
+import { getChampionship } from "@/lib/event/eventFunctions";
+import ShowAllButton from "@/components/admin/ShowAllButton";
 
 const page = async ({
   params,
@@ -20,9 +23,20 @@ const page = async ({
     getRegisteredContingents(params.championshipId, page, limit, showAll)
   );
 
+  const championshipTitle = getChampionship(params.championshipId)?.title;
+
   return (
     <div className="p-2">
-      <h1 className="font-semibold text-3xl">Daftar Kontingen</h1>
+      <div className="flex justify-between items-center mb-1">
+        <h1 className="font-semibold text-3xl">
+          Daftar Kontigen - {championshipTitle}
+        </h1>
+        <TableDownloadButton
+          fileName={`Daftar Kontigeng - ${championshipTitle}`}
+          needShowAll
+          isShowAll={showAll}
+        />
+      </div>
       <div className="bg-muted flex flex-col">
         <RegisteredContingentAdminTable
           registeredContingentAdmins={registeredContingentAdmins}
@@ -30,11 +44,7 @@ const page = async ({
       </div>
       <div className="flex gap-1 flex-col sm:flex-row sm:justify-between items-center mt-1">
         <p>Menampilkan per {registeredContingentAdmins.length} kontingen</p>
-        <Button asChild>
-          <Link href={"contingent?showAll=true"}>
-            Tampilkan Semua Kontingen
-          </Link>
-        </Button>
+        <ShowAllButton href="contingent" showAll={showAll} />
         <PagePagination
           page={page}
           limit={limit}
