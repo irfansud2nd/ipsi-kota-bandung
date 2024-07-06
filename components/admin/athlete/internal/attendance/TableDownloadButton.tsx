@@ -7,6 +7,7 @@ type Props = {
   needShowAll?: boolean;
   isShowAll?: boolean;
   useId?: boolean;
+  className?: string;
 };
 
 const TableDownloadButton = ({
@@ -14,6 +15,7 @@ const TableDownloadButton = ({
   needShowAll,
   isShowAll,
   useId,
+  className,
 }: Props) => {
   const ref = useId
     ? document.getElementById("download")
@@ -29,7 +31,7 @@ const TableDownloadButton = ({
   if (needShowAll && !isShowAll) isDisabled = true;
 
   return (
-    <Button disabled={isDisabled} onClick={onDownload}>
+    <Button disabled={isDisabled} onClick={onDownload} className={className}>
       Download
     </Button>
   );

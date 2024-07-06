@@ -19,7 +19,7 @@ const page = async ({
 
   return (
     <div className="p-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between max-md:flex-wrap mb-1">
         <h1 className="font-semibold text-3xl">Daftar Semua Atlet</h1>
         <TableDownloadButton
           fileName="Daftar Semua Atlet"

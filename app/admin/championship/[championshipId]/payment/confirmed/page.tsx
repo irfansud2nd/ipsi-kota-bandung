@@ -21,24 +21,28 @@ const page = async ({
   const showAll = searchParams.showAll == "true";
 
   const confirmedPayments = await fetchData(() =>
-    getConfirmedPaymentByChampionshipId(params.championshipId, page, limit)
+    getConfirmedPaymentByChampionshipId(
+      params.championshipId,
+      page,
+      limit,
+      showAll
+    )
   );
 
   const championshipTitle = getChampionship(params.championshipId)?.title;
 
   return (
     <div className="p-2">
-      <div className="flex gap-1 items-center justify-between flex-wrap">
-        <div className="flex justify-between items-center mb-1">
-          <h1 className="font-semibold text-3xl">
-            Daftar Pembayaran Terkonfirmasi - {championshipTitle}
-          </h1>
-          <TableDownloadButton
-            fileName={`Daftar Pembayaran Terkonfirmasi - ${championshipTitle}`}
-            needShowAll
-            isShowAll={showAll}
-          />
-        </div>
+      <div className="flex items-center justify-between max-md:flex-wrap mb-1">
+        <h1 className="font-semibold text-3xl">
+          Daftar Pembayaran Terkonfirmasi - {championshipTitle}
+        </h1>
+        <TableDownloadButton
+          fileName={`Daftar Pembayaran Terkonfirmasi - ${championshipTitle}`}
+          needShowAll
+          isShowAll={showAll}
+          className="mr-1"
+        />
         <RefreshButton />
       </div>
       <div className="bg-muted flex flex-col">

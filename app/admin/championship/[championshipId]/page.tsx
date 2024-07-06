@@ -1,19 +1,8 @@
 import EventDisplay from "@/components/Event/EventDisplay";
-import Container from "@/components/ui/Container";
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { getChampionship, getChampionships } from "@/lib/event/eventFunctions";
-import Link from "next/link";
-import EventCard from "@/components/Event/EventCard";
-import { baseUrl } from "@/lib/constants";
+import { getChampionship } from "@/lib/event/eventFunctions";
+import ChampionshipMenuAdmin from "@/components/admin/ChampionshipMenuAdmin";
 
 type Props = {
   params: { championshipId: string };
@@ -48,6 +37,11 @@ const page = async ({ params }: Props) => {
 
   if (!championship) return notFound();
 
-  return <EventDisplay event={championship} />;
+  return (
+    <div>
+      <EventDisplay event={championship} />
+      <ChampionshipMenuAdmin onPage />
+    </div>
+  );
 };
 export default page;

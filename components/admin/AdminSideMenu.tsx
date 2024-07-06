@@ -1,6 +1,6 @@
 import { getAdminLinks } from "@/lib/admin/adminActions";
 import SideMenuLinks from "../ui/SideMenuLinks";
-import AdminChampionshipMenu from "./AdminChampionshipMenu";
+import ChampionshipMenuAdmin from "./ChampionshipMenuAdmin";
 
 const AdminSideMenu = async () => {
   const adminLinks = await getAdminLinks();
@@ -8,7 +8,7 @@ const AdminSideMenu = async () => {
   return (
     <div className="border-r-2 h-full p-2 relative">
       <SideMenuLinks className="flex flex-col" menu={adminLinks} />
-      <AdminChampionshipMenu />
+      <ChampionshipMenuAdmin />
     </div>
   );
 };

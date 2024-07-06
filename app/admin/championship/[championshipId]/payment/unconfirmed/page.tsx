@@ -3,6 +3,7 @@ import { getUnconfirmedPaymentByChampionshipId } from "@/lib/payment/paymentActi
 import RefreshButton from "@/components/ui/RefreshButton";
 import PaymentTable from "@/components/admin/payment/PaymentTable";
 import { fetchData } from "@/lib/functions";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 const page = async ({
   params,
@@ -19,11 +20,13 @@ const page = async ({
     getUnconfirmedPaymentByChampionshipId(params.championshipId, page, limit)
   );
 
+  const championshipTitle = getChampionship(params.championshipId)?.title;
+
   return (
     <div className="p-2">
-      <div className="flex gap-1 items-center justify-between flex-wrap">
+      <div className="flex gap-1 items-center justify-between max-md:flex-wrap mb-1">
         <h1 className="font-semibold text-3xl">
-          Pembayaran Menunggu Konfirmasi
+          Pembayaran Menunggu Konfirmasi - {championshipTitle}
         </h1>
         <RefreshButton />
       </div>

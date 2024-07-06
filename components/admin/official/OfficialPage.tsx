@@ -17,7 +17,7 @@ const OfficialPage = async ({ page, limit, showAll }: Props) => {
 
   return (
     <div className="p-2">
-      <div className="flex justify-between items-center mb-1">
+      <div className="flex justify-between items-center max-md:flex-wrap mb-1">
         <h1 className="font-semibold text-3xl">Daftar Official</h1>
         <TableDownloadButton
           fileName="Daftar Official"

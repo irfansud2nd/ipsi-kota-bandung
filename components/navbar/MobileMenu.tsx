@@ -2,11 +2,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { IoMenuSharp } from "react-icons/io5";
 import { Button } from "../ui/button";
 import ProfileButton from "./ProfileButton";
-import MobileMenuLinks from "./MobileMenuLinks";
 import SideMenuLinks from "../ui/SideMenuLinks";
 import { getAdminLinks } from "@/lib/admin/adminActions";
 import { clientLinks } from "@/lib/constants";
-import AdminChampionshipMenu from "../admin/AdminChampionshipMenu";
+import ChampionshipMenuAdmin from "../admin/ChampionshipMenuAdmin";
 
 const MobileMenu = async () => {
   const adminLinks = await getAdminLinks();
@@ -37,7 +36,7 @@ const MobileMenu = async () => {
               menu={adminLinks}
               onSheet
             />
-            <AdminChampionshipMenu onSheet />
+            <ChampionshipMenuAdmin onSheet />
           </div>
         )}
       </SheetContent>

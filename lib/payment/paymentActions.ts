@@ -101,7 +101,8 @@ export const getPaymentsByContingentRegistrationId = async (
 export const getConfirmedPaymentByChampionshipId = async (
   championshipId: string,
   page: number,
-  limit: number
+  limit: number,
+  showAll: boolean = false
 ): Promise<ServerAction<Payment[]>> => {
   try {
     const response = await apiProtect({
@@ -109,11 +110,21 @@ export const getConfirmedPaymentByChampionshipId = async (
     });
     if (response) throw new Error(response.message);
 
+    let params = {
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll)
+      params = {
+        pg: 1,
+        lmt: 4000,
+      };
+
     const { data, error } = await supabase
       .rpc("get_confirmed_payment_by_championship_id", {
         champ_id: championshipId,
-        pg: page,
-        lmt: limit,
+        ...params,
       })
       .returns<Payment[]>();
 
@@ -128,7 +139,8 @@ export const getConfirmedPaymentByChampionshipId = async (
 export const getUnconfirmedPaymentByChampionshipId = async (
   championshipId: string,
   page: number,
-  limit: number
+  limit: number,
+  showAll: boolean = false
 ): Promise<ServerAction<Payment[]>> => {
   try {
     const response = await apiProtect({
@@ -136,11 +148,21 @@ export const getUnconfirmedPaymentByChampionshipId = async (
     });
     if (response) throw new Error(response.message);
 
+    let params = {
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll)
+      params = {
+        pg: 1,
+        lmt: 4000,
+      };
+
     const { data, error } = await supabase
       .rpc("get_unconfirmed_payment_by_championship_id", {
         champ_id: championshipId,
-        pg: page,
-        lmt: limit,
+        ...params,
       })
       .returns<Payment[]>();
 
