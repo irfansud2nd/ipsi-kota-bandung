@@ -8,6 +8,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/functions";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { MdMoreHoriz } from "react-icons/md";
 
 const ContingentTable = ({ contingents }: { contingents: Contingent[] }) => {
   return (
@@ -20,6 +29,7 @@ const ContingentTable = ({ contingents }: { contingents: Contingent[] }) => {
           <TableHead>Official</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Waktu dibuat</TableHead>
+          <TableHead>Detail</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -31,6 +41,22 @@ const ContingentTable = ({ contingents }: { contingents: Contingent[] }) => {
             <TableCell>{contingent.officials}</TableCell>
             <TableCell>{contingent.created_by}</TableCell>
             <TableCell>{formatDate(contingent.created_at)}</TableCell>
+            <TableCell>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button size={"icon"} variant={"outline"} asChild>
+                      <Link href={`/admin/contingent/${contingent.id}`}>
+                        <MdMoreHoriz className="size-4" />
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Detail</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

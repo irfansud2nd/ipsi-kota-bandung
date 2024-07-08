@@ -20,6 +20,7 @@ import {
   deleteAthleteAtEventSql,
   deleteAthleteSql,
   getAthletesSql,
+  getAthletesSqlByContingentId,
   getAthletesSqlByEmail,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
@@ -112,6 +113,25 @@ export const getAthletesByEmail = async (email: string) => {
     if (response) throw response;
 
     const { result: athletesSql, error } = await getAthletesSqlByEmail(email);
+    if (error) throw error;
+
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+export const getAthletesByContingentId = async (contingentId: string) => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw response;
+
+    const { result: athletesSql, error } = await getAthletesSqlByContingentId(
+      contingentId
+    );
     if (error) throw error;
 
     const athletes = athletesSql.map((athleteSql) =>

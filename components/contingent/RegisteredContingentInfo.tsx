@@ -12,7 +12,7 @@ import {
 import { deleteContingentAtEventRedux } from "@/lib/redux/championship/register/contingentSlice";
 import { toast } from "sonner";
 import { toastError } from "@/lib/form/formFunctions";
-import ContingentInfoTable from "./ContingentInfoTable";
+import HorizontalTable from "./HorizontalTable";
 import { getTotalMatchCost } from "@/lib/athlete/external/athleteFunctions";
 import { formatToRupiah } from "@/lib/functions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
@@ -94,7 +94,7 @@ const RegisteredContingentInfo = ({
       >
         Batalkan Pendaftaran
       </Button>
-      <ContingentInfoTable data={data} />
+      <HorizontalTable data={data} />
     </div>
   );
 };

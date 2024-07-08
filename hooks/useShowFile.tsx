@@ -1,22 +1,19 @@
 "use client";
-import ShowFile from "@/components/ui/ShowFile";
-import { Button } from "@/components/ui/button";
+import ShowFile from "@/components/showFile/ShowFile";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 
-const useShowFileDialog = () => {
+const useShowFile = () => {
   const [open, setOpen] = useState(false);
   const [src, setSrc] = useState("");
   const [title, setTitle] = useState("");
   const [landscape, setLandscape] = useState(false);
   const [resolveCallback, setResolveCallback] = useState<any>(null);
 
-  const showFile = (title: string, src: string, landscape: boolean = false) => {
+  const showFile = (title: string, src: string, landscape?: boolean) => {
     setSrc(src);
     setTitle(title);
-    setLandscape(landscape);
+    setLandscape(landscape ?? false);
     setOpen(true);
     return new Promise((resolve) => {
       setResolveCallback(() => resolve);
@@ -46,4 +43,4 @@ const useShowFileDialog = () => {
     ShowFileDialog,
   };
 };
-export default useShowFileDialog;
+export default useShowFile;

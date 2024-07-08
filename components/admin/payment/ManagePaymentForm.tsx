@@ -1,6 +1,6 @@
 "use client";
 import DisplayText from "@/components/inputs/DisplayText";
-import ShowFile from "@/components/ui/ShowFile";
+import ShowFile from "@/components/showFile/ShowFile";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toastError } from "@/lib/form/formFunctions";
@@ -139,7 +139,6 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
             src={payment.image.downloadUrl}
             label="Bukti Transaksi"
             className="max-w-[250px]"
-            newTab
           />
         </div>
         <div className="flex gap-1 justify-end">

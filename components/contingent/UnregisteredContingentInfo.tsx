@@ -20,7 +20,7 @@ import { deleteFiles } from "@/lib/actions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
 import { deleteAllOficialsRedux } from "@/lib/redux/championship/register/officialSlice";
 import useConfirmation from "@/hooks/useConfirmation";
-import ContingentInfoTable from "./ContingentInfoTable";
+import HorizontalTable from "./HorizontalTable";
 import { formatDate, getFileUrl } from "@/lib/functions";
 
 const UnregisteredContingentInfo = ({
@@ -141,7 +141,7 @@ const UnregisteredContingentInfo = ({
           Hapus Kontingen
         </Button>
       </div>
-      <ContingentInfoTable data={data} />
+      <HorizontalTable data={data} />
       {!registeredContingent && (
         <div className="w-full flex flex-col bg-yellow-200 items-center rounded p-2 gap-2 my-2">
           <p className="font-medium text-center">

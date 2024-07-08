@@ -1,8 +1,3 @@
-import { apiProtect } from "@/lib/admin/adminActions";
-import {
-  getContingenAtEvents,
-  getContingentByEmail,
-} from "@/lib/contingent/contingentActions";
 import supabase from "@/lib/database/supabase";
 import { getPaymentsByContingentRegistrationId } from "@/lib/payment/paymentActions";
 import { NextResponse } from "next/server";

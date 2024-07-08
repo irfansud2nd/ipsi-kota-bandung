@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/functions";
+import ShowFileButton from "@/components/showFile/ShowFileButton";
 
 const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
   return (
@@ -28,6 +29,8 @@ const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
           <TableHead>Nomor Telepon</TableHead>
           <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
+          <TableHead>Pas Foto</TableHead>
+          <TableHead>Kartu Keluarga</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -49,6 +52,19 @@ const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
             <TableCell>{athlete.phone_number}</TableCell>
             <TableCell>{athlete.created_by}</TableCell>
             <TableCell>{formatDate(athlete.created_at)}</TableCell>
+            <TableCell>
+              <ShowFileButton
+                title={`Pas Foto ${athlete.name}`}
+                src={athlete.image.downloadUrl}
+              />
+            </TableCell>
+            <TableCell>
+              <ShowFileButton
+                title={`Kartu Keluarga ${athlete.name}`}
+                src={athlete.kk.downloadUrl}
+                landscape
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

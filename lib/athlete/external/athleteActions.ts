@@ -80,6 +80,27 @@ export const getAthletesSql = async (
   }
 };
 
+export const getAthletesSqlByContingentId = async (
+  contingentId: string
+): Promise<ServerAction<AthleteSql[]>> => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .from("athletes")
+      .select()
+      .eq("contingent_id", contingentId)
+      .returns<AthleteSql[]>();
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // UPDATE
 export const updateAthleteSql = async (
   athleteSql: AthleteSql
@@ -162,6 +183,7 @@ export const getMatchBaseds = cache(
     }
   }
 );
+
 export const getMatchBasedsByCategory = cache(
   async (
     championshipId: string,
@@ -196,6 +218,29 @@ export const getMatchBasedsByCategory = cache(
 
       const { data, error } = await supabase
         .rpc("get_match_based_by_category", params)
+        .returns<MatchBased[]>();
+
+      if (error) throw new Error(error.message);
+
+      return action.success(data);
+    } catch (error) {
+      return action.error(error);
+    }
+  }
+);
+
+export const getMatchBasedsByContingentRegistrationId = cache(
+  async (
+    contingentRegistrationId: number
+  ): Promise<ServerAction<MatchBased[]>> => {
+    try {
+      const response = await apiProtect({ directory: "championship" });
+      if (response) throw new Error(response.message);
+
+      const { data, error } = await supabase
+        .rpc("get_match_based_by_contingen_registration_id", {
+          cont_reg_id: contingentRegistrationId,
+        })
         .returns<MatchBased[]>();
 
       if (error) throw new Error(error.message);

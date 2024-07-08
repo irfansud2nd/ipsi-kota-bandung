@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { formatDate, formatToRupiah } from "@/lib/functions";
 import { Button } from "@/components/ui/button";
-import { BiDetail } from "react-icons/bi";
 import {
   Tooltip,
   TooltipContent,
@@ -17,12 +16,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { MdMoreHoriz } from "react-icons/md";
+
+type Props = {
+  registeredContingentAdmins: RegisteredContingentAdmin[];
+  noDetail?: boolean;
+};
 
 const RegisteredContingentAdminTable = ({
   registeredContingentAdmins,
-}: {
-  registeredContingentAdmins: RegisteredContingentAdmin[];
-}) => {
+  noDetail,
+}: Props) => {
   return (
     <Table>
       <TableHeader>
@@ -41,7 +45,7 @@ const RegisteredContingentAdminTable = ({
           <TableHead>Tagihan</TableHead>
           <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu dibuat</TableHead>
-          {/* <TableHead>Detail</TableHead> */}
+          {!noDetail && <TableHead>Detail</TableHead>}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -85,24 +89,26 @@ const RegisteredContingentAdminTable = ({
             <TableCell className="whitespace-nowrap">
               {formatDate(registeredContingentAdmin.created_at)}
             </TableCell>
-            {/* <TableCell>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button size={"icon"} variant={"outline"} asChild>
-                      <Link
-                        href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
-                      >
-                        <BiDetail className="size-4" />
-                      </Link>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Detail</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TableCell> */}
+            {!noDetail && (
+              <TableCell>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button size={"icon"} variant={"outline"} asChild>
+                        <Link
+                          href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
+                        >
+                          <MdMoreHoriz className="size-4" />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Detail</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

@@ -4,6 +4,7 @@ import {
   addOfficialSql,
   deleteOfficialSql,
   getOfficialsSql,
+  getOfficialsSqlByContingentId,
   getOfficialsSqlByEmail,
   updateOfficialSql,
 } from "./officialActions";
@@ -91,6 +92,26 @@ export const getOfficialsByEmail = async (email: string) => {
     if (response) throw response;
 
     const { result: officialsSql, error } = await getOfficialsSqlByEmail(email);
+    if (error) throw error;
+
+    const officials = officialsSql.map((officialSql) =>
+      officialSqlToOfficial(officialSql)
+    );
+
+    return officials;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getOfficialsByContingentId = async (contingentId: string) => {
+  try {
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw response;
+
+    const { result: officialsSql, error } = await getOfficialsSqlByContingentId(
+      contingentId
+    );
     if (error) throw error;
 
     const officials = officialsSql.map((officialSql) =>

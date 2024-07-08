@@ -11,7 +11,7 @@ import {
   addContingentSql,
   deleteContingentAtEventSql,
   deleteContingentSql,
-  getContingenAtEvents,
+  getContingenAtEventsByContingentId,
   getContingentByEmail,
   updateContingentSql,
 } from "./contingentActions";
@@ -171,7 +171,7 @@ export const getContingentInfoByEmail = async (email: string) => {
     if (!result.contingent) return result;
 
     const { result: contingentAtEvents, error: contingentAtEventsError } =
-      await getContingenAtEvents(result.contingent.id);
+      await getContingenAtEventsByContingentId(result.contingent.id);
     if (contingentAtEventsError) throw contingentAtEventsError;
 
     result.contingentAtEvents = contingentAtEvents;

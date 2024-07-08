@@ -6,11 +6,10 @@ import { Badge } from "../ui/badge";
 import ErrorText from "../ui/ErrorText";
 import { calculateAge } from "@/lib/athlete/external/athleteFunctions";
 import { Input } from "../ui/input";
-import { championships } from "@/lib/event/eventConstants";
 import { InputProps } from "@/lib/form/formConstants";
 import { Button } from "../ui/button";
-import useShowFileDialog from "@/hooks/useShowFile";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import useShowFile from "@/hooks/useShowFile";
 
 type Props = InputProps & {
   landscape?: boolean;
@@ -68,7 +67,7 @@ const InputFile = ({
     (championshipId && getChampionship(championshipId)?.status.editOnly) ||
     false;
 
-  const { showFile, ShowFileDialog } = useShowFileDialog();
+  const { showFile, ShowFileDialog } = useShowFile();
 
   return (
     <div

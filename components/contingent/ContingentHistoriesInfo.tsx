@@ -8,7 +8,7 @@ import {
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
-import ContingentInfoTable from "./ContingentInfoTable";
+import HorizontalTable from "./HorizontalTable";
 
 const ContingentHistoriesInfo = ({
   championshipId,
@@ -17,45 +17,39 @@ const ContingentHistoriesInfo = ({
 }) => {
   const contingentAtEvents = useSelector(
     (state: RootState) => state.contingent.contingentAtEvents
-  );
-  const data = contingentAtEvents.filter(
-    (item) => item.championship_id !== championshipId
-  );
+  ).filter((item) => item.championship_id !== championshipId);
 
-  if (!data.length) return null;
-
-  let histories = data.map((item) => ({
-    championshipId: item.championship_id,
-    data: [
-      {
-        key: "Atlet",
-        value: item.registered_athletes,
-      },
-      {
-        key: "Official",
-        value: item.registered_officials,
-      },
-      {
-        key: "Nomor pertandingan",
-        value: item.match_count,
-      },
-    ],
-  }));
+  if (!contingentAtEvents.length) return null;
 
   return (
     <>
-      <h2 className="font-medium text-xl">Event yang pernah diikuti</h2>
+      <h2 className="font-medium text-xl">Kejuaraan yang pernah diikuti</h2>
       <Accordion type="single" collapsible>
-        {histories.map((history) => (
+        {contingentAtEvents.map((contingentAtEvent) => (
           <AccordionItem
-            value={history.championshipId}
-            key={history.championshipId}
+            value={contingentAtEvent.championship_id}
+            key={contingentAtEvent.championship_id}
           >
             <AccordionTrigger>
-              {getChampionship(history.championshipId)?.title}
+              {getChampionship(contingentAtEvent.championship_id)?.title}
             </AccordionTrigger>
             <AccordionContent className="pb-0">
-              <ContingentInfoTable data={history.data} />
+              <HorizontalTable
+                data={[
+                  {
+                    key: "Atlet",
+                    value: contingentAtEvent.registered_athletes,
+                  },
+                  {
+                    key: "Official",
+                    value: contingentAtEvent.registered_officials,
+                  },
+                  {
+                    key: "Nomor pertandingan",
+                    value: contingentAtEvent.match_count,
+                  },
+                ]}
+              />
             </AccordionContent>
           </AccordionItem>
         ))}

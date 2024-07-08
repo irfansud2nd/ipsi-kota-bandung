@@ -1,3 +1,4 @@
+import ShowFileButton from "@/components/showFile/ShowFileButton";
 import {
   Table,
   TableBody,
@@ -34,6 +35,8 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
           <TableHead>Nomor Telepon</TableHead>
           <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
+          <TableHead>Pas Foto</TableHead>
+          <TableHead>Kartu Keluarga</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -54,7 +57,9 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
             <TableCell>{matchBased.schema}</TableCell>
             <TableCell>{matchBased.level}</TableCell>
             <TableCell>{matchBased.category}</TableCell>
-            <TableCell>{matchBased.team ?? "-"}</TableCell>
+            <TableCell>
+              {matchBased.team?.length ? matchBased.team : "-"}
+            </TableCell>
             <TableCell
               className={`${
                 matchBased.payment_id ? "text-green-500" : "text-red-500"
@@ -67,6 +72,19 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
             <TableCell>{matchBased.phone_number}</TableCell>
             <TableCell>{matchBased.created_by}</TableCell>
             <TableCell>{formatDate(matchBased.created_at)}</TableCell>
+            <TableCell>
+              <ShowFileButton
+                title={`Pas Foto ${matchBased.name}`}
+                src={matchBased.image.downloadUrl}
+              />
+            </TableCell>
+            <TableCell>
+              <ShowFileButton
+                title={`Kartu Keluarga ${matchBased.name}`}
+                src={matchBased.kk.downloadUrl}
+                landscape
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

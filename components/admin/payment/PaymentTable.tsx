@@ -26,6 +26,7 @@ const PaymentTable = ({ payments }: Props) => {
           <TableHead>Total Pembayaran</TableHead>
           <TableHead>Nomor Telepon</TableHead>
           <TableHead>Nominal Transfer</TableHead>
+          <TableHead>Status</TableHead>
           <TableHead>Waktu Pembayaran</TableHead>
           <TableHead>Aksi</TableHead>
         </TableRow>
@@ -42,6 +43,15 @@ const PaymentTable = ({ payments }: Props) => {
               {formatToRupiah(
                 getUniquePaymentTotal(payment.total, payment.phone_number)
               )}
+            </TableCell>
+            <TableCell
+              className={`${
+                payment.confirmed_by.length ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {payment.confirmed_by.length
+                ? "Dikonfirmasi"
+                : "Menunggu Konfirmasi"}
             </TableCell>
             <TableCell>{formatDate(payment.created_at)}</TableCell>
             <TableCell>

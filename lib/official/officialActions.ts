@@ -4,7 +4,6 @@ import { ServerAction } from "../constants";
 import supabase from "../database/supabase";
 import { action } from "../functions";
 import { OfficialSql } from "./officialContants";
-import { officialSqlToOfficial } from "./officialFunctions";
 
 // OFFICIAL SQL
 // READ
@@ -44,6 +43,27 @@ export const getOfficialsSql = async (
       getData = getData.range(page * limit - limit, page * limit - 1);
 
     const { data, error } = await getData;
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+export const getOfficialsSqlByContingentId = async (
+  contingentId: string
+): Promise<ServerAction<OfficialSql[]>> => {
+  try {
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .from("officials")
+      .select()
+      .eq("contingent_id", contingentId)
+      .returns<OfficialSql[]>();
 
     if (error) throw new Error(error.message);
 

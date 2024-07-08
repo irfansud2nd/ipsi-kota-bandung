@@ -69,6 +69,29 @@ export const getContingents = async (
   }
 };
 
+export const getContingentById = async (
+  id: string
+): Promise<ServerAction<Contingent | undefined>> => {
+  try {
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .rpc("get_contingent_by_id", {
+        identification: id,
+      })
+      .returns<Contingent[]>();
+
+    if (error) throw new Error(error.message);
+
+    if (!data.length) action.success(undefined);
+
+    return action.success(data[0]);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // CONTINGENT SQL
 // CREATE
 export const addContingentSql = async (
@@ -153,7 +176,7 @@ export const deleteContingentSql = async (
 
 // CONTINGENT AT EVENT
 // READ
-export const getContingenAtEvents = async (
+export const getContingenAtEventsByContingentId = async (
   contingentId: string
 ): Promise<ServerAction<ContingentAtEvent[]>> => {
   try {
@@ -225,9 +248,9 @@ export const deleteContingentAtEventSql = async (
   }
 };
 
-// REGISTERD CONTINGENT
+// REGISTERED CONTINGENT
 // READ
-export const getRegisteredContingents = async (
+export const getRegisteredContingentAdminsByChampionshipId = async (
   championshipId: string,
   page: number,
   limit: number,
@@ -255,6 +278,31 @@ export const getRegisteredContingents = async (
     if (error) throw new Error(error.message);
 
     return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+export const getRegisteredContingentAdminByContingentId = async (
+  contingentId: string,
+  championshipId: string
+): Promise<ServerAction<RegisteredContingentAdmin | undefined>> => {
+  try {
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .rpc("get_registered_contingent_admin_by_contingent_id", {
+        cont_id: contingentId,
+        champ_id: championshipId,
+      })
+      .returns<RegisteredContingentAdmin[]>();
+
+    if (error) throw new Error(error.message);
+
+    if (!data.length) return action.success(undefined);
+
+    return action.success(data[0]);
   } catch (error) {
     return action.error(error);
   }

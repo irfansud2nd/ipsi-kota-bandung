@@ -5,7 +5,7 @@ type Info = {
   value: string | number;
 };
 
-const ContingentInfoTable = ({ data }: { data: Info[] }) => {
+const HorizontalTable = ({ data }: { data: Info[] }) => {
   return (
     <Table>
       <TableBody>
@@ -19,4 +19,4 @@ const ContingentInfoTable = ({ data }: { data: Info[] }) => {
     </Table>
   );
 };
-export default ContingentInfoTable;
+export default HorizontalTable;

@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/functions";
+import ShowFileButton from "@/components/showFile/ShowFileButton";
 
 const OfficialTable = ({ officials }: { officials: Official[] }) => {
   return (
@@ -21,6 +22,7 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
           <TableHead>Jabatan</TableHead>
           <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
+          <TableHead>Pas Foto</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -33,6 +35,12 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
             <TableCell>{official.contingent_name}</TableCell>
             <TableCell>{official.created_by}</TableCell>
             <TableCell>{formatDate(official.created_at)}</TableCell>
+            <TableCell>
+              <ShowFileButton
+                title={`Pas Foto ${official.name}`}
+                src={official.image.downloadUrl}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

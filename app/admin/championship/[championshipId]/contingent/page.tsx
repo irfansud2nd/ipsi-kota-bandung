@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PagePagination from "@/components/ui/PagePagination";
-import { getRegisteredContingents } from "@/lib/contingent/contingentActions";
+import { getRegisteredContingentAdminsByChampionshipId } from "@/lib/contingent/contingentActions";
 import RegisteredContingentAdminTable from "@/components/admin/contingent/RegisteredContingentAdminTable";
 import { fetchData } from "@/lib/functions";
 import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
@@ -20,7 +20,12 @@ const page = async ({
   const showAll = searchParams.showAll == "true";
 
   const registeredContingentAdmins = await fetchData(() =>
-    getRegisteredContingents(params.championshipId, page, limit, showAll)
+    getRegisteredContingentAdminsByChampionshipId(
+      params.championshipId,
+      page,
+      limit,
+      showAll
+    )
   );
 
   const championshipTitle = getChampionship(params.championshipId)?.title;
