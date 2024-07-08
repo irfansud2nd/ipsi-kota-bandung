@@ -1,7 +1,4 @@
-import {
-  RegisteredContingent,
-  RegisteredContingentAdmin,
-} from "@/lib/contingent/contingentConstants";
+import { RegisteredContingentAdmin } from "@/lib/contingent/contingentConstants";
 import {
   Table,
   TableBody,
@@ -11,6 +8,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate, formatToRupiah } from "@/lib/functions";
+import { Button } from "@/components/ui/button";
+import { BiDetail } from "react-icons/bi";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 
 const RegisteredContingentAdminTable = ({
   registeredContingentAdmins,
@@ -30,12 +36,12 @@ const RegisteredContingentAdminTable = ({
           <TableHead>Pemula Seni</TableHead>
           <TableHead>Prestasi Tanding</TableHead>
           <TableHead>Prestasi Seni</TableHead>
-          <TableHead>Tanding</TableHead>
-          <TableHead>Seni</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Pembayaran</TableHead>
           <TableHead>Tagihan</TableHead>
+          <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu dibuat</TableHead>
+          {/* <TableHead>Detail</TableHead> */}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -76,9 +82,27 @@ const RegisteredContingentAdminTable = ({
               {formatToRupiah(registeredContingentAdmin.payment_bill)}
             </TableCell>
             <TableCell>{registeredContingentAdmin.created_by}</TableCell>
-            <TableCell>
+            <TableCell className="whitespace-nowrap">
               {formatDate(registeredContingentAdmin.created_at)}
             </TableCell>
+            {/* <TableCell>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button size={"icon"} variant={"outline"} asChild>
+                      <Link
+                        href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
+                      >
+                        <BiDetail className="size-4" />
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Detail</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TableCell> */}
           </TableRow>
         ))}
       </TableBody>
