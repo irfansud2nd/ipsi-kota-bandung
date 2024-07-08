@@ -174,6 +174,31 @@ export const getUnconfirmedPaymentByChampionshipId = async (
   }
 };
 
+export const getPaymentById = async (
+  id: string
+): Promise<ServerAction<Payment | undefined>> => {
+  try {
+    const response = await apiProtect({
+      loggedInOnly: true,
+    });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .rpc("get_payment_by_id", {
+        identification: id,
+      })
+      .returns<Payment[]>();
+
+    if (error) throw new Error(error.message);
+
+    if (!data.length) return action.success(undefined);
+
+    return action.success(data[0]);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // OTHERS
 export const countPaymentSqlBefore = async (
   time: number

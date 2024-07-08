@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 
 type Info = {
   key: string;
-  value: string | number;
+  value: string | number | React.ReactNode;
 };
 
 const HorizontalTable = ({ data }: { data: Info[] }) => {

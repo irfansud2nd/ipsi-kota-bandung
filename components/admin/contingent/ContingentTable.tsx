@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MdMoreHoriz } from "react-icons/md";
+import DetailButton from "@/components/ui/DetailButton";
 
 const ContingentTable = ({ contingents }: { contingents: Contingent[] }) => {
   return (
@@ -42,20 +43,7 @@ const ContingentTable = ({ contingents }: { contingents: Contingent[] }) => {
             <TableCell>{contingent.created_by}</TableCell>
             <TableCell>{formatDate(contingent.created_at)}</TableCell>
             <TableCell>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button size={"icon"} variant={"outline"} asChild>
-                      <Link href={`/admin/contingent/${contingent.id}`}>
-                        <MdMoreHoriz className="size-4" />
-                      </Link>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Detail</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <DetailButton href={`/admin/contingent/${contingent.id}`} />
             </TableCell>
           </TableRow>
         ))}

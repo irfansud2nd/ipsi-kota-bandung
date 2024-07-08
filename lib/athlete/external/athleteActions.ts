@@ -229,6 +229,27 @@ export const getMatchBasedsByCategory = cache(
   }
 );
 
+export const getMatchBasedsByPaymentId = cache(
+  async (paymentId: string): Promise<ServerAction<MatchBased[]>> => {
+    try {
+      const response = await apiProtect({ directory: "championship" });
+      if (response) throw new Error(response.message);
+
+      const { data, error } = await supabase
+        .rpc("get_match_based_by_payment_id", {
+          pay_id: paymentId,
+        })
+        .returns<MatchBased[]>();
+
+      if (error) throw new Error(error.message);
+
+      return action.success(data);
+    } catch (error) {
+      return action.error(error);
+    }
+  }
+);
+
 export const getMatchBasedsByContingentRegistrationId = cache(
   async (
     contingentRegistrationId: number

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 import { MdMoreHoriz } from "react-icons/md";
+import DetailButton from "@/components/ui/DetailButton";
 
 type Props = {
   registeredContingentAdmins: RegisteredContingentAdmin[];
@@ -91,22 +92,9 @@ const RegisteredContingentAdminTable = ({
             </TableCell>
             {!noDetail && (
               <TableCell>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button size={"icon"} variant={"outline"} asChild>
-                        <Link
-                          href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
-                        >
-                          <MdMoreHoriz className="size-4" />
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Detail</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <DetailButton
+                  href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
+                />
               </TableCell>
             )}
           </TableRow>

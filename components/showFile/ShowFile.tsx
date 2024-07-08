@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
-// import download from "download";
 
 type Props = {
   label: string;
@@ -15,7 +14,6 @@ type Props = {
 
 const ShowFile = ({ label, src, landscape, className }: Props) => {
   const [skeleton, setSkeleton] = useState(true);
-
   return (
     <div className={`flex flex-col gap-1 items-center w-fit ${className}`}>
       <Label>{label}</Label>
@@ -30,7 +28,6 @@ const ShowFile = ({ label, src, landscape, className }: Props) => {
               ${landscape ? "aspect-video" : "aspect-[9/16]"}
               `}
           onLoad={() => setSkeleton(false)}
-          id="target_image"
         />
         {skeleton && (
           <Skeleton
@@ -42,7 +39,7 @@ const ShowFile = ({ label, src, landscape, className }: Props) => {
       </div>
       <div className="flex gap-1">
         <Button size={"sm"} asChild>
-          <Link href={src} target="_blank" download>
+          <Link href={src} target="_blank">
             Buka di Tab baru
           </Link>
         </Button>
