@@ -29,6 +29,7 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
             <TableCell>{i + 1}</TableCell>
             <TableCell>{official.name}</TableCell>
             <TableCell>{official.gender}</TableCell>
+            <TableCell>{official.position}</TableCell>
             <TableCell>{official.contingent_name}</TableCell>
             <TableCell>{official.created_by}</TableCell>
             <TableCell>{formatDate(official.created_at)}</TableCell>
