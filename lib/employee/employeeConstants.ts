@@ -39,6 +39,7 @@ export const employeeSchema = (ignoreImage: boolean = false) => {
       .required("Tolong lengkapi posisi")
       .max(225, "Posisi terlalu panjang"),
   });
+
   if (!ignoreImage)
     schema = schema.concat(
       yup.object({
@@ -47,5 +48,6 @@ export const employeeSchema = (ignoreImage: boolean = false) => {
         }),
       })
     );
+
   return schema;
 };

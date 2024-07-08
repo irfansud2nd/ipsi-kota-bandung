@@ -121,6 +121,129 @@ const links: Links = [
   },
 ];
 
+const groupedLinks: GroupedLinks = [
+  {
+    title: "Berita",
+    prefix: "/admin/news",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/add",
+        label: "Tambah",
+      },
+    ],
+  },
+  {
+    title: "Event",
+    prefix: "/admin/event",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/add",
+        label: "Tambah",
+      },
+    ],
+  },
+  {
+    title: "PAL",
+    prefix: "/admin/specialuser/palAthlete",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/attendance",
+        label: "Absen",
+      },
+    ],
+  },
+  {
+    title: "POPWILDA",
+    prefix: "/admin/specialuser/popwildaAthlete",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/attendance",
+        label: "Absen",
+      },
+    ],
+  },
+  {
+    title: "PORPROV",
+    prefix: "/admin/specialuser/porprovAthlete",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/attendance",
+        label: "Absen",
+      },
+    ],
+  },
+  {
+    title: "Kontingen",
+    prefix: "/admin/contingent",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+  {
+    title: "Atlet",
+    prefix: "/admin/athlete",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+  {
+    title: "Official",
+    prefix: "/admin/official",
+    restricted: true,
+    links: [
+      {
+        href: "/",
+        label: "Daftar",
+      },
+      {
+        href: "/count",
+        label: "Jumlah",
+      },
+    ],
+  },
+];
+
 export const championshipAdminLinks: {
   links: Links;
   groupedLinks: GroupedLinks;
@@ -201,128 +324,5 @@ export const championshipAdminLinks: {
     },
   ],
 };
-
-const groupedLinks: GroupedLinks = [
-  {
-    title: "Berita",
-    prefix: "/admin/news",
-    restricted: true,
-    links: [
-      {
-        href: "/add",
-        label: "Tambah",
-      },
-      {
-        href: "/",
-        label: "Kelola",
-      },
-    ],
-  },
-  {
-    title: "Event",
-    prefix: "/admin/event",
-    restricted: true,
-    links: [
-      {
-        href: "/add",
-        label: "Tambah",
-      },
-      {
-        href: "/",
-        label: "Kelola",
-      },
-    ],
-  },
-  {
-    title: "PAL",
-    prefix: "/admin/specialuser/palAthlete",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Kelola Atlet",
-      },
-      {
-        href: "/attendance",
-        label: "Absen",
-      },
-    ],
-  },
-  {
-    title: "POPWILDA",
-    prefix: "/admin/specialuser/popwildaAthlete",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Kelola Atlet",
-      },
-      {
-        href: "/attendance",
-        label: "Absen",
-      },
-    ],
-  },
-  {
-    title: "PORPROV",
-    prefix: "/admin/specialuser/porprovAthlete",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Kelola Atlet",
-      },
-      {
-        href: "/attendance",
-        label: "Absen",
-      },
-    ],
-  },
-  {
-    title: "Kontingen",
-    prefix: "/admin/contingent",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Daftar",
-      },
-      {
-        href: "/count",
-        label: "Jumlah",
-      },
-    ],
-  },
-  {
-    title: "Atlet",
-    prefix: "/admin/athlete",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Daftar",
-      },
-      {
-        href: "/count",
-        label: "Jumlah",
-      },
-    ],
-  },
-  {
-    title: "Official",
-    prefix: "/admin/official",
-    restricted: true,
-    links: [
-      {
-        href: "/",
-        label: "Daftar",
-      },
-      {
-        href: "/count",
-        label: "Jumlah",
-      },
-    ],
-  },
-];
 
 export const adminLinks = { links, groupedLinks };

@@ -7,7 +7,8 @@ import {
   specialUserIntitialValue,
   specialUserSchema,
 } from "@/lib/admin/adminConstants";
-import { addSepecialUser } from "@/lib/admin/adminFunctions";
+import { addSpecialUser } from "@/lib/admin/adminFunctions";
+import { getSpecialUserLabel } from "@/lib/functions";
 import { Form, Formik, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 
@@ -20,18 +21,20 @@ const SpecialUserForm = ({ role, userToEdit }: Props) => {
   const router = useRouter();
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-2">Tambah Atlet</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        Tambah {getSpecialUserLabel(role)}
+      </h2>
       <Formik
         initialValues={userToEdit ?? specialUserIntitialValue(role)}
-        onSubmit={(values, { setSubmitting, resetForm }) => {
-          if (userToEdit) {
-          } else {
-            addSepecialUser(values)
-              .then((res) => {
-                resetForm();
-                router.refresh();
-              })
-              .finally(() => setSubmitting(false));
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          try {
+            if (userToEdit) {
+            } else {
+              await addSpecialUser(values);
+            }
+            router.refresh();
+          } catch (error) {
+            throw error;
           }
         }}
         validationSchema={specialUserSchema}

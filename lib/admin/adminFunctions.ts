@@ -23,7 +23,7 @@ import { cache } from "react";
 
 // SPECIAL USER
 // CREATE
-export const addSepecialUser = async (specialUser: SpecialUser) => {
+export const addSpecialUser = async (specialUser: SpecialUser) => {
   let data: SpecialUser = specialUser;
   const toastId = toast.loading(`Menambahkan Akun`);
   try {

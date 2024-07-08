@@ -41,15 +41,17 @@ export const addSpecialUserSql = async (
 // READ
 export const getSpecialUserSqlByEmail = async (
   email: string
-): Promise<ServerAction<SpecialUserSql>> => {
+): Promise<ServerAction<SpecialUserSql | undefined>> => {
   try {
     const { data, error } = await supabase
-      .from("special_user")
+      .from("special_users")
       .select()
       .eq("email", email)
       .returns<SpecialUserSql[]>();
 
     if (error) throw new Error(error.message);
+
+    if (!data.length) return action.success(undefined);
 
     return action.success(data[0]);
   } catch (error) {

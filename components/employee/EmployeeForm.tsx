@@ -18,12 +18,37 @@ import { decode } from "jsonwebtoken";
 import { updateSpecialUser } from "@/lib/admin/adminFunctions";
 import { addEmployee, updateEmployee } from "@/lib/employee/employeeFunctions";
 import { useRouter } from "next/navigation";
+import DisplayText from "../inputs/DisplayText";
 
 type Props = {
   employeeToEdit?: Employee;
   athlete?: boolean;
   noDialog?: boolean;
 };
+
+const EmployeeForm = ({
+  employeeToEdit,
+  athlete,
+  noDialog,
+  children,
+  asChild,
+}: Props & {
+  children: React.ReactNode;
+  asChild?: boolean;
+}) => {
+  if (noDialog)
+    return <FormComponent employeeToEdit={employeeToEdit} athlete={athlete} />;
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
+      <DialogContent className="w-fit">
+        <FormComponent employeeToEdit={employeeToEdit} />
+      </DialogContent>
+    </Dialog>
+  );
+};
+export default EmployeeForm;
 
 const FormComponent = ({ employeeToEdit, athlete }: Props) => {
   const [changeImage, setChangeImage] = useState(false);
@@ -62,7 +87,7 @@ const FormComponent = ({ employeeToEdit, athlete }: Props) => {
               roles,
             };
             await updateSpecialUser(data);
-          } else if (employeeToEdit) {
+          } else if (employeeToEdit?.id) {
             // UPDATE EMPLOYEE
             await updateEmployee(values);
           } else {
@@ -75,7 +100,7 @@ const FormComponent = ({ employeeToEdit, athlete }: Props) => {
           setSubmitting(false);
         }
       }}
-      validationSchema={employeeSchema(changeImage)}
+      validationSchema={employeeSchema(!!employeeToEdit?.id && !changeImage)}
     >
       {(props: FormikProps<Employee>) => {
         return (
@@ -85,6 +110,7 @@ const FormComponent = ({ employeeToEdit, athlete }: Props) => {
               {!athlete && (
                 <InputText label="Jabatan" name="position" formik={props} />
               )}
+              <DisplayText label="Order" value={props.values.order} />
               <InputFile
                 label="Gambar"
                 name="image"
@@ -111,23 +137,3 @@ const FormComponent = ({ employeeToEdit, athlete }: Props) => {
     </Formik>
   );
 };
-
-const EmployeeForm = ({ employeeToEdit, athlete, noDialog }: Props) => {
-  if (noDialog)
-    return <FormComponent employeeToEdit={employeeToEdit} athlete={athlete} />;
-  return (
-    <Dialog>
-      <DialogTrigger asChild={!employeeToEdit}>
-        {employeeToEdit ? (
-          <EditButton />
-        ) : (
-          <Button>{athlete ? "Ubah Data" : "Tambah"}</Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="w-fit">
-        <FormComponent />
-      </DialogContent>
-    </Dialog>
-  );
-};
-export default EmployeeForm;

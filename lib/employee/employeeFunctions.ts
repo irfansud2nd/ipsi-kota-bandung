@@ -6,10 +6,12 @@ import { sendFile, toastError } from "../form/formFunctions";
 import { getFileUrl } from "../functions";
 import {
   addEmployeeSql,
+  deleteEmployeeSql,
   getEmployeesSql,
   updateEmployeeSql,
 } from "./employeeActions";
 import { cache } from "react";
+import { deleteFile } from "../actions";
 
 // EMPLOYEE
 // CREATE
@@ -75,6 +77,31 @@ export const updateEmployee = async (employee: Employee) => {
 
     toast.success("Pengurus berhasil diperbaharui", { id: toastId });
     return { result: data };
+  } catch (error) {
+    toastError(error, toastId);
+    throw error;
+  }
+};
+
+// DELETE
+export const deleteEmployee = async (employee: Employee) => {
+  const toastId = toast.loading("Menghapus pengurus");
+
+  try {
+    const { imageUrl } = getFileUrl("employee", employee.id);
+
+    toast.loading("Menghapus gambar", { id: toastId });
+    await deleteFile(imageUrl);
+
+    toast.loading("Menghapus pengurus", { id: toastId });
+
+    const { result, error } = await deleteEmployeeSql(
+      employeeToEmployeeSql(employee)
+    );
+    if (error) throw error;
+
+    toast.success("Pengurus berhasil dihapus", { id: toastId });
+    return employeeSqlToEmployee(result);
   } catch (error) {
     toastError(error, toastId);
     throw error;

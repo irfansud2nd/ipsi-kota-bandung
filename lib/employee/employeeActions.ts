@@ -16,7 +16,9 @@ export const addEmployeeSql = async (
     if (response) throw new Error(response.message);
 
     let dataToSend: any = employeeSql;
-    delete dataToSend.order;
+    if (employeeSql.order == 0) {
+      delete dataToSend.order;
+    }
 
     const { error, data } = await supabase
       .from("employees")
@@ -64,6 +66,29 @@ export const updateEmployeeSql = async (
     const { error } = await supabase
       .from("employees")
       .update(employeeSql)
+      .eq("id", employeeSql.id);
+
+    if (error) throw new Error(error.message);
+
+    return action.success(employeeSql);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+// DELETE
+export const deleteEmployeeSql = async (
+  employeeSql: EmployeeSql
+): Promise<ServerAction<EmployeeSql>> => {
+  try {
+    const response = await apiProtect({ directory: "employee" });
+    if (response) throw new Error(response.message);
+
+    console.log("id", employeeSql.id);
+
+    const { error } = await supabase
+      .from("employees")
+      .delete()
       .eq("id", employeeSql.id);
 
     if (error) throw new Error(error.message);

@@ -74,7 +74,8 @@ export const compare = (query: string, type: "asc" | "desc") => {
 export const getSpecialUserLabel = (role: SpecialUserRole) => {
   let label: string = role;
   if (role == "eventAdmin") return "Admin Event";
-  if (!role.includes("Athlete")) return label;
+  if (!role.includes("Athlete"))
+    return label.charAt(0).toUpperCase() + label.slice(1);
   label = label.replace("Athlete", "");
   label = label.toUpperCase();
   return `Atlet ${label}`;

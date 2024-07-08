@@ -10,24 +10,24 @@ import { notFound } from "next/navigation";
 const page = async ({ params }: { params: { role: string } }) => {
   const role = params.role as SpecialUserRole;
   if (!isSpecialRole(role)) return notFound();
-  const data = await getSpecialUsers(role, 1, 6);
+  const specialUsers = await getSpecialUsers(role, 1, 6);
+
+  const label = getSpecialUserLabel(role);
 
   return (
     <div className="p-2">
       <div className="flex items-center mb-2">
-        <h1 className="text-2xl font-bold capitalize">
-          Kelola {getSpecialUserLabel(role)}
-        </h1>
+        <h1 className="text-2xl font-bold">Kelola {label}</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="ml-auto">Tambah atlet</Button>
+            <Button className="ml-auto">Tambah {label}</Button>
           </DialogTrigger>
           <DialogContent className="w-fit">
             <SpecialUserForm role={role} />
           </DialogContent>
         </Dialog>
       </div>
-      <SpecialUserTable data={data} role={role} />
+      <SpecialUserTable specialUsers={specialUsers} role={role} />
     </div>
   );
 };
