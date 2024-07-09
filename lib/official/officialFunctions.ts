@@ -5,7 +5,6 @@ import {
   deleteOfficialSql,
   getOfficialsSql,
   getOfficialsSqlByContingentId,
-  getOfficialsSqlByEmail,
   updateOfficialSql,
 } from "./officialActions";
 import { Official, OfficialSql } from "./officialContants";
@@ -26,18 +25,13 @@ export const addOfficial = async (officialData: Official) => {
   const { imageUrl } = getFileUrl("official", id);
 
   try {
-    if (!official.created_by) {
-      throw { message: "Email pendaftar tidak ditemukan" };
-    }
     if (!official.contingent_id)
       throw { message: "ID Kontingen tidak ditemukan" };
     if (!official.contingent_name)
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!official.image.file) throw { message: "Pas foto tidak ditemukan" };
 
-    const response = await apiProtect({
-      permittedEmail: official.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // SEND IMAGE
@@ -86,27 +80,9 @@ export const getOfficials = async (
   }
 };
 
-export const getOfficialsByEmail = async (email: string) => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
-
-    const { result: officialsSql, error } = await getOfficialsSqlByEmail(email);
-    if (error) throw error;
-
-    const officials = officialsSql.map((officialSql) =>
-      officialSqlToOfficial(officialSql)
-    );
-
-    return officials;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getOfficialsByContingentId = async (contingentId: string) => {
   try {
-    const response = await apiProtect({ directory: "championship" });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { result: officialsSql, error } = await getOfficialsSqlByContingentId(
@@ -130,9 +106,7 @@ export const updateOfficial = async (official: Official) => {
   const { imageUrl } = getFileUrl("official", official.id);
 
   try {
-    const response = await apiProtect({
-      permittedEmail: official.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     if (official.image.file) {
@@ -165,9 +139,7 @@ export const deleteOfficial = async (official: Official) => {
   const { imageUrl } = getFileUrl("official", official.id);
 
   try {
-    const response = await apiProtect({
-      permittedEmail: official.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // DELETE IMAGE

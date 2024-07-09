@@ -33,7 +33,6 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
           <TableHead>Nama Kontingen</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Nomor Telepon</TableHead>
-          <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
           <TableHead>Pas Foto</TableHead>
           <TableHead>Kartu Keluarga</TableHead>
@@ -70,7 +69,6 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
             <TableCell>{matchBased.contingent_name}</TableCell>
             <TableCell>{matchBased.email}</TableCell>
             <TableCell>{matchBased.phone_number}</TableCell>
-            <TableCell>{matchBased.created_by}</TableCell>
             <TableCell>{formatDate(matchBased.created_at)}</TableCell>
             <TableCell>
               <ShowFileButton

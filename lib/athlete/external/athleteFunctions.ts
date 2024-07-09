@@ -21,7 +21,6 @@ import {
   deleteAthleteSql,
   getAthletesSql,
   getAthletesSqlByContingentId,
-  getAthletesSqlByEmail,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
   updateAthleteSql,
@@ -41,9 +40,6 @@ export const addAthlete = async (athleteData: Athlete) => {
   const { imageUrl, kkUrl } = getFileUrl("athlete", id);
 
   try {
-    if (!athlete.created_by) {
-      throw { message: "Email pendaftar tidak ditemukan" };
-    }
     if (!athlete.contingent_id)
       throw { message: "ID Kontingen tidak ditemukan" };
     if (!athlete.contingent_name)
@@ -51,9 +47,7 @@ export const addAthlete = async (athleteData: Athlete) => {
     if (!athlete.image.file) throw { message: "Pas foto tidak ditemukan" };
     if (!athlete.kk.file) throw { message: "KK tidak ditemukan" };
 
-    const response = await apiProtect({
-      permittedEmail: athlete.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // SEND IMAGE
@@ -107,26 +101,9 @@ export const getAthletes = async (
   }
 };
 
-export const getAthletesByEmail = async (email: string) => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw response;
-
-    const { result: athletesSql, error } = await getAthletesSqlByEmail(email);
-    if (error) throw error;
-
-    const athletes = athletesSql.map((athleteSql) =>
-      athleteSqlToAthlete(athleteSql)
-    );
-
-    return athletes;
-  } catch (error) {
-    throw error;
-  }
-};
 export const getAthletesByContingentId = async (contingentId: string) => {
   try {
-    const response = await apiProtect({ directory: "athlete" });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { result: athletesSql, error } = await getAthletesSqlByContingentId(
@@ -150,9 +127,7 @@ export const updateAthlete = async (athlete: Athlete) => {
   const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
 
   try {
-    const response = await apiProtect({
-      permittedEmail: athlete.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     if (athlete.image.file) {
@@ -190,9 +165,7 @@ export const deleteAthlete = async (athlete: Athlete) => {
   const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
 
   try {
-    const response = await apiProtect({
-      permittedEmail: athlete.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // DELETE IMAGE

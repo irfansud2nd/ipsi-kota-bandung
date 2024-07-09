@@ -7,27 +7,6 @@ import { OfficialSql } from "./officialContants";
 
 // OFFICIAL SQL
 // READ
-export const getOfficialsSqlByEmail = async (
-  email: string
-): Promise<ServerAction<OfficialSql[]>> => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw new Error(response.message);
-
-    const { data, error } = await supabase
-      .from("officials")
-      .select()
-      .eq("created_by", email)
-      .returns<OfficialSql[]>();
-
-    if (error) throw new Error(error.message);
-
-    return action.success(data);
-  } catch (error) {
-    return action.error(error);
-  }
-};
-
 export const getOfficialsSql = async (
   page: number,
   limit: number,
@@ -56,7 +35,7 @@ export const getOfficialsSqlByContingentId = async (
   contingentId: string
 ): Promise<ServerAction<OfficialSql[]>> => {
   try {
-    const response = await apiProtect({ directory: "championship" });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -78,9 +57,7 @@ export const addOfficialSql = async (
   officialSql: OfficialSql
 ): Promise<ServerAction<OfficialSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: officialSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("officials").insert(officialSql);
@@ -98,9 +75,7 @@ export const updateOfficialSql = async (
   officialSql: OfficialSql
 ): Promise<ServerAction<OfficialSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: officialSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase
@@ -121,9 +96,7 @@ export const deleteOfficialSql = async (
   officialSql: OfficialSql
 ): Promise<ServerAction<OfficialSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: officialSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase

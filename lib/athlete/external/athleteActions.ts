@@ -19,9 +19,7 @@ export const addAthleteSql = async (
   athleteSql: AthleteSql
 ): Promise<ServerAction<AthleteSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: athleteSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("athletes").insert(athleteSql);
@@ -35,27 +33,6 @@ export const addAthleteSql = async (
 };
 
 // READ
-export const getAthletesSqlByEmail = async (
-  email: string
-): Promise<ServerAction<AthleteSql[]>> => {
-  try {
-    const response = await apiProtect({ permittedEmail: email });
-    if (response) throw new Error(response.message);
-
-    const { data, error } = await supabase
-      .from("athletes")
-      .select()
-      .eq("created_by", email)
-      .returns<AthleteSql[]>();
-
-    if (error) throw new Error(error.message);
-
-    return action.success(data);
-  } catch (error) {
-    return action.error(error);
-  }
-};
-
 export const getAthletesSql = async (
   page: number,
   limit: number,
@@ -84,7 +61,7 @@ export const getAthletesSqlByContingentId = async (
   contingentId: string
 ): Promise<ServerAction<AthleteSql[]>> => {
   try {
-    const response = await apiProtect({ directory: "athlete" });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -106,9 +83,7 @@ export const updateAthleteSql = async (
   athleteSql: AthleteSql
 ): Promise<ServerAction<AthleteSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: athleteSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase
@@ -129,9 +104,7 @@ export const deleteAthleteSql = async (
   athleteSql: AthleteSql
 ): Promise<ServerAction<AthleteSql>> => {
   try {
-    const response = await apiProtect({
-      permittedEmail: athleteSql.created_by,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase

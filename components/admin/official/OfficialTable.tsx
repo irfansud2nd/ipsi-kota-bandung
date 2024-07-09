@@ -20,7 +20,6 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
           <TableHead>Jenis Kelamin</TableHead>
           <TableHead>Nama kontingen</TableHead>
           <TableHead>Jabatan</TableHead>
-          <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
           <TableHead>Pas Foto</TableHead>
         </TableRow>
@@ -33,7 +32,6 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
             <TableCell>{official.gender}</TableCell>
             <TableCell>{official.position}</TableCell>
             <TableCell>{official.contingent_name}</TableCell>
-            <TableCell>{official.created_by}</TableCell>
             <TableCell>{formatDate(official.created_at)}</TableCell>
             <TableCell>
               <ShowFileButton

@@ -21,6 +21,7 @@ import {
 } from "@/lib/redux/championship/register/athleteSlice";
 import { RootState } from "@/lib/redux/store";
 import { deleteAthlete } from "@/lib/athlete/external/athleteFunctions";
+import { apiProtect } from "@/lib/admin/adminActions";
 
 export const AthleteColumns = (championshipId: string) => {
   const championship = getChampionship(championshipId);
@@ -79,6 +80,9 @@ export const AthleteColumns = (championshipId: string) => {
         const athleteAtEvents = useSelector(
           (state: RootState) => state.athlete.athleteAtEvents
         );
+        const contingent = useSelector(
+          (state: RootState) => state.contingent.unregistered
+        );
 
         const getHisAthleteAtEvents = () => {
           return athleteAtEvents.filter(
@@ -107,7 +111,9 @@ export const AthleteColumns = (championshipId: string) => {
             : undefined;
           const result = await confirm("Hapus Atlet", { ...options, message });
           if (!result) return;
-          await deleteAthlete(athlete);
+          try {
+            await deleteAthlete(athlete);
+          } catch (error) {}
           dispatch(deleteAthleteRedux(athlete));
         };
 

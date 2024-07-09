@@ -10,7 +10,6 @@ export type OfficialBase = {
   contingent_id: string;
   contingent_name: string;
   position: string;
-  created_by: string;
   created_at: number;
 };
 
@@ -32,7 +31,6 @@ export const officialInitialValue: Official = {
   contingent_id: "",
   contingent_name: "",
   position: officialPositions[0],
-  created_by: "",
   created_at: 0,
   image: {
     downloadUrl: "",

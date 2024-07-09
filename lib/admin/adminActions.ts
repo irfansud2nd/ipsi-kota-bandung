@@ -232,7 +232,7 @@ export const apiProtect = async (options?: {
     };
   }
 
-  if (options?.loggedInOnly) return initialResult;
+  if (!options) return initialResult;
 
   if (options?.permittedEmail) {
     return userEmail == options.permittedEmail ? initialResult : notAuthorized;

@@ -22,7 +22,6 @@ export type AthleteBase = {
   weight: string;
   contingent_id: string;
   contingent_name: string;
-  created_by: string;
   created_at: number;
 };
 
@@ -84,7 +83,6 @@ export const athleteInitialValue: Athlete = {
   kk: {
     downloadUrl: "",
   },
-  created_by: "",
   created_at: 0,
 };
 
@@ -217,7 +215,6 @@ export const getDummyAthletes = (length: number) => {
       kk: {
         downloadUrl: "",
       },
-      created_by: `irfansud2nd@gmail.com`,
       created_at: 0,
     });
   }

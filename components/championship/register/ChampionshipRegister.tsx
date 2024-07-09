@@ -3,11 +3,11 @@
 import Contingent from "@/components/contingent/ContingentInfo";
 import Loading from "@/components/ui/Loading";
 import { getAthtleteAtEventsByContingentRegistrationId } from "@/lib/athlete/external/athleteActions";
-import { getAthletesByEmail } from "@/lib/athlete/external/athleteFunctions";
+import { getAthletesByContingentId } from "@/lib/athlete/external/athleteFunctions";
 import { getContingentInfoByEmail } from "@/lib/contingent/contingentFunctions";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
-import { getOfficialsByEmail } from "@/lib/official/officialFunctions";
+import { getOfficialsByContingentId } from "@/lib/official/officialFunctions";
 import { getPaymentsByContingentRegistrationId } from "@/lib/payment/paymentActions";
 import {
   addAthletesAtEventsRedux,
@@ -21,7 +21,7 @@ import { addOfficialsRedux } from "@/lib/redux/championship/register/officialSli
 import { addPaymentsRedux } from "@/lib/redux/championship/register/paymentSlice";
 import { RootState } from "@/lib/redux/store";
 import { useSession } from "next-auth/react";
-import { notFound, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -91,7 +91,9 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   const fetchAthletes = async () => {
     // console.log("fetchAthletes");
     try {
-      const athletes = await getAthletesByEmail(userEmail);
+      const athletes = await getAthletesByContingentId(
+        registeredContingent?.id as string
+      );
       dispatch(addAthletesRedux(athletes));
 
       const { result: athleteAtEvents, error } =
@@ -112,7 +114,9 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   const fetchOfficials = async () => {
     // console.log("fetchOfficials");
     try {
-      const officials = await getOfficialsByEmail(userEmail);
+      const officials = await getOfficialsByContingentId(
+        registeredContingent?.id as string
+      );
       dispatch(addOfficialsRedux(officials));
 
       setFetched((prev) => ({ ...prev, official: true }));

@@ -36,11 +36,9 @@ const OfficialForm = () => {
   );
 
   const dispatch = useDispatch();
-  const session = useSession();
 
   const initialValue: Official = {
     ...officialInitialValue,
-    created_by: session.data?.user?.email || "",
     contingent_id: contingent?.id || "",
     contingent_name: contingent?.name || "",
   };

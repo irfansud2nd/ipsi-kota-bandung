@@ -27,7 +27,6 @@ const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
           <TableHead>Nama Kontingen</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Nomor Telepon</TableHead>
-          <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu Pendaftaran</TableHead>
           <TableHead>Pas Foto</TableHead>
           <TableHead>Kartu Keluarga</TableHead>
@@ -50,7 +49,6 @@ const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
             <TableCell>{athlete.contingent_name}</TableCell>
             <TableCell>{athlete.email}</TableCell>
             <TableCell>{athlete.phone_number}</TableCell>
-            <TableCell>{athlete.created_by}</TableCell>
             <TableCell>{formatDate(athlete.created_at)}</TableCell>
             <TableCell>
               <ShowFileButton

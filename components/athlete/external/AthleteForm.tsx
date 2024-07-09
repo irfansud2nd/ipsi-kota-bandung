@@ -6,6 +6,7 @@ import InputText from "@/components/inputs/InputText";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { apiProtect } from "@/lib/admin/adminActions";
 import {
   Athlete,
   athleteGender,
@@ -45,7 +46,6 @@ const AthleteForm = () => {
   );
 
   const dispatch = useDispatch();
-  const session = useSession();
 
   const useDummyAthlete = 0;
   const initialData = useDummyAthlete
@@ -54,7 +54,6 @@ const AthleteForm = () => {
 
   const initialValue: Athlete = {
     ...initialData,
-    created_by: session.data?.user?.email || "",
     contingent_id: contingent?.id || "",
     contingent_name: contingent?.name || "",
   };
@@ -88,7 +87,9 @@ const AthleteForm = () => {
               } else {
                 athlete = await addAthlete(values);
               }
+
               dispatch(addAthletesRedux([athlete]));
+
               resetForm();
             } catch (error) {
             } finally {

@@ -26,10 +26,7 @@ import { apiProtect } from "@/lib/admin/adminActions";
 import { toastError } from "@/lib/form/formFunctions";
 import { toast } from "sonner";
 
-export const RegisteredAthleteColumns = (
-  championshipId: string,
-  art?: boolean
-) => {
+export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
   const championship = getChampionship(championshipId);
 
   let columns: ColumnDef<MatchBased>[] = [
@@ -94,11 +91,6 @@ export const RegisteredAthleteColumns = (
           if (!result) return;
           const toastId = toast.loading("Menghapus pertandingan");
           try {
-            const response = await apiProtect({
-              permittedEmail: matchBased.created_by,
-            });
-            if (response) throw response;
-
             const athleteAtEvent = matchBasedToAthleteAtEvent(matchBased);
             await deleteAthleteAtEvent(athleteAtEvent);
             dispatch(deleteAthleteAtEventRedux(athleteAtEvent));

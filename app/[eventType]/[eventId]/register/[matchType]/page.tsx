@@ -1,5 +1,5 @@
+import MatchBasedTable from "@/components/athlete/external/MatchBasedTable";
 import RegisterAthleteForm from "@/components/athlete/external/RegisterAthleteForm";
-import RegisteredAthleteTable from "@/components/athlete/external/RegisteredAthleteTable";
 import ChampionshipMenuButton from "@/components/championship/register/menu/ChampionshipMenuButton";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -29,7 +29,7 @@ const page = ({ params }: Props) => {
         <RegisterAthleteForm eventId={params.eventId} art={isArt} />
       </div>
       <div className="registration_content">
-        <RegisteredAthleteTable championshipId={params.eventId} art={isArt} />
+        <MatchBasedTable championshipId={params.eventId} art={isArt} />
       </div>
     </div>
   );
