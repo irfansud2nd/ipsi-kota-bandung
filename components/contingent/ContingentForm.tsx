@@ -30,6 +30,8 @@ import {
 } from "@/lib/redux/championship/register/contingentSlice";
 import { toast } from "sonner";
 import { toastError } from "@/lib/form/formFunctions";
+import { changeAthleteContingentNameRedux } from "@/lib/redux/championship/register/athleteSlice";
+import { changeOfficialContingentNameRedux } from "@/lib/redux/championship/register/officialSlice";
 
 type Props = {
   contingentToEdit?: Contingent;
@@ -64,6 +66,8 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
               if (contingentToEdit) {
                 const contingent = await updateContingent(values);
                 dispatch(updateContingentRedux(contingent));
+                dispatch(changeAthleteContingentNameRedux(contingent.name));
+                dispatch(changeOfficialContingentNameRedux(contingent.name));
               } else {
                 const { contingent, contingentAtEvents } =
                   await addContingentAndRegister(values, championshipId);

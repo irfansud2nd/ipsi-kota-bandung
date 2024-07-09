@@ -32,6 +32,16 @@ const officialsSlice = createSlice({
     ) => {
       state.officialToEdit = action.payload;
     },
+    changeOfficialContingentNameRedux: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      const contingentName = action.payload;
+      state.all = state.all.map((item) => ({
+        ...item,
+        contingent_name: contingentName,
+      }));
+    },
   },
 });
 
@@ -40,5 +50,6 @@ export const {
   deleteOfficialRedux,
   deleteAllOficialsRedux,
   setOfficialToEditRedux,
+  changeOfficialContingentNameRedux,
 } = officialsSlice.actions;
 export default officialsSlice.reducer;

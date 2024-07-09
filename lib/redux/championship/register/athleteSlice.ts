@@ -114,6 +114,24 @@ const athleteSlice = createSlice({
     ) => {
       state.athleteAtEventToEdit = action.payload;
     },
+    changeAthleteContingentNameRedux: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      const contingentName = action.payload;
+      state.all = state.all.map((item) => ({
+        ...item,
+        contingent_name: contingentName,
+      }));
+      state.registered = state.registered.map((item) => ({
+        ...item,
+        contingent_name: contingentName,
+      }));
+      state.matchBased = state.matchBased.map((item) => ({
+        ...item,
+        contingent_name: contingentName,
+      }));
+    },
   },
 });
 
@@ -125,5 +143,6 @@ export const {
   addAthletesAtEventsRedux,
   deleteAthleteAtEventRedux,
   setAthleteAtEventToEditRedux,
+  changeAthleteContingentNameRedux,
 } = athleteSlice.actions;
 export default athleteSlice.reducer;
