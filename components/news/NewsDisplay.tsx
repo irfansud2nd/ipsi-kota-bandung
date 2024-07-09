@@ -10,7 +10,7 @@ type Props = {
 };
 
 const NewsDisplay = ({ news, preview }: Props) => {
-  let showImage = false;
+  let showImage = news.image.downloadUrl.length > 0;
   let imageUrl = news.image.downloadUrl;
 
   if (!preview) {

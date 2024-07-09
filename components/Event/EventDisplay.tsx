@@ -13,7 +13,7 @@ type Props = {
 };
 
 const EventDisplay = ({ event, preview }: Props) => {
-  let showImage = false;
+  let showImage = event.image.downloadUrl.length > 0;
   let imageUrl = event.image.downloadUrl;
 
   if (!preview) {

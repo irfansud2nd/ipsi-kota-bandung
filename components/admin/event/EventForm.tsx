@@ -68,10 +68,7 @@ const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
                   name="created_by"
                   formik={props}
                   forceDisabled
-                  forceValue={
-                    eventToEdit?.created_by ??
-                    (session.data?.user?.email as string)
-                  }
+                  forceValue={session.data?.user?.email as string}
                 />
               </div>
               <div>

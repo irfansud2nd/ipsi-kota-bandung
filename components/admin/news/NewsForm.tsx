@@ -49,9 +49,7 @@ const NewsForm = ({ newsToEdit }: { newsToEdit?: News }) => {
               name="created_by"
               formik={props}
               forceDisabled
-              forceValue={
-                newsToEdit?.created_by ?? (session.data?.user?.email as string)
-              }
+              forceValue={session.data?.user?.email as string}
               className={`${!newsToEdit?.id && "hidden"}`}
             />
             <div className="flex gap-2 my-4">
