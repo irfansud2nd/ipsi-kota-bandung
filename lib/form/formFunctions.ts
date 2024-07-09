@@ -50,17 +50,3 @@ export const toastError = (error: any, id?: string | number) => {
 
   toast.error(string, { id });
 };
-
-export const testFunc = async () => {
-  try {
-    console.log("hitting /api/test/1");
-    await axios.get("/api/test/1");
-    console.log("hitting /api/test/2");
-    await axios.get("/api/test/2");
-    console.log("hitting /api/test/3");
-    await axios.get("/api/test/3");
-  } catch (error: any) {
-    toastError(error);
-    throw error;
-  }
-};

@@ -66,7 +66,6 @@ const ManageEmployee = ({ employee, aboveEmployee, belowEmployee }: Props) => {
         await deleteEmployee(employee);
         router.refresh();
       } catch (error) {
-        console.log({ error });
         throw error;
       }
     }

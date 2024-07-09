@@ -490,8 +490,6 @@ export const checkMatchBasedLimited = async (
       await countDuplicateMatch(matchBased, limit.paid, true);
     if (palCountError) throw palCountError;
 
-    console.log({ count, palCount });
-
     if (
       !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
       count < countLimit &&
