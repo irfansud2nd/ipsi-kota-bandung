@@ -31,7 +31,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="id-ID" className="scroll-smooth" translate="no">
       <SessionProvider session={session}>
         <body
           className={`${poppins.className} grid grid-rows-[1fr_auto] min-h-screen`}
