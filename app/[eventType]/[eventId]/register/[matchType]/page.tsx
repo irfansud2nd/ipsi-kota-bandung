@@ -4,15 +4,17 @@ import ChampionshipMenuButton from "@/components/championship/register/menu/Cham
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Kategori Tanding",
+type Props = {
+  params: { eventId: string; matchType: "fight" | "art" };
 };
 
-const page = ({
-  params,
-}: {
-  params: { eventId: string; matchType: "fight" | "art" };
-}) => {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: `Kategori ${params.matchType == "fight" ? "Tanding" : "Seni"}`,
+  };
+}
+
+const page = ({ params }: Props) => {
   if (!["fight", "art"].includes(params.matchType)) return notFound();
 
   const isArt = params.matchType == "art";
