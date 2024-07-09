@@ -3,7 +3,6 @@ import { getChampionship } from "@/lib/event/eventFunctions";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -15,6 +14,10 @@ import {
   matchType,
 } from "@/lib/athlete/external/athleteConstants";
 import { countProfessionalMatches } from "@/lib/athlete/external/athleteActions";
+
+import CategorizedCountTable, {
+  CategorizedCount,
+} from "@/components/admin/athlete/external/CategorizedCountTable";
 
 const page = async ({ params }: { params: { championshipId: string } }) => {
   const championship = getChampionship(params.championshipId) as Championship;
@@ -73,16 +76,7 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
   const rawData = await fetchRawData();
 
   const reduceData = (data: typeof rawData) => {
-    let result: {
-      type: string;
-      level: string;
-      category: string;
-      count: {
-        putra: number;
-        putri: number;
-        total: number;
-      };
-    }[] = [];
+    let result: CategorizedCount[] = [];
 
     data.map((item) => {
       if (item.gender == athleteGender[0]) {
@@ -105,40 +99,15 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
     return result;
   };
 
-  const reducedData = reduceData(rawData);
+  const categorizedCounts = reduceData(rawData);
 
   return (
     <div>
       <h1 className="font-semibold text-3xl">Kuota Pertandingan Prestasi</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Jenis</TableHead>
-            <TableHead>Tingkatan</TableHead>
-            <TableHead>Kategori</TableHead>
-            <TableHead>Putra</TableHead>
-            <TableHead>Putri</TableHead>
-            <TableHead>Total</TableHead>
-            {/* <TableHead>Kuota</TableHead> */}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {reducedData.map((item) => {
-            const key = `Prestasi ${item.type} ${item.level} ${item.category}`;
-            return (
-              <TableRow key={key}>
-                <TableCell>{item.type}</TableCell>
-                <TableCell>{item.level}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.count.putra}</TableCell>
-                <TableCell>{item.count.putri}</TableCell>
-                <TableCell>{item.count.total}</TableCell>
-                {/* <TableCell>-</TableCell> */}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <CategorizedCountTable
+        championshipId={championship.id}
+        categorizedCounts={categorizedCounts}
+      />
     </div>
   );
 };
