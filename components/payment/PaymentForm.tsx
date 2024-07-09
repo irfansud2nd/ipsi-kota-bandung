@@ -22,7 +22,7 @@ import {
 } from "@/lib/payment/paymentFunctions";
 import { addPaymentsRedux } from "@/lib/redux/championship/register/paymentSlice";
 import {
-  checkAthletAtEventsLimited,
+  checkAthleteAtEventsLimited,
   getTotalMatchCost,
   matchBasedToAthleteAtEvent,
   updateAthleteAtEvents,
@@ -196,7 +196,7 @@ Terimakasih.`,
             initialValues={initialValue}
             onSubmit={async (values, { resetForm }) => {
               try {
-                const isLimit = await checkAthletAtEventsLimited(
+                const isLimit = await checkAthleteAtEventsLimited(
                   selectedMatchBaseds,
                   matchBaseds,
                   championship

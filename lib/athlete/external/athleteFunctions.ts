@@ -479,8 +479,6 @@ export const checkMatchBasedLimited = async (
   }
   if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
 
-  countLimit -= 1;
-
   try {
     const { result: count, error } = await countDuplicateMatch(
       matchBased,
@@ -489,6 +487,13 @@ export const checkMatchBasedLimited = async (
     if (error) throw error;
 
     // console.log({ count, countLimit });
+    if (
+      !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
+      count < countLimit
+    ) {
+      countLimit -= 1;
+    }
+
     if (count < countLimit) return;
     return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
   } catch (error: any) {
@@ -496,7 +501,7 @@ export const checkMatchBasedLimited = async (
   }
 };
 
-export const checkAthletAtEventsLimited = async (
+export const checkAthleteAtEventsLimited = async (
   matchBasedsToCheck: MatchBased[],
   allMatchBaseds: MatchBased[],
   championship: Championship
