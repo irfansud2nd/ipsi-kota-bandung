@@ -479,22 +479,21 @@ export const checkMatchBasedLimited = async (
   }
   if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
 
-  countLimit -= 1;
-
   try {
     const { result: count, error } = await countDuplicateMatch(
       matchBased,
       limit.paid
     );
     if (error) throw error;
+    console.log(matchBased.contingent_name);
+    console.log(matchBased.contingent_name.includes("PAL KOTA BANDUNG"));
 
-    // console.log({ count, countLimit });
-    // if (
-    //   !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
-    //   count < countLimit
-    // ) {
-    //   countLimit -= 1;
-    // }
+    if (
+      !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
+      count < countLimit
+    ) {
+      countLimit -= 1;
+    }
 
     if (count < countLimit) return;
     return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
