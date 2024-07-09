@@ -39,6 +39,7 @@ import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa6";
 import { toastError } from "@/lib/form/formFunctions";
 import DisplayText from "../inputs/DisplayText";
+import Loading from "../ui/Loading";
 
 const PaymentForm = ({
   selectedMatchBaseds,
@@ -47,6 +48,7 @@ const PaymentForm = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [isSent, setIsSent] = useState<Payment | undefined>();
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -78,10 +80,30 @@ const PaymentForm = ({
     return result;
   };
 
-  const toggleDialog = (state: boolean) => {
+  const toggleDialog = async (state: boolean) => {
     setOpen(state);
     if (!state && isSent) {
       setIsSent(undefined);
+    }
+    if (state) {
+      setLoading(true);
+      const isLimit = await checkAthleteAtEventsLimited(
+        selectedMatchBaseds,
+        matchBaseds,
+        championship
+      );
+
+      if (isLimit) {
+        const matchBased = getMatchBasedRegistrationId(isLimit);
+        console.log("toast error");
+
+        toastError(
+          `Kategori yang dipilih oleh ${matchBased.name} yaitu ${matchBased.type} ${matchBased.schema} ${matchBased.category} ${matchBased.gender} telah penuh, silahkan pilih kategori lain atau keluarkan pertandingan tersebut dari pembayaran`
+        );
+
+        setOpen(false);
+      }
+      setLoading(false);
     }
   };
 
@@ -121,7 +143,9 @@ Terimakasih.`,
         <Button>Bayar</Button>
       </DialogTrigger>
       <DialogContent>
-        {isSent ? (
+        {loading ? (
+          <Loading className="Menghitung Kuota" full />
+        ) : isSent ? (
           <div className="w-fit mx-auto">
             <p>Konfirmasi pembayaran ke</p>
             <div className="flex flex-col md:flex-row gap-x-3 gap-y-1">
