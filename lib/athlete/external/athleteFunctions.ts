@@ -486,16 +486,18 @@ export const checkMatchBasedLimited = async (
     );
     if (countError) throw countError;
 
-    const { result: palCount, error: palCountError } =
-      await countDuplicateMatch(matchBased, limit.paid, true);
-    if (palCountError) throw palCountError;
+    if (getChampionship(matchBased.championship_id)?.reserveForPal) {
+      const { result: palCount, error: palCountError } =
+        await countDuplicateMatch(matchBased, limit.paid, true);
+      if (palCountError) throw palCountError;
 
-    if (
-      !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
-      count < countLimit &&
-      palCount < 1
-    ) {
-      countLimit -= 1;
+      if (
+        !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
+        count < countLimit &&
+        palCount < 1
+      ) {
+        countLimit -= 1;
+      }
     }
 
     if (count < countLimit) return;
