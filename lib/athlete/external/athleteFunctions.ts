@@ -500,7 +500,7 @@ export const checkMatchBasedLimited = async (
       }
     }
 
-    if (count < countLimit) return;
+    if (count <= countLimit) return;
     return `Kuota pertandingan untuk kategori yang anda pilih telah penuh (${countLimit} atlet), silahkan ubah ke kategori Pemula`;
   } catch (error: any) {
     return error.message as string;
