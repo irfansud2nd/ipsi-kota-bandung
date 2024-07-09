@@ -76,7 +76,9 @@ const InputSelect = ({
         <SelectContent>
           {options.map((option) => (
             <SelectItem value={option} key={option}>
-              {customOptionLabel ? customOptionLabel(option) : option}
+              <span>
+                {customOptionLabel ? customOptionLabel(option) : option}
+              </span>
             </SelectItem>
           ))}
         </SelectContent>
