@@ -74,7 +74,9 @@ const PaymentTable = ({ payments }: Props) => {
                     <ManagePaymentForm payment={payment} remove />
                   </>
                 )}
-                <DetailButton href={`${payment.id}`} />
+                <DetailButton
+                  href={`/admin/championship/${payment.championship_id}/payment/${payment.id}`}
+                />
               </div>
             </TableCell>
           </TableRow>
