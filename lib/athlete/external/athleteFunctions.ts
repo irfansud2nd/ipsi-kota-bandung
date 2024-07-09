@@ -485,8 +485,6 @@ export const checkMatchBasedLimited = async (
       limit.paid
     );
     if (error) throw error;
-    console.log(matchBased.contingent_name);
-    console.log(matchBased.contingent_name.includes("PAL KOTA BANDUNG"));
 
     if (
       !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
