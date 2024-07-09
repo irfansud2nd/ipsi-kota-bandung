@@ -204,9 +204,12 @@ Terimakasih.`,
 
                 if (isLimit) {
                   const matchBased = getMatchBasedRegistrationId(isLimit);
+                  console.log("toast error");
+
                   toastError(
-                    `Kategori yang dipilih oleh ${matchBased} yaitu ${matchBased.type} ${matchBased.schema} ${matchBased.category} ${matchBased.gender} telah penuh, silahkan pilih kategori lain atau keluarkan pertandingan tersebut dari pembayaran`
+                    `Kategori yang dipilih oleh ${matchBased.name} yaitu ${matchBased.type} ${matchBased.schema} ${matchBased.category} ${matchBased.gender} telah penuh, silahkan pilih kategori lain atau keluarkan pertandingan tersebut dari pembayaran`
                   );
+
                   return;
                 }
 

@@ -39,8 +39,14 @@ export const toastError = (error: any, id?: string | number) => {
 
     return undefined;
   };
-  const message = getNestedProperty(error, "message") ?? "Something went wrong";
-  const code = getNestedProperty(error, "code") ?? undefined;
+
+  let message: string = error;
+  let code: string | undefined = undefined;
+
+  if (typeof error != "string") {
+    message = getNestedProperty(error, "message") ?? "Something went wrong";
+    code = getNestedProperty(error, "code") ?? undefined;
+  }
 
   // console.log({ error });
   // console.log({ message });
