@@ -169,7 +169,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
       } else {
         setFetched((prev) => ({ ...prev, official: true }));
       }
-      if (registeredContingent.payment_ids?.length > 0 && !payments.length) {
+      if (registeredContingent.payment_total > 0 && !payments.length) {
         fetchPayments();
       } else {
         setFetched((prev) => ({ ...prev, payment: true }));

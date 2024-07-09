@@ -69,7 +69,6 @@ export const addContingentAtEvent = async (
     registered_officials: 0,
     match_count: 0,
     registered_at: Date.now(),
-    payment_ids: [],
     payment_bill: 0,
     payment_total: 0,
   };
@@ -216,7 +215,6 @@ export const registeredContinentToContingentAtEvent = (
     registered_athletes: registeredContigent.registered_athletes,
     registered_officials: registeredContigent.registered_officials,
     match_count: registeredContigent.match_count,
-    payment_ids: registeredContigent.payment_ids,
     payment_total: registeredContigent.payment_total,
     payment_bill: registeredContigent.payment_bill,
   };

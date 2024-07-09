@@ -23,7 +23,6 @@ export type ContingentAtEvent = ContingentAtEventSql & {
   registered_athletes: number;
   registered_officials: number;
   match_count: number;
-  payment_ids: string[];
   payment_total: number;
   payment_bill: number;
 };
