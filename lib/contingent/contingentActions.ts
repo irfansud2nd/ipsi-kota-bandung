@@ -339,3 +339,32 @@ export const countContingentAtEventByChampionshipId = async (
     return action.error(error);
   }
 };
+
+export const isContingentEverPaid = async (
+  id: string
+): Promise<ServerAction<boolean>> => {
+  try {
+    const { data: contingentAtEvents, error: contingentAtEventsError } =
+      await supabase
+        .from("contingent_at_events")
+        .select("registration_id")
+        .eq("contingent_id", id);
+
+    if (contingentAtEventsError)
+      throw new Error(contingentAtEventsError.message);
+
+    const { count: paymentsCount, error: paymentsError } = await supabase
+      .from("payments")
+      .select("id", { count: "exact", head: true })
+      .in(
+        "contingent_registration_id",
+        contingentAtEvents.map((item) => item.registration_id)
+      );
+
+    if (paymentsError) throw new Error(paymentsError.message);
+
+    return action.success((paymentsCount || 0) > 0);
+  } catch (error) {
+    return action.error(error);
+  }
+};

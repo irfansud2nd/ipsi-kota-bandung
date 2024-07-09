@@ -520,3 +520,23 @@ export const countProfessionalMatches = async (
     return action.error(error);
   }
 };
+
+export const getAthleteIdsByContingentId = async (
+  contingentId: string
+): Promise<ServerAction<string[]>> => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw new Error(response.message);
+
+    const { data, error } = await supabase
+      .from("athletes")
+      .select("id")
+      .eq("contingent_id", contingentId);
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data.map((item) => item.id as string));
+  } catch (error) {
+    return action.error(error);
+  }
+};

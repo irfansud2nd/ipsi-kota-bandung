@@ -145,8 +145,7 @@ const UnregisteredContingentInfo = ({
       {!registeredContingent && (
         <div className="w-full flex flex-col bg-yellow-200 items-center rounded p-2 gap-2 my-2">
           <p className="font-medium text-center">
-            Anda belum mendaftarkan kontingen {unregisteredContingent.name} pada
-            kejuaraan
+            Anda belum mendaftarkan {unregisteredContingent.name} di kejuaraan
             {" " + championship.title}
           </p>
           <Button variant={"secondary"} onClick={handleRegister}>

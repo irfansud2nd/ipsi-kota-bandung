@@ -7,6 +7,7 @@ import { fetchData } from "@/lib/functions";
 import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import ShowAllButton from "@/components/admin/ShowAllButton";
+import RefreshButton from "@/components/ui/RefreshButton";
 
 const page = async ({
   params,
@@ -32,10 +33,11 @@ const page = async ({
 
   return (
     <div className="p-2">
-      <div className="flex justify-between items-center max-md:flex-wrap mb-1">
-        <h1 className="font-semibold text-3xl">
+      <div className="flex justify-center items-center max-md:flex-wrap mb-1">
+        <h1 className="font-semibold text-3xl mr-auto">
           Daftar Kontigen - {championshipTitle}
         </h1>
+        <RefreshButton className="mr-1" />
         <TableDownloadButton
           fileName={`Daftar Kontigeng - ${championshipTitle}`}
           needShowAll

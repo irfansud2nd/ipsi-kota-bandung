@@ -8,16 +8,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate, formatToRupiah } from "@/lib/functions";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import Link from "next/link";
-import { MdMoreHoriz } from "react-icons/md";
 import DetailButton from "@/components/ui/DetailButton";
+import ManageRegisteredContingent from "./ManageRegisteredContingent";
 
 type Props = {
   registeredContingentAdmins: RegisteredContingentAdmin[];
@@ -46,7 +38,7 @@ const RegisteredContingentAdminTable = ({
           <TableHead>Tagihan</TableHead>
           <TableHead>Email Pendaftar</TableHead>
           <TableHead>Waktu dibuat</TableHead>
-          {!noDetail && <TableHead>Detail</TableHead>}
+          <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -90,13 +82,16 @@ const RegisteredContingentAdminTable = ({
             <TableCell className="whitespace-nowrap">
               {formatDate(registeredContingentAdmin.created_at)}
             </TableCell>
-            {!noDetail && (
-              <TableCell>
+            <TableCell className="flex gap-1">
+              {!noDetail && (
                 <DetailButton
                   href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
                 />
-              </TableCell>
-            )}
+              )}
+              <ManageRegisteredContingent
+                registeredContingentAdmin={registeredContingentAdmin}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

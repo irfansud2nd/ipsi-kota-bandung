@@ -52,7 +52,7 @@ const RegisteredContingentInfo = ({
       await deleteContingentAtEvent(contingentAtEvent);
       dispatch(deleteContingentAtEventRedux(contingentAtEvent));
       dispatch(deleteAllAthletesRedux());
-      toast.success("Pndaftaran Kontingen berhasil dihapus", { id: toastId });
+      toast.success("Pendaftaran Kontingen berhasil dihapus", { id: toastId });
     } catch (error) {
       toastError(error, toastId);
     }
