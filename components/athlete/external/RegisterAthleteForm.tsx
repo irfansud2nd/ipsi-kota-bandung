@@ -160,7 +160,7 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
                 matchBased,
                 championship
               );
-              if (message) throw message;
+              if (message) throw { message };
 
               if (athleteAtEventToEdit) {
                 await updateAthleteAtEvent(values);
