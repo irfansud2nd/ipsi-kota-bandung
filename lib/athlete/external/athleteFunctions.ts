@@ -480,15 +480,22 @@ export const checkMatchBasedLimited = async (
   if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
 
   try {
-    const { result: count, error } = await countDuplicateMatch(
+    const { result: count, error: countError } = await countDuplicateMatch(
       matchBased,
       limit.paid
     );
-    if (error) throw error;
+    if (countError) throw countError;
+
+    const { result: palCount, error: palCountError } =
+      await countDuplicateMatch(matchBased, limit.paid, true);
+    if (palCountError) throw palCountError;
+
+    console.log({ count, palCount });
 
     if (
       !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
-      count < countLimit
+      count < countLimit &&
+      palCount < 1
     ) {
       countLimit -= 1;
     }

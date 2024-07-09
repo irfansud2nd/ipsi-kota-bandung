@@ -401,15 +401,20 @@ export const countAthlete = async (): Promise<ServerAction<number>> => {
 
 export const countDuplicateMatch = async (
   matchBased: MatchBased,
-  paid: boolean
+  paid: boolean,
+  pal?: boolean
 ): Promise<ServerAction<number>> => {
   try {
-    let func = "count_duplicate_art_match_by_championship_id";
+    let func = pal
+      ? "count_duplicate_art_match_pal_by_championship_id"
+      : "count_duplicate_art_match_by_championship_id";
     if (
       matchBased.type == matchType[0] ||
       matchBased.category.includes("Tunggal")
     )
-      func = "count_duplicate_fight_match_by_championship_id";
+      func = pal
+        ? "count_duplicate_fight_match_pal_by_championship_id"
+        : "count_duplicate_fight_match_by_championship_id";
 
     let getCount = supabase.rpc(func, {
       champ_id: matchBased.championship_id,
