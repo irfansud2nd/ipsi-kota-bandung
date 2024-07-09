@@ -117,8 +117,7 @@ Terimakasih.`,
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      {/* <DialogTrigger asChild disabled={!selectedMatchBaseds.length}> */}
-      <DialogTrigger asChild>
+      <DialogTrigger asChild disabled={!selectedMatchBaseds.length}>
         <Button>Bayar</Button>
       </DialogTrigger>
       <DialogContent>
