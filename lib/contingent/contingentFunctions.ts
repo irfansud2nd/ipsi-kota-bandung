@@ -44,7 +44,6 @@ export const deleteContingent = async (contingent: Contingent) => {
       permittedEmail: contingent.created_by,
       directory: "championship",
     });
-    console.log({ response });
     if (response) throw response;
 
     const { error } = await deleteContingentSql(

@@ -72,13 +72,11 @@ const ManageRegisteredContingent = ({ registeredContingentAdmin }: Props) => {
       const athleteIds = await fetchData(() =>
         getAthleteIdsByContingentId(registeredContingentAdmin.id)
       );
-      console.log({ athleteIds });
 
       toast.loading("Mengumpulkan informasi file atlet", { id: toastId });
       const officialIds = await fetchData(() =>
         getOfficialIdsByContingentId(registeredContingentAdmin.id)
       );
-      console.log({ officialIds });
 
       const athleteFileUrls = athleteIds.map((id) => getFileUrl("athlete", id));
       const officialImageUrls = officialIds.map(

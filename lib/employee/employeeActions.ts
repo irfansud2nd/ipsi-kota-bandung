@@ -84,8 +84,6 @@ export const deleteEmployeeSql = async (
     const response = await apiProtect({ directory: "employee" });
     if (response) throw new Error(response.message);
 
-    console.log("id", employeeSql.id);
-
     const { error } = await supabase
       .from("employees")
       .delete()
