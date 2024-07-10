@@ -95,7 +95,7 @@ export const deleteContingentAtEvent = async (
   contingentAtEvent: ContingentAtEvent
 ) => {
   try {
-    const response = await apiProtect({ loggedInOnly: true });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { error } = await deleteContingentAtEventSql(

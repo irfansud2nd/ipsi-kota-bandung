@@ -252,9 +252,7 @@ export const addAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const dataToSend: any = athletAtEventSql;
@@ -278,7 +276,7 @@ export const getAthtleteAtEventsByContingentRegistrationId = async (
   contingentRegistrationId: number
 ): Promise<ServerAction<AthleteAtEvent[]>> => {
   try {
-    const response = await apiProtect({ loggedInOnly: true });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data: athleteAtEvents } = await supabase
@@ -298,9 +296,7 @@ export const updateAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase
@@ -339,9 +335,7 @@ export const deleteAthleteAtEventSql = async (
   athletAtEventSql: AthleteAtEventSql
 ): Promise<ServerAction<AthleteAtEventSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase

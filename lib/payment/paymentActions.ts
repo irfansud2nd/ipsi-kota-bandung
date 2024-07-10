@@ -12,9 +12,7 @@ export const addPaymentSql = async (
   paymentSql: PaymentSql
 ): Promise<ServerAction<PaymentSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase.from("payments").insert(paymentSql);
@@ -55,9 +53,7 @@ export const deletePaymentSql = async (
   paymentSql: PaymentSql
 ): Promise<ServerAction<PaymentSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase
@@ -79,9 +75,7 @@ export const getPaymentsByContingentRegistrationId = async (
   contingentRegsitrationId: number
 ): Promise<ServerAction<Payment[]>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -178,9 +172,7 @@ export const getPaymentById = async (
   id: string
 ): Promise<ServerAction<Payment | undefined>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -222,9 +214,7 @@ export const sumPaymentBillByChampionshipId = async (
   championshipId: string
 ): Promise<ServerAction<number>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -245,9 +235,7 @@ export const sumPaymentTotalByChampionshipId = async (
   championshipId: string
 ): Promise<ServerAction<number>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -268,9 +256,7 @@ export const sumConfirmedPaymentByChampionshipId = async (
   championshipId: string
 ): Promise<ServerAction<number>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -291,9 +277,7 @@ export const sumUnconfirmedPaymentByChampionshipId = async (
   championshipId: string
 ): Promise<ServerAction<number>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase

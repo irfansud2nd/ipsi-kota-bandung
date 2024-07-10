@@ -197,9 +197,7 @@ export const deleteAthlete = async (athlete: Athlete) => {
 // CREATE
 export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { result: athleteAtEventSql, error } = await addAthleteAtEventSql(
@@ -220,9 +218,7 @@ export const addAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
 // UPDATE
 export const updateAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { error } = await updateAthleteAtEventSql(
@@ -240,9 +236,7 @@ export const updateAthleteAtEvents = async (
   athleteAtEvents: AthleteAtEvent[]
 ) => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { error } = await updateAthleteAtEventsSql(
@@ -257,9 +251,7 @@ export const updateAthleteAtEvents = async (
 // DELETE
 export const deleteAthleteAtEvent = async (athleteAtEvent: AthleteAtEvent) => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     const { error } = await deleteAthleteAtEventSql(

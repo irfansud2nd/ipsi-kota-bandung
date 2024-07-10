@@ -180,7 +180,7 @@ export const getContingenAtEventsByContingentId = async (
   contingentId: string
 ): Promise<ServerAction<ContingentAtEvent[]>> => {
   try {
-    const response = await apiProtect({ loggedInOnly: true });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { data, error } = await supabase
@@ -206,9 +206,7 @@ export const addContingentAtEventSql = async (
     const dataToSend: any = contingentAtEventSql;
     delete dataToSend.registration_id;
 
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error, data } = await supabase
@@ -230,9 +228,7 @@ export const deleteContingentAtEventSql = async (
   contingentAtEventSql: ContingentAtEventSql
 ): Promise<ServerAction<ContingentAtEventSql>> => {
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw new Error(response.message);
 
     const { error } = await supabase

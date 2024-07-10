@@ -200,10 +200,6 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     });
   };
 
-  // useEffect(() => {
-  //   console.log("FETCHED", fetched);
-  // }, [fetched]);
-
   if (!isAllFetched() && !returnWithoutFetch) return <Loading full />;
 
   if (!registeredContingent && !returnWithoutFetch) {

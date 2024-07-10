@@ -22,7 +22,7 @@ export const deleteFile = async (
     let params: any = { directory };
 
     if (acessedByGuest.some((item) => directory.split("/").includes(item)))
-      params = { loggedInOnly: true };
+      params = undefined;
 
     const response = await apiProtect(params);
     if (response) throw new Error(response.message);
@@ -49,7 +49,7 @@ export const uploadFile = async (
     let params: any = { directory };
 
     if (acessedByGuest.some((item) => directory.split("/").includes(item)))
-      params = { loggedInOnly: true };
+      params = undefined;
 
     const response = await apiProtect(params);
     if (response) throw new Error(response.message);

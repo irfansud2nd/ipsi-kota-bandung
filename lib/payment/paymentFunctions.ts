@@ -27,9 +27,7 @@ export const addPayment = async (paymentData: Payment) => {
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!payment.image.file) throw { message: "Bukti tidak ditemukan" };
 
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // SEND IMAGE
@@ -57,9 +55,7 @@ export const deletePayment = async (payment: Payment) => {
   const { imageUrl } = getFileUrl("payment", payment.id);
 
   try {
-    const response = await apiProtect({
-      loggedInOnly: true,
-    });
+    const response = await apiProtect();
     if (response) throw response;
 
     // SEND IMAGE
