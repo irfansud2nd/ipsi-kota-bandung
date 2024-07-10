@@ -42,7 +42,9 @@ export const deleteContingent = async (contingent: Contingent) => {
   try {
     const response = await apiProtect({
       permittedEmail: contingent.created_by,
+      directory: "championship",
     });
+    console.log({ response });
     if (response) throw response;
 
     const { error } = await deleteContingentSql(

@@ -16,6 +16,7 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
       <TableHeader>
         <TableRow>
           <TableHead>No</TableHead>
+          <TableHead>ID</TableHead>
           <TableHead>Nama</TableHead>
           <TableHead>NIK</TableHead>
           <TableHead>Jenis Kelamin</TableHead>
@@ -42,6 +43,7 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
         {matchBaseds.map((matchBased, i) => (
           <TableRow key={matchBased.registration_id}>
             <TableCell>{i + 1}</TableCell>
+            <TableCell>{matchBased.registration_id}</TableCell>
             <TableCell>{matchBased.name}</TableCell>
             <TableCell>{matchBased.nik}</TableCell>
             <TableCell>{matchBased.gender}</TableCell>

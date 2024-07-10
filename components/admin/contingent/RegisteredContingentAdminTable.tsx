@@ -27,6 +27,7 @@ const RegisteredContingentAdminTable = ({
           <TableHead>No</TableHead>
           <TableHead>Nama Kontingen</TableHead>
           <TableHead>Atlet</TableHead>
+          <TableHead>Atlet Bertanding</TableHead>
           <TableHead>Official</TableHead>
           <TableHead>Nomor Pertandingan</TableHead>
           <TableHead>Pemula Tanding</TableHead>
@@ -46,6 +47,7 @@ const RegisteredContingentAdminTable = ({
           <TableRow key={registeredContingentAdmin.id}>
             <TableCell>{i + 1}</TableCell>
             <TableCell>{registeredContingentAdmin.name}</TableCell>
+            <TableCell>{registeredContingentAdmin.athletes}</TableCell>
             <TableCell>
               {registeredContingentAdmin.registered_athletes}
             </TableCell>
@@ -82,15 +84,17 @@ const RegisteredContingentAdminTable = ({
             <TableCell className="whitespace-nowrap">
               {formatDate(registeredContingentAdmin.created_at)}
             </TableCell>
-            <TableCell className="flex gap-1">
-              {!noDetail && (
-                <DetailButton
-                  href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
+            <TableCell>
+              <div className="flex gap-1 items-center">
+                {!noDetail && (
+                  <DetailButton
+                    href={`/admin/contingent/${registeredContingentAdmin.id}/${registeredContingentAdmin.championship_id}`}
+                  />
+                )}
+                <ManageRegisteredContingent
+                  registeredContingentAdmin={registeredContingentAdmin}
                 />
-              )}
-              <ManageRegisteredContingent
-                registeredContingentAdmin={registeredContingentAdmin}
-              />
+              </div>
             </TableCell>
           </TableRow>
         ))}

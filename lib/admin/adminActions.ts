@@ -234,15 +234,12 @@ export const apiProtect = async (options?: {
 
   if (!options) return initialResult;
 
-  if (options?.permittedEmail) {
-    return userEmail == options.permittedEmail ? initialResult : notAuthorized;
-  }
-
-  if (!roles.length) return initialResult;
+  if (options?.permittedEmail && userEmail == options.permittedEmail)
+    return initialResult;
 
   !roles.includes("master") && roles.push("master");
 
-  const { permitted } = await isAuthorized({ roles });
+  const { permitted } = await isAuthorized({ roles, noFetch: true });
   if (permitted) return initialResult;
 
   return notAuthorized;

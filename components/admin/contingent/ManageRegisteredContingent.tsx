@@ -68,34 +68,45 @@ const ManageRegisteredContingent = ({ registeredContingentAdmin }: Props) => {
     if (!result) return;
     const toastId = toast.loading("Menghapus kontingen");
     try {
+      toast.loading("Mengumpulkan informasi file atlet", { id: toastId });
       const athleteIds = await fetchData(() =>
         getAthleteIdsByContingentId(registeredContingentAdmin.id)
       );
+      console.log({ athleteIds });
+
+      toast.loading("Mengumpulkan informasi file atlet", { id: toastId });
       const officialIds = await fetchData(() =>
         getOfficialIdsByContingentId(registeredContingentAdmin.id)
       );
+      console.log({ officialIds });
 
       const athleteFileUrls = athleteIds.map((id) => getFileUrl("athlete", id));
       const officialImageUrls = officialIds.map(
         (id) => getFileUrl("official", id).imageUrl
       );
 
+      toast.loading("Menghapus foto atlet", { id: toastId });
       const { error: athleteImageError } = await deleteFiles(
         athleteFileUrls.map((item) => item.imageUrl)
       );
       if (athleteImageError) throw athleteImageError;
 
+      toast.loading("Menghapus KK atlet", { id: toastId });
       const { error: athleteKkError } = await deleteFiles(
         athleteFileUrls.map((item) => item.kkUrl)
       );
       if (athleteKkError) throw athleteKkError;
 
+      toast.loading("Menghapus foto official", { id: toastId });
       const { error: officialFileError } = await deleteFiles(officialImageUrls);
       if (officialFileError) throw officialFileError;
 
+      toast.loading("Menghapus kontingen", { id: toastId });
       await deleteContingent(registeredContingentAdmin);
 
       toast.success("Kontingen berhasil dihapus", { id: toastId });
+
+      router.refresh();
     } catch (error) {
       toastError(error, toastId);
     }
