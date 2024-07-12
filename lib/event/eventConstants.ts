@@ -184,7 +184,7 @@ const generateKategoriPertandingan = (
 export const championships: Championship[] = [
   {
     id: "bandung-open-24",
-    title: "Bandung Open Pencak Silat Tournament",
+    title: "Bandung Pencak Silat Tournament 2024",
     image: {
       downloadUrl: "/images/championships/bandung-open-24/thumbnail.png",
     },

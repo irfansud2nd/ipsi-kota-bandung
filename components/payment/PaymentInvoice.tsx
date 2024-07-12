@@ -250,7 +250,8 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
       <Button onClick={generatePdf} className="mx-auto">
         Download
       </Button>
-      <div className="absolute -z-50 top-0 right-full">
+      {/* <div className="absolute -z-50 top-0 right-full"> */}
+      <div>
         <div ref={printRef} className={`w-[1050px] h-fit`}>
           {datas.map((data, page) => (
             <div
@@ -287,12 +288,12 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
                               {item}
                             </span>
                           ))}
-                          <span> </span>
-                          {"OPEN".split("").map((item, i) => (
+                          {/* <span> </span> */}
+                          {/* {"OPEN".split("").map((item, i) => (
                             <span key={i} className="text-[#BF994C]">
                               {item}
                             </span>
-                          ))}
+                          ))} */}
                         </h1>
                         <div className="ml-1 w-[24px] flex items-center justify-center">
                           <p className="text-2xl -rotate-90 tracking-[4px] text-[#053858]">
@@ -416,8 +417,7 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
                           <p>
                             Pembayaran invoice diatas dibayarkan pada :
                             <br />
-                            Bagian Keuangan “Bandung Open Pencak Silat
-                            Tournament 2024”
+                            Bagian Keuangan “{championship.title}”
                             <br />
                             0129228164100
                             <br />
