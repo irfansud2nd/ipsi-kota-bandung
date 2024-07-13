@@ -251,7 +251,6 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
         Download
       </Button>
       <div className="absolute -z-50 top-0 right-full">
-        {/* <div> */}
         <div ref={printRef} className={`w-[1050px] h-fit`}>
           {datas.map((data, page) => (
             <div
