@@ -4,6 +4,7 @@ import { Label } from "../ui/label";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -73,14 +74,16 @@ const InputSelect = ({
         <SelectTrigger>
           <SelectValue placeholder={value} />
         </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem value={option} key={option}>
-              <span>
-                {customOptionLabel ? customOptionLabel(option) : option}
-              </span>
-            </SelectItem>
-          ))}
+        <SelectContent className="max-h-[200px]">
+          <SelectGroup>
+            {options.map((option) => (
+              <SelectItem value={option} key={option}>
+                <span>
+                  {customOptionLabel ? customOptionLabel(option) : option}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <ErrorMessage name={name} component={ErrorText} />
