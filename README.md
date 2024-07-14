@@ -1,4 +1,4 @@
-# La Dwitra 2024 - Registration Website
+# IPSI Kota Bandung - Business Website
 
 ## Introduction
 
