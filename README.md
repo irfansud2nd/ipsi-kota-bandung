@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# La Dwitra 2024 - Registration Website
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+The business website for **"Ikatan Pencak Silat Indonesia (IPSI) Kota Bandung"**. This will facilitate championship registrations, manage the attendance of athletes trained by IPSI Kota Bandung, and manage news and events to be shared.I think this website is the best from all projects that i have done. Currently, this website is still being developed in several parts according to the client's wishes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Client
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Add, update and delete contingent data
+- Add, update and delete contingent's official data
+- Upload, update and delete contingent's official photo
+- Add, update and delete contingent's athlete data
+- Upload, update and delete photo and personal file of contingent's athlete
+- Upload contingent's payment
+- Automatically deleting the old file if the user updates it
+- Automatically calculating the registration fee amount
+- QR scan based attendance
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Admin
 
-## Learn More
+- Dashboard
+- Add, update, delete news
+- Add, update, delete event
+- Add, update, delete admin
+- Add, update, delete athlete
+- Athlete's attendance report
+- Generate QR for attendance
+- Update announcement
+- Delete contingent
+- Delete contingent's payment
+- Verify contingent's payment
+- Unverify contingent's payment
+- Search data
+- Table of athletes with customizable filters
+- Table of categorized number of athletes
+- Export data to Excel format
 
-To learn more about Next.js, take a look at the following resources:
+## How to use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Live Web [here](https://ipsikotabandung.com)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- Next JS
+- Typescript
+- Tailwind CSS
+- shadcn/ui
+- Supabase
+- Firebase (Storage, Authentication)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Other Resource or Liraries
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [tiptap](https://tiptap.dev/)
+- [formik](https://formik.org/)
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [next-auth](link)
+- [react-export-table-to-excel](https://github.com/EdisonJpp/react-export-table-to-excel)
+- [react-icons](https://react-icons.github.io/react-icons/)
+- [redux](https://redux.js.org/)
+- [sonner](https://sonner.emilkowal.ski/)
+- [file-saver](https://github.com/eligrey/FileSaver.js)
+- [html2canvas](https://html2canvas.hertzen.com/)
+- [jspdf](https://github.com/mrrio/jspdf)
+- [qr-scanner](https://github.com/nimiq/qr-scanner)
+- [qrcode.react](http://zpao.github.io/qrcode.react)

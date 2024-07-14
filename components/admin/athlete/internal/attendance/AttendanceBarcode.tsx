@@ -6,14 +6,11 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toastError } from "@/lib/form/formFunctions";
 import Loading from "@/components/ui/Loading";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
 import { getSpecialUserLabel } from "@/lib/functions";
-import { sign } from "jsonwebtoken";
-import { getToken } from "next-auth/jwt";
 import {
   addAttendanceToken,
   getAttendanceToken,
