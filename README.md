@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The business website for **"Ikatan Pencak Silat Indonesia (IPSI) Kota Bandung"**. This will facilitate championship registrations, manage the attendance of athletes trained by IPSI Kota Bandung, and manage news and events to be shared.I think this website is the best from all projects that i have done. Currently, this website is still being developed in several parts according to the client's wishes.
+The business website for **Ikatan Pencak Silat Indonesia (IPSI) Kota Bandung**. This will facilitate championship registrations, manage the attendance of athletes trained by IPSI Kota Bandung, and manage news and events to be shared.I think this website is the best from all projects that i have done. Currently, this website is still being developed in several parts according to the client's wishes.
 
 ## Features
 
