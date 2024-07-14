@@ -50,7 +50,7 @@ The business website for **"Ikatan Pencak Silat Indonesia (IPSI) Kota Bandung"**
 - Supabase
 - Firebase (Storage, Authentication)
 
-## Other Resource or Liraries
+## Other Resource or Libraries
 
 - [tiptap](https://tiptap.dev/)
 - [formik](https://formik.org/)
