@@ -320,6 +320,10 @@ export const championshipAdminLinks: {
           href: "/unconfirmed",
           label: "Menunggu Konfirmasi",
         },
+        {
+          href: "/categorized/count",
+          label: "Filter Tingkatan",
+        },
       ],
     },
   ],

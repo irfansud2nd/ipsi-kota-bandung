@@ -48,7 +48,10 @@ const page = async ({ params, searchParams }: Props) => {
   return (
     <div>
       <h1 className="font-semibold text-3xl">Filter Kategori</h1>
-      <CategorySelector championshipId={params.championshipId} />
+      <CategorySelector
+        championshipId={params.championshipId}
+        url={"categorized"}
+      />
       <p>
         Hasil Pencarian:{" "}
         <b>

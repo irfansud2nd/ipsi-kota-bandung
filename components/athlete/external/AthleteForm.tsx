@@ -84,13 +84,13 @@ const AthleteForm = () => {
               let athlete = values;
               if (athleteToEdit) {
                 athlete = await updateAthlete(values);
+                setOpen(false);
               } else {
                 athlete = await addAthlete(values);
+                resetForm();
               }
 
               dispatch(addAthletesRedux([athlete]));
-
-              resetForm();
             } catch (error) {
             } finally {
             }

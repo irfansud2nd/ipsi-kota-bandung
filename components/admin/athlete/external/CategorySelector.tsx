@@ -8,15 +8,26 @@ import {
   matchSchema,
   matchType,
 } from "@/lib/athlete/external/athleteConstants";
-import { getMatchCategory } from "@/lib/athlete/external/athleteFunctions";
+import {
+  getLevel,
+  getMatchCategory,
+} from "@/lib/athlete/external/athleteFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Props = { championshipId: string };
-const CategorySelector = ({ championshipId }: Props) => {
+type Props = {
+  championshipId: string;
+  url: string;
+  hide?: {
+    type?: boolean;
+    category?: boolean;
+    page?: boolean;
+  };
+};
+const CategorySelector = ({ championshipId, url, hide }: Props) => {
   const championship = getChampionship(championshipId) as Championship;
   const { matchCategory } = championship;
 
@@ -36,9 +47,47 @@ const CategorySelector = ({ championshipId }: Props) => {
       return;
     }
 
-    const url = `categorized?schema=${schema}&type=${type}&level=${level}&category=${category}&gender=${gender}&page=1`;
+    let params = [
+      {
+        key: "schema",
+        value: schema,
+      },
+      {
+        key: "type",
+        value: type,
+      },
+      {
+        key: "level",
+        value: level,
+      },
+      {
+        key: "category",
+        value: category,
+      },
+      {
+        key: "gender",
+        value: gender,
+      },
+      {
+        key: "page",
+        value: 1,
+      },
+    ];
 
-    router.push(url);
+    if (hide) {
+      for (const key in hide) {
+        params = params.filter((item) => item.key != key);
+      }
+    }
+
+    // const targetUrl = `${url}?schema=${schema}&type=${type}&level=${level}&category=${category}&gender=${gender}&page=1`;
+    let targetUrl = `${url}?`;
+    params.map((item, i) => {
+      targetUrl += `${item.key}=${item.value}`;
+      if (i < params.length - 1) targetUrl += "&";
+    });
+
+    router.push(targetUrl);
   };
 
   useEffect(() => {
@@ -54,24 +103,28 @@ const CategorySelector = ({ championshipId }: Props) => {
         value={schema}
         onChange={(value) => setSchema(value)}
       />
-      <SelectComponent
-        label="Jenis Pertandingan"
-        options={matchType}
-        value={type}
-        onChange={(value) => setType(value)}
-      />
+      {!hide?.type && (
+        <SelectComponent
+          label="Jenis Pertandingan"
+          options={matchType}
+          value={type}
+          onChange={(value) => setType(value)}
+        />
+      )}
       <SelectComponent
         label="Kelompok Usia"
-        options={levels}
+        options={getLevel(schema == matchSchema[0], championship.matchCategory)}
         value={level}
         onChange={(value) => setLevel(value)}
       />
-      <SelectComponent
-        label="Kategori"
-        options={getMatchCategory(level, type, matchCategory)}
-        value={category}
-        onChange={(value) => setCategory(value)}
-      />
+      {!hide?.category && (
+        <SelectComponent
+          label="Kategori"
+          options={getMatchCategory(level, type, matchCategory)}
+          value={category}
+          onChange={(value) => setCategory(value)}
+        />
+      )}
       <SelectComponent
         label="Jenis Kelamin"
         options={athleteGender}

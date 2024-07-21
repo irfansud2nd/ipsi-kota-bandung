@@ -435,6 +435,51 @@ export const countAthleteByChampionshipId = async (
   }
 };
 
+export const countMatchByPaymentType = async (
+  championshipId: string,
+  schema: string,
+  level: string,
+  gender: string,
+  categories: string[]
+): Promise<
+  ServerAction<{ category: string; paid: number; unpaid: number }[]>
+> => {
+  try {
+    if (!categories.length) return action.success([]);
+
+    const countPromises = categories.map(async (category) => {
+      let result = {
+        paid: 0,
+        unpaid: 0,
+      };
+
+      const { data, error } = await supabase
+        .rpc("count_match_by_payment_type", {
+          champ_id: championshipId,
+          scm: schema,
+          lvl: level,
+          ctgr: category,
+          gdr: gender,
+        })
+        .returns<{ paid: number; unpaid: number }[]>();
+
+      if (error) throw new Error(error.message);
+
+      if (data.length > 0) result = data[0];
+
+      return {
+        category,
+        ...result,
+      };
+    });
+
+    const data = await Promise.all(countPromises);
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 export const countProfessionalMatches = async (
   matches: {
     championshipId: string;
