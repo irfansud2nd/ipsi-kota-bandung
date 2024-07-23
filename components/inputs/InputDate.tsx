@@ -2,11 +2,10 @@
 import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import React from "react";
 import { Label } from "../ui/label";
-import { championships } from "@/lib/event/eventConstants";
 import { Input } from "../ui/input";
 import ErrorText from "../ui/ErrorText";
 import { InputProps, getInputValue } from "@/lib/form/formConstants";
-import { dateToNumber, formatDate } from "@/lib/functions";
+import { dateToNumber, formatDate, timeToNumber } from "@/lib/functions";
 import { getChampionship } from "@/lib/event/eventFunctions";
 type Props = InputProps & {
   time?: boolean;
@@ -59,7 +58,10 @@ const InputDate = ({
           withoutHour: true,
         })}
         onChange={(e) => {
-          setFieldValue(name, dateToNumber(e.target.value, time));
+          setFieldValue(
+            name,
+            time ? timeToNumber(e.target.value) : dateToNumber(e.target.value)
+          );
         }}
         disabled={isSubmitting}
       />

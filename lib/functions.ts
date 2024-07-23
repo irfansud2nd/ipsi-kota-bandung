@@ -47,15 +47,19 @@ export const formatDate = (
   return result;
 };
 
-export const dateToNumber = (date: string, time?: boolean) => {
+export const dateToNumber = (date: string, time?: string) => {
   let result = 0;
   if (!date) return result;
   if (time) {
-    result = new Date("2000-01-01 " + date + ":00").getTime();
+    result = new Date(`${date} ` + time + ":00").getTime();
   } else {
     result = new Date(date).getTime();
   }
   return result;
+};
+
+export const timeToNumber = (time: string) => {
+  return new Date("2000-01-01 " + time + ":00").getTime();
 };
 
 // COMPARE FOR DATA SORTER

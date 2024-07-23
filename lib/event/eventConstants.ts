@@ -199,12 +199,12 @@ export const championships: Championship[] = [
     description: "",
     register: {
       start: dateToNumber("2024-06-10"),
-      end: dateToNumber("2024-07-31"),
+      end: dateToNumber("2024-07-25", "19:00"),
     },
     athletes: 0,
     matchCount: 0,
     techmeet: {
-      date: dateToNumber("2024-08-03 10:00:00"),
+      date: dateToNumber("2024-08-04", "10:00"),
       location: {
         name: "GOR KONI Kota Bandung",
         url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
@@ -269,7 +269,7 @@ export const championships: Championship[] = [
       "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
     status: {
       checkLimit: false,
-      editOnly: false,
+      editOnly: true,
     },
     payment: {
       closed: false,
