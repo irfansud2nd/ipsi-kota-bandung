@@ -233,9 +233,6 @@ export const apiProtect = async (options?: {
 
   if (!options) return initialResult;
 
-  console.log({ options });
-  console.log(options?.permittedEmail && userEmail == options.permittedEmail);
-
   if (options?.permittedEmail && userEmail == options.permittedEmail)
     return initialResult;
 

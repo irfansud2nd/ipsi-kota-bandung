@@ -37,9 +37,6 @@ const page = async ({ params, searchParams }: Props) => {
 
     if (!categories) return [];
 
-    console.log({ schema, level, gender });
-    console.log({ categories });
-
     return [...categories.fight, ...categories.art];
   };
 
