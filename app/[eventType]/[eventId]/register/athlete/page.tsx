@@ -22,7 +22,7 @@ const page = ({ params }: { params: { eventId: string } }) => {
           <TabsTrigger value="registered">Atlet terdaftar</TabsTrigger>
           <TabsTrigger value="all">Semua Atlet</TabsTrigger>
         </TabsList>
-        <AthleteForm />
+        <AthleteForm championshipId={params.eventId} />
       </div>
       <div className="registration_content flex-1">
         <TabsContent value="registered" className="registration_content">

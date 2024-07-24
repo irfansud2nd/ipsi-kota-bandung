@@ -5,10 +5,12 @@ import Link from "next/link";
 import ContingentForm from "./ContingentForm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
+import { Championship } from "@/lib/event/eventConstants";
 
 const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
-  const championship = getChampionship(championshipId);
-  const disableRegister = championship?.status.editOnly;
+  const championship = getChampionship(championshipId) as Championship;
+  const disableRegister =
+    championship.register.end < Date.now() || championship.status.editOnly;
   const unregisteredContingent = useSelector(
     (state: RootState) => state.contingent.unregistered
   );

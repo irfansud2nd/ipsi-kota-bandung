@@ -122,30 +122,6 @@ export type Championship = Event & {
   testerEmail?: string[];
 };
 
-// DUMMY DATA
-export const getDummyEvents = (length: number, startNumber: number = 0) => {
-  let result: Event[] = [];
-  for (let i = 1 + startNumber; i <= length + startNumber; i++) {
-    result.push({
-      id: v4(),
-      title: "Event " + i,
-      image: {
-        downloadUrl: "url " + i,
-      },
-      location_name: "Location " + i,
-      date_start: Date.now() + i * 99999999,
-      date_end: Date.now() + i * 99999999 + 99999999,
-      time_start: Date.now() + i * 99999999,
-      time_end: Date.now() + 50000 + i * 99999999,
-      organizer: "IPSI Kota Bandung",
-      created_by: "irfansud" + i + "gmail.com",
-      created_at: Date.now() - i * 99999999,
-      description: "Description " + i,
-    });
-  }
-  return result;
-};
-
 const generateKategoriPertandingan = (
   endAlphabet: string,
   start: number,
@@ -269,7 +245,7 @@ export const championships: Championship[] = [
       "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
     status: {
       checkLimit: false,
-      editOnly: true,
+      editOnly: false,
     },
     payment: {
       closed: false,

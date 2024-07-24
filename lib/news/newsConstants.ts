@@ -54,22 +54,3 @@ export const newsSchema = (ignoreImage: boolean = false) => {
     );
   return schema;
 };
-
-// DUMMY DATA
-export const getDummyNews = (length: number, startNumber: number = 0) => {
-  let result: News[] = [];
-  for (let i = 1 + startNumber; i <= length + startNumber; i++) {
-    result.push({
-      id: v4(),
-      title: `Judul ${i}`,
-      image: {
-        downloadUrl: `https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/news%2F7117670d-91d1-4a8e-ad73-5781291a17df?alt=media&token=51267911-66a7-454c-b6f3-dc784d395b94`,
-      },
-      text: `<h2>Konten ${i}</h2><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p><p></p><ul><li><p>item 1</p></li><li><p>item 2</p></li><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p></li></ul><ol><li><p>item 1</p></li><li><p>item 2</p><p></p></li></ol><p><strong>Lorem ipsum dolor sit</strong> amet <em>consectetur adipisicing elit</em>. Natus iure voluptates rerum. Assumenda, omnis, vero delectus debitis molestiae in error temporibus minima corrupti totam quaerat perspiciatis. Aspernatur earum quasi laudantium quaerat iste iure, nostrum minus hic nemo sit beatae maiores explicabo eligendi delectus qui amet laboriosam maxime. Quas reiciendis vel eveniet commodi laudantium accusantium recusandae facere sed nemo in. Officiis tempore accusamus quam dolores, asperiores ea iusto ipsam doloremque, adipisci aut nobis libero exercitationem laudantium autem nulla neque explicabo cum atque repellat, distinctio rem. Iste eos magni temporibus harum, laudantium impedit quidem a doloremque illum facere omnis rem eius consequuntur</p>`,
-      created_by: `irfansud${i}@gmail.com`,
-      writer: `IPSI Kota Bandung`,
-      created_at: Date.now() + i * 99999999,
-    });
-  }
-  return result;
-};

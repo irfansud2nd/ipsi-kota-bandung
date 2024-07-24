@@ -18,6 +18,8 @@ import {
   addAthlete,
   updateAthlete,
 } from "@/lib/athlete/external/athleteFunctions";
+import { Championship } from "@/lib/event/eventConstants";
+import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
 import {
   addAthletesRedux,
@@ -30,7 +32,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const AthleteForm = () => {
+const AthleteForm = ({ championshipId }: { championshipId: string }) => {
   const [open, setOpen] = useState(false);
   const [fileChanging, setFileChanging] = useState({
     image: false,
@@ -67,10 +69,15 @@ const AthleteForm = () => {
     if (athleteToEdit) setOpen(true);
   }, [athleteToEdit]);
 
+  const championship = getChampionship(championshipId) as Championship;
+
+  const disableAdd =
+    championship.register.end < Date.now() || championship.status.editOnly;
+
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
       <DialogTrigger asChild>
-        <Button>Tambah Atlet</Button>
+        <Button disabled={disableAdd}>Tambah Atlet</Button>
       </DialogTrigger>
       <DialogContent>
         <Formik
