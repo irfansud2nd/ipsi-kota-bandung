@@ -51,7 +51,7 @@ export const dateToNumber = (date: string, time?: string) => {
   let result = 0;
   if (!date) return result;
   if (time) {
-    result = new Date(`${date} ` + time + ":00").getTime();
+    result = new Date(`${date}T` + time + ":00").getTime();
   } else {
     result = new Date(date).getTime();
   }
@@ -59,7 +59,7 @@ export const dateToNumber = (date: string, time?: string) => {
 };
 
 export const timeToNumber = (time: string) => {
-  return new Date("2000-01-01 " + time + ":00").getTime();
+  return new Date("2000-01-01T" + time + ":00").getTime();
 };
 
 // COMPARE FOR DATA SORTER
