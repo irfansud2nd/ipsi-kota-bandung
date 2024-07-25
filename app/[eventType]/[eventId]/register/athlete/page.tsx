@@ -25,7 +25,7 @@ const page = ({ params }: { params: { eventId: string } }) => {
         <AthleteForm championshipId={params.eventId} />
       </div>
       <div className="registration_content flex-1">
-        <TabsContent value="registered" className="registration_content">
+        <TabsContent value="registered">
           <AthleteTable registered championshipId={params.eventId} />
         </TabsContent>
         <TabsContent value="all">

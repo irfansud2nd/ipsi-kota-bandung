@@ -25,10 +25,8 @@ import {
   addAthletesRedux,
   setAthleteToEditRedux,
 } from "@/lib/redux/championship/register/athleteSlice";
-
 import { RootState } from "@/lib/redux/store";
 import { Form, Formik, FormikProps } from "formik";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -71,14 +69,16 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
 
   const championship = getChampionship(championshipId) as Championship;
 
-  const disableAdd =
-    championship.register.end < Date.now() || championship.status.editOnly;
+  const disableAdd = Date.now() > championship.register.end;
+  const disableEdit = disableAdd && Date.now() > championship.editLimit;
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild>
-        <Button disabled={disableAdd}>Tambah Atlet</Button>
-      </DialogTrigger>
+      {!disableAdd && (
+        <DialogTrigger asChild>
+          <Button>Tambah Atlet</Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <Formik
           initialValues={athleteToEdit ?? initialValue}
@@ -90,9 +90,17 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
             try {
               let athlete = values;
               if (athleteToEdit) {
+                if (disableEdit) {
+                  toastError("Pengguna sudah tidak dapat merubah data atlet");
+                  return;
+                }
                 athlete = await updateAthlete(values);
-                setOpen(false);
+                toggleDialog(false);
               } else {
+                if (disableAdd) {
+                  toastError("Pendaftaran telah ditutup");
+                  return;
+                }
                 athlete = await addAthlete(values);
                 resetForm();
               }

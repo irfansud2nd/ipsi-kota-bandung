@@ -88,9 +88,6 @@ const page = ({ params }: { params: { eventId: string } }) => {
           </TabsContent>
         </div>
       </Tabs>
-      {/* <PaymentInvoice championshipId={params.eventId} />
-      <PaymentInvoice championshipId={params.eventId} onPhone /> */}
-      {/* <TestPaymentInvoice championshipId={params.eventId} /> */}
     </div>
   );
 };

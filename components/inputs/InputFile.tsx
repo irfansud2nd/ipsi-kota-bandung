@@ -64,7 +64,8 @@ const InputFile = ({
   }
 
   const editOnly =
-    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    (championshipId &&
+      Date.now() > (getChampionship(championshipId)?.editLimit || 0)) ||
     false;
 
   const { showFile, ShowFileDialog } = useShowFile();

@@ -37,17 +37,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 type Props = {
-  eventId: string;
+  championshipId: string;
   art?: boolean;
 };
 
-const RegisterAthleteForm = ({ eventId, art }: Props) => {
+const RegisterAthleteForm = ({ championshipId, art }: Props) => {
   const [open, setOpen] = useState(false);
   const [validateTeam, setValidateTeam] = useState(false);
 
   const {
     all: athletes,
-    athleteAtEvents,
     athleteAtEventToEdit,
     matchBased: matchBaseds,
   } = useSelector((state: RootState) => state.athlete);
@@ -62,7 +61,10 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
     return athletes.find((athlete) => athlete.id == athleteId) as Athlete;
   };
 
-  const championship = getChampionship(eventId) as Championship;
+  const championship = getChampionship(championshipId) as Championship;
+
+  const disableAdd = Date.now() > championship.register.end;
+  const disableEdit = disableAdd && Date.now() > championship.editLimit;
 
   const initialValues: AthleteAtEvent = {
     ...athleteAtEventInitialValue,
@@ -119,13 +121,29 @@ const RegisterAthleteForm = ({ eventId, art }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild disabled={!athletes.length}>
-        <Button>Tambah Atlet</Button>
-      </DialogTrigger>
+      {!disableAdd && (
+        <DialogTrigger asChild disabled={!athletes.length}>
+          <Button>Tambah Atlet</Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <Formik
           initialValues={athleteAtEventToEdit ?? initialValues}
           onSubmit={async (values, { resetForm }) => {
+            if (athleteAtEventToEdit) {
+              if (disableEdit) {
+                toastError(
+                  "Pengguna sudah tidak dapat merubah data pertandingan"
+                );
+                return;
+              }
+            } else {
+              if (disableAdd) {
+                toastError("Pendaftaran telah ditutup");
+                return;
+              }
+            }
+
             const toastId = toast.loading(
               `${
                 athleteAtEventToEdit ? "Memperharui" : "Mendaftarkan"

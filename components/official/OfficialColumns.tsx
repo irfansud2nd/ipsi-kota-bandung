@@ -17,9 +17,14 @@ import {
 import { Button } from "../ui/button";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { Championship } from "@/lib/event/eventConstants";
 
 export const OfficialColumn = (championshipId: string) => {
-  const championship = getChampionship(championshipId);
+  const championship = getChampionship(championshipId) as Championship;
+
+  const locked =
+    Date.now() > championship.register.end &&
+    Date.now() > championship.editLimit;
 
   let columns: ColumnDef<Official>[] = [
     {
@@ -50,6 +55,7 @@ export const OfficialColumn = (championshipId: string) => {
         const { confirm, ConfirmationDialog } = useConfirmation();
 
         const handleDelete = async () => {
+          if (locked) return;
           const result = await confirm("Hapus Official");
           if (!result) return;
           await deleteOfficial(official);
@@ -68,18 +74,19 @@ export const OfficialColumn = (championshipId: string) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
-                  onClick={() => dispatch(setOfficialToEditRedux(official))}
+                  onClick={() => {
+                    if (locked) return;
+                    dispatch(setOfficialToEditRedux(official));
+                  }}
                 >
                   Edit
                 </DropdownMenuItem>
-                {!championship?.status.editOnly && (
-                  <DropdownMenuItem
-                    onClick={handleDelete}
-                    className={`text-destructive`}
-                  >
-                    Hapus
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem
+                  onClick={handleDelete}
+                  className={`text-destructive`}
+                >
+                  Hapus
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
@@ -87,6 +94,10 @@ export const OfficialColumn = (championshipId: string) => {
       },
     },
   ];
+
+  if (locked) {
+    columns = columns.filter((item) => item.id != "Aksi");
+  }
 
   return columns;
 };

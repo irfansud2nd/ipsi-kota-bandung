@@ -17,7 +17,7 @@ const page = ({ params }: { params: { eventId: string } }) => {
             Daftar Official
           </h1>
         </div>
-        <OfficialForm />
+        <OfficialForm championshipId={params.eventId} />
       </div>
       <div className="registration_content">
         <OfficialTable championshipId={params.eventId} />

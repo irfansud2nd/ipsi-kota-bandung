@@ -43,7 +43,11 @@ const UnregisteredContingentInfo = ({
 
   if (!unregisteredContingent) return null;
 
+  const disableAdd = Date.now() > championship.register.end;
+  const locked = disableAdd && Date.now() > championship.editLimit;
+
   const handleRegister = async () => {
+    if (disableAdd) return;
     const toastId = toast.loading("Mendaftarkan kontingen ke kejuaraan");
     try {
       const contingentAtEvents = await addContingentAtEvent(
@@ -65,6 +69,7 @@ const UnregisteredContingentInfo = ({
   };
 
   const handleDelete = async () => {
+    if (locked) return;
     const result = await confirm(
       "Hapus kontingen",
       getContingentConfirmationOption(payments.length > 0)
@@ -133,13 +138,18 @@ const UnregisteredContingentInfo = ({
         <span className="font-semibold"> {unregisteredContingent.name} </span>!
       </h1>
       <div className="flex gap-2 justify-center mt-2">
-        <ContingentForm
-          championshipId={championship.id}
-          contingentToEdit={unregisteredContingent}
-        />
-        <Button variant={"destructive"} onClick={handleDelete}>
-          Hapus Kontingen
-        </Button>
+        {!disableAdd && (
+          <ContingentForm
+            locked={disableAdd}
+            championshipId={championship.id}
+            contingentToEdit={unregisteredContingent}
+          />
+        )}
+        {!locked && (
+          <Button variant={"destructive"} onClick={handleDelete}>
+            Hapus Kontingen
+          </Button>
+        )}
       </div>
       <HorizontalTable data={data} />
       {!registeredContingent && (
@@ -148,9 +158,15 @@ const UnregisteredContingentInfo = ({
             Anda belum mendaftarkan {unregisteredContingent.name} di kejuaraan
             {" " + championship.title}
           </p>
-          <Button variant={"secondary"} onClick={handleRegister}>
-            Daftarkan Kontingen
-          </Button>
+          {disableAdd ? (
+            <p className="bg-secondary text-red-500 py-2 px-4 rounded font-bold">
+              Maaf pendaftaran {championship.title} telah ditutup
+            </p>
+          ) : (
+            <Button variant={"secondary"} onClick={handleRegister}>
+              Daftarkan Kontingen
+            </Button>
+          )}
         </div>
       )}
     </>

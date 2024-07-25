@@ -60,7 +60,8 @@ const InputText = ({
   }
 
   const editOnly =
-    (championshipId && getChampionship(championshipId)?.status.editOnly) ||
+    (championshipId &&
+      Date.now() > (getChampionship(championshipId)?.editLimit || 0)) ||
     false;
 
   return (

@@ -63,6 +63,8 @@ const PaymentForm = ({
     registeredContingent.championship_id
   ) as Championship;
 
+  const closePayment = Date.now() > championship.payment.closedAt;
+
   let initialValue: Payment = {
     ...paymentInitialValue,
     total: getTotalMatchCost(selectedMatchBaseds),
@@ -138,7 +140,7 @@ Terimakasih.`,
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
       <DialogTrigger asChild disabled={!selectedMatchBaseds.length}>
-        <Button>Bayar</Button>
+        {!closePayment && <Button>Bayar</Button>}
       </DialogTrigger>
       <DialogContent>
         {loading ? (
@@ -216,6 +218,10 @@ Terimakasih.`,
           <Formik
             initialValues={initialValue}
             onSubmit={async (values, { resetForm }) => {
+              if (closePayment) {
+                toastError("Pembayaran telah ditupup");
+                return;
+              }
               try {
                 const isLimit = await checkAthleteAtEventsLimited(
                   selectedMatchBaseds,

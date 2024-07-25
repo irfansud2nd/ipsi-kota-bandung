@@ -9,8 +9,7 @@ import { Championship } from "@/lib/event/eventConstants";
 
 const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
   const championship = getChampionship(championshipId) as Championship;
-  const disableRegister =
-    championship.register.end < Date.now() || championship.status.editOnly;
+  const disableAdd = Date.now() > championship.register.end;
   const unregisteredContingent = useSelector(
     (state: RootState) => state.contingent.unregistered
   );
@@ -21,22 +20,16 @@ const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
     <div className="h-full w-full flex justify-center items-center text-center">
       <div className="flex flex-col gap-1 items-center">
         <h1 className="text-3xl font-semibold">
-          {/* Tidak ada Kontingen terdaftar */}
-          {disableRegister
+          {disableAdd
             ? "Maaf, pendaftaran telah ditutup"
             : "Daftarkan kontingen terlebih dahulu untuk melanjutkan"}
         </h1>
-        {/* <p className="text-muted-foreground">
-          {disableRegister
-            ? "Maaf, pendaftaran telah ditutup"
-            : "Daftarkan kontingen terlebih dahulu untuk melanjutkan"}
-        </p> */}
-        {disableRegister ? (
+        {disableAdd ? (
           <Button asChild className="w-fit">
             <Link href={"/"}>Kembali ke halaman awal</Link>
           </Button>
         ) : (
-          <ContingentForm championshipId={championshipId} />
+          <ContingentForm championshipId={championshipId} locked={disableAdd} />
         )}
       </div>
     </div>

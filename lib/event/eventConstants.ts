@@ -80,6 +80,7 @@ export type Championship = Event & {
     start: number;
     end: number;
   };
+  editLimit: number;
   athletes: number;
   matchCount: number;
   techmeet: {
@@ -93,10 +94,9 @@ export type Championship = Event & {
   proposal: string;
   status: {
     checkLimit: boolean;
-    editOnly: boolean;
   };
   payment: {
-    closed: boolean;
+    closedAt: number;
     total: number;
     confirmed: number;
     target: {
@@ -177,6 +177,7 @@ export const championships: Championship[] = [
       start: dateToNumber("2024-06-10"),
       end: dateToNumber("2024-07-25", "19:00"),
     },
+    editLimit: dateToNumber("2024-07-27", "19:00"),
     athletes: 0,
     matchCount: 0,
     techmeet: {
@@ -245,10 +246,9 @@ export const championships: Championship[] = [
       "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
     status: {
       checkLimit: false,
-      editOnly: false,
     },
     payment: {
-      closed: false,
+      closedAt: dateToNumber("2024-08-01", "19:00"),
       total: 0,
       confirmed: 0,
       target: {

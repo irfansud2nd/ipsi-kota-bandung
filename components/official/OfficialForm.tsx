@@ -23,8 +23,10 @@ import InputFile from "../inputs/InputFile";
 import InputSelect from "../inputs/InputSelect";
 import { adultGender } from "@/lib/form/formConstants";
 import { addOfficial, updateOfficial } from "@/lib/official/officialFunctions";
+import { getChampionship } from "@/lib/event/eventFunctions";
+import { Championship } from "@/lib/event/eventConstants";
 
-const OfficialForm = () => {
+const OfficialForm = ({ championshipId }: { championshipId: string }) => {
   const [open, setOpen] = useState(false);
   const [imageChanging, setimageChanging] = useState(false);
 
@@ -52,11 +54,17 @@ const OfficialForm = () => {
     if (officialToEdit) setOpen(true);
   }, [officialToEdit]);
 
+  const championship = getChampionship(championshipId) as Championship;
+  const disableAdd = Date.now() > championship.register.end;
+  const disableEdit = disableAdd && Date.now() > championship.editLimit;
+
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <DialogTrigger asChild>
-        <Button>Tambah Official</Button>
-      </DialogTrigger>
+      {!disableAdd && (
+        <DialogTrigger asChild>
+          <Button>Tambah Official</Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <Formik
           initialValues={officialToEdit ?? initialValue}
@@ -68,8 +76,19 @@ const OfficialForm = () => {
             try {
               let official = values;
               if (officialToEdit) {
+                if (disableEdit) {
+                  toastError(
+                    "Pengguna sudah tidak dapat merubah data official"
+                  );
+                  return;
+                }
                 official = await updateOfficial(values);
+                toggleDialog(false);
               } else {
+                if (disableAdd) {
+                  toastError("Pendaftaran telah ditutup");
+                  return;
+                }
                 official = await addOfficial(values);
               }
               dispatch(addOfficialsRedux([official]));

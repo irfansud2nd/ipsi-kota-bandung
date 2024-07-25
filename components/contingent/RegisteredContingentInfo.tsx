@@ -16,6 +16,7 @@ import HorizontalTable from "./HorizontalTable";
 import { getTotalMatchCost } from "@/lib/athlete/external/athleteFunctions";
 import { formatToRupiah } from "@/lib/functions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
+import { Payment } from "@/lib/payment/paymentConstants";
 
 const RegisteredContingentInfo = ({
   championship,
@@ -39,7 +40,12 @@ const RegisteredContingentInfo = ({
 
   if (!registeredContingent) return null;
 
+  const locked =
+    Date.now() > championship.register.end &&
+    Date.now() > championship.editLimit;
+
   const handleUnregister = async () => {
+    if (locked) return;
     const result = await confirm(
       "Batalkan pendaftaran kontingen",
       getContingentConfirmationOption(payments.length > 0)
@@ -56,6 +62,15 @@ const RegisteredContingentInfo = ({
     } catch (error) {
       toastError(error, toastId);
     }
+  };
+
+  const getPaymentTotal = (payment: Payment[]) => {
+    if (!payments.length) return 0;
+
+    let result = 0;
+    payments.map((payment) => (result += payment.total));
+
+    return result;
   };
 
   let data = [
@@ -77,7 +92,7 @@ const RegisteredContingentInfo = ({
     },
     {
       key: "Pembayaran",
-      value: formatToRupiah(registeredContingent.payment_total),
+      value: formatToRupiah(getPaymentTotal(payments)),
     },
   ];
 
@@ -87,13 +102,15 @@ const RegisteredContingentInfo = ({
       <h2 className="font-medium text-xl text-center">
         Info {registeredContingent?.name} pada {championship.title}
       </h2>
-      <Button
-        variant={"destructive"}
-        className="w-fit mx-auto"
-        onClick={handleUnregister}
-      >
-        Batalkan Pendaftaran
-      </Button>
+      {!locked && (
+        <Button
+          variant={"destructive"}
+          className="w-fit mx-auto"
+          onClick={handleUnregister}
+        >
+          Batalkan Pendaftaran
+        </Button>
+      )}
       <HorizontalTable data={data} />
     </div>
   );

@@ -21,10 +21,14 @@ import {
 } from "@/lib/redux/championship/register/athleteSlice";
 import { RootState } from "@/lib/redux/store";
 import { deleteAthlete } from "@/lib/athlete/external/athleteFunctions";
-import { apiProtect } from "@/lib/admin/adminActions";
+import { Championship } from "@/lib/event/eventConstants";
 
 export const AthleteColumns = (championshipId: string) => {
-  const championship = getChampionship(championshipId);
+  const championship = getChampionship(championshipId) as Championship;
+
+  const locked =
+    Date.now() > championship.register.end &&
+    Date.now() > championship.editLimit;
 
   let columns: ColumnDef<Athlete>[] = [
     {
@@ -102,6 +106,7 @@ export const AthleteColumns = (championshipId: string) => {
         const { confirm, ConfirmationDialog } = useConfirmation();
 
         const handleDelete = async () => {
+          if (locked) return;
           const paid = isAthletePaid();
           const message = paid
             ? "Atlet yang sudah dibayar tidak dapat dihapus."
@@ -129,18 +134,19 @@ export const AthleteColumns = (championshipId: string) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
-                  onClick={() => dispatch(setAthleteToEditRedux(athlete))}
+                  onClick={() => {
+                    if (locked) return;
+                    dispatch(setAthleteToEditRedux(athlete));
+                  }}
                 >
                   Edit
                 </DropdownMenuItem>
-                {!championship?.status.editOnly && (
-                  <DropdownMenuItem
-                    onClick={handleDelete}
-                    className={`text-destructive`}
-                  >
-                    Hapus
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem
+                  onClick={handleDelete}
+                  className={`text-destructive`}
+                >
+                  Hapus
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
@@ -149,8 +155,8 @@ export const AthleteColumns = (championshipId: string) => {
     },
   ];
 
-  if (Date.now() >= (championship?.register.end || 0)) {
-    columns = columns.filter((item) => item.id !== "Aksi");
+  if (locked) {
+    columns = columns.filter((item) => item.id != "Aksi");
   }
 
   return columns;

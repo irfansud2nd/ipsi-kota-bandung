@@ -26,7 +26,7 @@ const page = ({ params }: Props) => {
         <h1 className="font-semibold text-3xl flex-1 max-md:text-center">
           Kategori {isArt ? "Seni" : "Tanding"}
         </h1>
-        <RegisterAthleteForm eventId={params.eventId} art={isArt} />
+        <RegisterAthleteForm championshipId={params.eventId} art={isArt} />
       </div>
       <div className="registration_content">
         <MatchBasedTable championshipId={params.eventId} art={isArt} />

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/tooltip";
 import { MdOutlineCancel, MdOutlineDeleteForever } from "react-icons/md";
 import useConfirmation from "@/hooks/useConfirmation";
+import { useState } from "react";
 
 type Props = {
   payment: Payment;
@@ -33,6 +34,7 @@ type Props = {
 };
 
 const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
+  const [open, setOpen] = useState(false);
   const session = useSession();
   const userEmail = session.data?.user?.email;
 
@@ -54,6 +56,7 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
       if (error) throw error;
 
       toast.success("Pembayaran berhasil dikonfirmasi", { id: toastId });
+      setOpen(false);
       router.refresh();
     } catch (error) {
       toastError(error, toastId);
@@ -71,6 +74,7 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
       if (error) throw error;
 
       toast.success("Konfirmasi berhasil dibatalkan", { id: toastId });
+      setOpen(false);
       router.refresh();
     } catch (error) {
       toastError(error, toastId);
@@ -81,11 +85,12 @@ const ManagePaymentForm = ({ payment, remove, confirm, unconfirm }: Props) => {
     const result = await confirmFunc("Menghapus Pembayaran");
     if (!result) return;
     await deletePayment(payment);
+    setOpen(false);
     router.refresh();
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <ConfirmationDialog />
       <TooltipProvider>
         <Tooltip>

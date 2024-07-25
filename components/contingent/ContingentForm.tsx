@@ -36,9 +36,14 @@ import { changeOfficialContingentNameRedux } from "@/lib/redux/championship/regi
 type Props = {
   contingentToEdit?: Contingent;
   championshipId: string;
+  locked: boolean;
 };
 
-const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
+const ContingentForm = ({
+  contingentToEdit,
+  championshipId,
+  locked,
+}: Props) => {
   const [open, setOpen] = useState(false);
 
   const session = useSession();
@@ -52,13 +57,14 @@ const ContingentForm = ({ contingentToEdit, championshipId }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-fit">
+        <Button className="w-fit" disabled={locked}>
           {contingentToEdit ? "Edit" : "Tambah"} Kontingen
         </Button>
       </DialogTrigger>
       <DialogContent className="w-fit">
         <Formik
           onSubmit={async (values, { resetForm, setSubmitting }) => {
+            if (locked) return;
             const toastId = toast.loading(
               `${contingentToEdit ? "Memperbaharui" : "Mendaftarkan"} Kontingen`
             );

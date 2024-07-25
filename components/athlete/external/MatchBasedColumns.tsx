@@ -25,9 +25,14 @@ import {
 import { apiProtect } from "@/lib/admin/adminActions";
 import { toastError } from "@/lib/form/formFunctions";
 import { toast } from "sonner";
+import { Championship } from "@/lib/event/eventConstants";
 
 export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
-  const championship = getChampionship(championshipId);
+  const championship = getChampionship(championshipId) as Championship;
+
+  const locked =
+    Date.now() > championship.register.end &&
+    Date.now() > championship.editLimit;
 
   let columns: ColumnDef<MatchBased>[] = [
     {
@@ -77,6 +82,7 @@ export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
         const { confirm, ConfirmationDialog } = useConfirmation();
 
         const handleDelete = async (matchBased: MatchBased) => {
+          if (locked) return;
           const paid = matchBased.payment_id;
           const message = paid
             ? "Pertandingan yang sudah dibayar tidak dapat dihapus."
@@ -112,24 +118,23 @@ export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
-                  onClick={() =>
+                  onClick={() => {
+                    if (locked) return;
                     dispatch(
                       setAthleteAtEventToEditRedux(
                         matchBasedToAthleteAtEvent(matchBased)
                       )
-                    )
-                  }
+                    );
+                  }}
                 >
                   Edit
                 </DropdownMenuItem>
-                {!championship?.status.editOnly && (
-                  <DropdownMenuItem
-                    onClick={() => handleDelete(matchBased)}
-                    className={`text-destructive`}
-                  >
-                    Hapus
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem
+                  onClick={() => handleDelete(matchBased)}
+                  className={`text-destructive`}
+                >
+                  Hapus
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
@@ -138,11 +143,11 @@ export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
     },
   ];
 
-  if (Date.now() >= (championship?.register.end || 0)) {
-    columns = columns.filter((item) => item.id !== "Aksi");
-  }
-
   if (!art) columns = columns.filter((item) => item.id !== "team");
+
+  if (locked) {
+    columns = columns.filter((item) => item.id != "Aksi");
+  }
 
   return columns;
 };
