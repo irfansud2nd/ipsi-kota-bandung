@@ -57,9 +57,11 @@ const ContingentForm = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-fit" disabled={locked}>
-          {contingentToEdit ? "Edit" : "Tambah"} Kontingen
-        </Button>
+        {!locked && (
+          <Button className="w-fit" disabled={locked}>
+            {contingentToEdit ? "Edit" : "Tambah"} Kontingen
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-fit">
         <Formik
