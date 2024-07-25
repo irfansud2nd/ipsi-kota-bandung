@@ -270,7 +270,7 @@ export const championships: Championship[] = [
     reserveForPal: false,
     officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
     showOnHome: true,
-    dialogOnHome: true,
+    dialogOnHome: false,
     testerEmail: [
       "irfansud2nd@gmail.com",
       "iqbalbobalfarisy@gmail.com",
