@@ -138,13 +138,13 @@ const UnregisteredContingentInfo = ({
         <span className="font-semibold"> {unregisteredContingent.name} </span>!
       </h1>
       <div className="flex gap-2 justify-center mt-2">
-        {!disableAdd && (
+        {/* {!disableAdd && (
           <ContingentForm
             locked={disableAdd}
             championshipId={championship.id}
             contingentToEdit={unregisteredContingent}
           />
-        )}
+        )} */}
         {!locked && (
           <Button variant={"destructive"} onClick={handleDelete}>
             Hapus Kontingen
