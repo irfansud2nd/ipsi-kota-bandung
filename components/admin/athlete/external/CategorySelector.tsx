@@ -1,6 +1,7 @@
 "use client";
 
 import PagePagination from "@/components/ui/PagePagination";
+import RefreshButton from "@/components/ui/RefreshButton";
 import SelectComponent from "@/components/ui/SelectComponent";
 import { Button } from "@/components/ui/button";
 import {
@@ -134,6 +135,7 @@ const CategorySelector = ({ championshipId, url, hide }: Props) => {
       <Button onClick={handleSubmit} className="mb-1">
         Cari
       </Button>
+      <RefreshButton />
     </div>
   );
 };

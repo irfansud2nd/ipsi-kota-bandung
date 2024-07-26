@@ -26,6 +26,7 @@ import { apiProtect } from "@/lib/admin/adminActions";
 import { toastError } from "@/lib/form/formFunctions";
 import { toast } from "sonner";
 import { Championship } from "@/lib/event/eventConstants";
+import OptionButton from "@/components/ui/OptionButton";
 
 export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -110,11 +111,8 @@ export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
           <>
             <ConfirmationDialog />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <FiMoreHorizontal className="h-4 w-4" />
-                </Button>
+              <DropdownMenuTrigger>
+                <OptionButton />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem

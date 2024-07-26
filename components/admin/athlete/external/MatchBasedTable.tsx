@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { MatchBased } from "@/lib/athlete/external/athleteConstants";
 import { formatDate } from "@/lib/functions";
+import ManageMatchBased from "./ManageMatchBased";
 
 const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
   return (
@@ -37,6 +38,7 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
           <TableHead>Waktu Pendaftaran</TableHead>
           <TableHead>Pas Foto</TableHead>
           <TableHead>Kartu Keluarga</TableHead>
+          <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -84,6 +86,9 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
                 src={matchBased.kk.downloadUrl}
                 landscape
               />
+            </TableCell>
+            <TableCell>
+              <ManageMatchBased matchBased={matchBased} />
             </TableCell>
           </TableRow>
         ))}

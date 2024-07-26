@@ -557,3 +557,22 @@ export const getAthleteIdsByContingentId = async (
     return action.error(error);
   }
 };
+
+export const moveToRookie = async (
+  registrationId: number
+): Promise<ServerAction<string>> => {
+  try {
+    const response = await apiProtect({ directory: "championship" });
+    if (response) throw new Error(response.message);
+
+    const { error } = await supabase
+      .from("athlete_at_events")
+      .update({ schema: "Pemula" })
+      .eq("registration_id", registrationId);
+    if (error) throw new Error(error.message);
+
+    return action.success("success");
+  } catch (error) {
+    return action.error(error);
+  }
+};

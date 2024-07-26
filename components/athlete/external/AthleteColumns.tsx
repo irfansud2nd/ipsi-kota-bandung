@@ -22,6 +22,7 @@ import {
 import { RootState } from "@/lib/redux/store";
 import { deleteAthlete } from "@/lib/athlete/external/athleteFunctions";
 import { Championship } from "@/lib/event/eventConstants";
+import OptionButton from "@/components/ui/OptionButton";
 
 export const AthleteColumns = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -84,9 +85,6 @@ export const AthleteColumns = (championshipId: string) => {
         const athleteAtEvents = useSelector(
           (state: RootState) => state.athlete.athleteAtEvents
         );
-        const contingent = useSelector(
-          (state: RootState) => state.contingent.unregistered
-        );
 
         const getHisAthleteAtEvents = () => {
           return athleteAtEvents.filter(
@@ -126,11 +124,8 @@ export const AthleteColumns = (championshipId: string) => {
           <>
             <ConfirmationDialog />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <FiMoreHorizontal className="h-4 w-4" />
-                </Button>
+              <DropdownMenuTrigger>
+                <OptionButton />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem

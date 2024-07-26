@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
+import OptionButton from "../ui/OptionButton";
 
 export const OfficialColumn = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -66,11 +67,8 @@ export const OfficialColumn = (championshipId: string) => {
           <>
             <ConfirmationDialog />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <FiMoreHorizontal className="h-4 w-4" />
-                </Button>
+              <DropdownMenuTrigger>
+                <OptionButton />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
