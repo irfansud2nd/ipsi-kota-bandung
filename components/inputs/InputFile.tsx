@@ -63,18 +63,29 @@ const InputFile = ({
     umur = calculateAge(values.tanggalLahir);
   }
 
-  const editOnly =
-    (championshipId &&
-      Date.now() > (getChampionship(championshipId)?.editLimit || 0)) ||
-    false;
-
   const { showFile, ShowFileDialog } = useShowFile();
+
+  let disableAdd = false;
+  let disableEdit = false;
+  let hide = false;
+  const championship = getChampionship(championshipId || "");
+  const now = Date.now();
+
+  if (championship) {
+    disableAdd = now > championship.register.end;
+    disableEdit = now > championship.editLimit;
+  }
+
+  if (disableAdd && !showOnEditOnly && !disableEdit) {
+    hide = true;
+  }
+
+  if (hide) return null;
 
   return (
     <div
       className={`input_container
-      ${className} 
-      ${editOnly && !showOnEditOnly && "hidden"}`}
+      ${className} `}
     >
       <Label>
         {label}

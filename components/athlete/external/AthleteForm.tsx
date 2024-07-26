@@ -123,35 +123,49 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
                       label="Nama Lengkap"
                       name="name"
                       formik={props}
+                      championshipId={championshipId}
+                      showOnEditOnly
                     />
-                    <InputText label="NIK" name="nik" formik={props} />
+                    <InputText
+                      label="NIK"
+                      name="nik"
+                      formik={props}
+                      championshipId={championshipId}
+                      showOnEditOnly
+                    />
                     <InputText
                       label="Tempat Lahir"
                       name="birth_place"
                       formik={props}
+                      championshipId={championshipId}
                     />
                     <InputDate
                       label="Tanggal Lahir"
                       name="birth_date"
                       formik={props}
+                      championshipId={championshipId}
                     />
                     <InputSelect
                       label="Jenis Kelamin"
                       name="gender"
                       formik={props}
                       options={athleteGender}
+                      championshipId={championshipId}
+                      showOnEditOnly
                     />
                     <InputText
                       label="Tinggi Badan"
                       helperText="(CM)"
                       name="height"
                       formik={props}
+                      championshipId={championshipId}
                     />
                     <InputText
                       label="Berat Badan"
                       helperText="(KG)"
                       name="weight"
                       formik={props}
+                      championshipId={championshipId}
                     />
                   </div>
                   <div>
@@ -160,23 +174,27 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
                       name="phone_number"
                       formik={props}
                       // under17
+                      championshipId={championshipId}
                     />
                     <InputText
                       label="Email"
                       name="email"
                       formik={props}
                       // under17
+                      championshipId={championshipId}
                     />
                     <InputText
                       label="Nama Kontingen"
                       name="contingent_name"
                       formik={props}
                       forceDisabled
+                      championshipId={championshipId}
                     />
                     <InputTextarea
                       label="Alamat"
                       name="address"
                       formik={props}
+                      championshipId={championshipId}
                     />
                     <InputFile
                       label="Pas Foto"
@@ -185,6 +203,7 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
                       isFileChanging={(value) => {
                         setFileChanging((prev) => ({ ...prev, image: !value }));
                       }}
+                      championshipId={championshipId}
                     />
                     <InputFile
                       label="Kartu Keluarga"
@@ -194,6 +213,7 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
                         setFileChanging((prev) => ({ ...prev, kk: !value }));
                       }}
                       landscape
+                      championshipId={championshipId}
                     />
                   </div>
                 </div>

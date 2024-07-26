@@ -121,7 +121,7 @@ const RegisterAthleteForm = ({ championshipId, art }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      {!disableAdd && (
+      {!disableEdit && (
         <DialogTrigger asChild disabled={!athletes.length}>
           <Button>Tambah Atlet</Button>
         </DialogTrigger>
@@ -138,7 +138,7 @@ const RegisterAthleteForm = ({ championshipId, art }: Props) => {
                 return;
               }
             } else {
-              if (disableAdd) {
+              if (disableEdit) {
                 toastError("Pendaftaran telah ditutup");
                 return;
               }
