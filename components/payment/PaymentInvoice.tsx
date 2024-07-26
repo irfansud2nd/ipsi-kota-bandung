@@ -79,19 +79,23 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
 
   const championship = getChampionship(payment.championship_id) as Championship;
 
+  const changeCategorylabel = (category: string) => {
+    if (category.includes("Tunggal")) {
+      return "Tunggal";
+    } else if (category.includes("Ganda")) {
+      return "Ganda";
+    } else if (category.includes("Regu")) {
+      return "Regu";
+    } else {
+      return "Tanding";
+    }
+  };
+
   const generateMatchBasedMatchId = () => {
     let ids: string[] = [];
     paidMatchBaseds.map((item) => {
       let id = "";
-      if (item.category.includes("Tunggal")) {
-        id += "Tunggal";
-      } else if (item.category.includes("Ganda")) {
-        id += "Ganda";
-      } else if (item.category.includes("Regu")) {
-        id += "Regu";
-      } else {
-        id += "Tanding";
-      }
+      id += changeCategorylabel(item.category);
       id += ` ${item.gender}`;
       id += ` ${item.level.replace(/\s*\(.*?\)\s*/g, "")}`;
       if (!isLevelRookieOnly(item.level, championship)) id += ` ${item.schema}`;
@@ -137,7 +141,7 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
       match.category.art.map((artCategory) => {
         athleteGender.map((gender) => {
           let id = "";
-          id += artCategory;
+          id += changeCategorylabel(artCategory);
           id += ` ${gender}`;
           id += ` ${match.level.replace(/\s*\(.*?\)\s*/g, "")}`;
           if (!match.rookieOnly) {
@@ -251,6 +255,7 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
         Download
       </Button>
       <div className="absolute -z-50 top-0 right-full">
+        {/* <div> */}
         <div ref={printRef} className={`w-[1050px] h-fit`}>
           {datas.map((data, page) => (
             <div

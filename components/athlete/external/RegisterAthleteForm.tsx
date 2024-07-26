@@ -183,6 +183,7 @@ const RegisterAthleteForm = ({ championshipId, art }: Props) => {
               if (athleteAtEventToEdit) {
                 await updateAthleteAtEvent(values);
                 dispatch(addAthletesAtEventsRedux([values]));
+                toggleDialog(false);
               } else {
                 const athleteAtEvent = await addAthleteAtEvent(values);
                 dispatch(addAthletesAtEventsRedux([athleteAtEvent]));
