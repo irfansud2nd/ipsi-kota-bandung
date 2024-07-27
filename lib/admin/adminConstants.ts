@@ -222,6 +222,10 @@ const groupedLinks: GroupedLinks = [
         label: "Daftar",
       },
       {
+        href: "/unregistered",
+        label: "Tanpa pertandingan",
+      },
+      {
         href: "/count",
         label: "Jumlah",
       },

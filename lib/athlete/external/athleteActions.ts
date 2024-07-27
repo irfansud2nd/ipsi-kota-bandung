@@ -57,6 +57,41 @@ export const getAthletesSql = async (
   }
 };
 
+export const getUnregisteredAthletesSql = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+): Promise<ServerAction<AthleteSql[]>> => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw new Error(response.message);
+
+    let params = {
+      pg: page,
+      lmt: limit,
+    };
+
+    if (showAll) {
+      params = {
+        pg: 1,
+        lmt: 200,
+      };
+    }
+
+    let getData = supabase
+      .rpc("get_unregistered_athletes", params)
+      .returns<AthleteSql[]>();
+
+    const { data, error } = await getData;
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 export const getAthletesSqlByContingentId = async (
   contingentId: string
 ): Promise<ServerAction<AthleteSql[]>> => {

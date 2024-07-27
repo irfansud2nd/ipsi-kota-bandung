@@ -21,6 +21,7 @@ import {
   deleteAthleteSql,
   getAthletesSql,
   getAthletesSqlByContingentId,
+  getUnregisteredAthletesSql,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
   updateAthleteSql,
@@ -108,6 +109,32 @@ export const getAthletesByContingentId = async (contingentId: string) => {
 
     const { result: athletesSql, error } = await getAthletesSqlByContingentId(
       contingentId
+    );
+    if (error) throw error;
+
+    const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUnregisteredAthletes = async (
+  page: number,
+  limit: number,
+  showAll: boolean = false
+) => {
+  try {
+    const response = await apiProtect({ directory: "athlete" });
+    if (response) throw new Error(response.message);
+
+    const { result: athletesSql, error } = await getUnregisteredAthletesSql(
+      page,
+      limit,
+      showAll
     );
     if (error) throw error;
 
