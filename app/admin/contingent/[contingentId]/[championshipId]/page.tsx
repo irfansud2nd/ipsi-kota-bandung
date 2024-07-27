@@ -2,6 +2,7 @@ import MatchBasedTable from "@/components/admin/athlete/external/MatchBasedTable
 import RegisteredContingentAdminTable from "@/components/admin/contingent/RegisteredContingentAdminTable";
 import OfficialTable from "@/components/admin/official/OfficialTable";
 import PaymentTable from "@/components/admin/payment/PaymentTable";
+import RefreshButton from "@/components/ui/RefreshButton";
 import { getMatchBasedsByContingentRegistrationId } from "@/lib/athlete/external/athleteActions";
 import { getRegisteredContingentAdminByContingentId } from "@/lib/contingent/contingentActions";
 import { getChampionship } from "@/lib/event/eventFunctions";
@@ -41,9 +42,12 @@ const page = async ({ params }: Props) => {
 
   return (
     <div>
-      <h1 className="font-semibold text-2xl border-b-2 border-black pb-1 mb-1">
-        {registeredContingent.name} - {championship.title}
-      </h1>
+      <div className="flex items-center border-b-2 border-black pb-1 mb-1 justify-between flex-wrap">
+        <h1 className="font-semibold text-2xl w-fit">
+          {registeredContingent.name} - {championship.title}
+        </h1>
+        <RefreshButton />
+      </div>
       <div className="border-2 p-1 rounded mb-1">
         <h2 className="font-medium text-lg border-b-2 w-fit">Info Kontingen</h2>
         <RegisteredContingentAdminTable
