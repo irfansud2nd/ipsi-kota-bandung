@@ -3,6 +3,7 @@ import AthleteTable from "@/components/admin/athlete/external/AthleteTable";
 import { getUnregisteredAthletes } from "@/lib/athlete/external/athleteFunctions";
 import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
 import ShowAllButton from "@/components/admin/ShowAllButton";
+import RefreshButton from "@/components/ui/RefreshButton";
 
 const page = async ({
   searchParams,
@@ -26,6 +27,7 @@ const page = async ({
           needShowAll
           isShowAll={showAll}
         />
+        <RefreshButton />
       </div>
       <div className="bg-muted flex flex-col">
         <AthleteTable athletes={athletes} />
