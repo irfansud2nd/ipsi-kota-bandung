@@ -7,8 +7,6 @@ import RegisteredContingentInfo from "./RegisteredContingentInfo";
 import ContingentHistoriesInfo from "./ContingentHistoriesInfo";
 
 const ContingentInfo = ({ championshipId }: { championshipId: string }) => {
-  const championship = getChampionship(championshipId) as Championship;
-
   return (
     <div className="flex flex-col w-full">
       <div className="flex items-center">
@@ -18,9 +16,9 @@ const ContingentInfo = ({ championshipId }: { championshipId: string }) => {
       <div className="flex justify-center items-center w-full flex-1 registration_content">
         <div className="w-full">
           <ContingentNotFound championshipId={championshipId} />
-          <UnregisteredContingentInfo championship={championship} />
-          <RegisteredContingentInfo championship={championship} />
-          <ContingentHistoriesInfo championshipId={championship.id} />
+          <UnregisteredContingentInfo championshipId={championshipId} />
+          <RegisteredContingentInfo championshipId={championshipId} />
+          <ContingentHistoriesInfo championshipId={championshipId} />
         </div>
       </div>
     </div>

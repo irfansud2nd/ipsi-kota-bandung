@@ -23,14 +23,13 @@ import HorizontalTable from "./HorizontalTable";
 import { formatDate, getFileUrl } from "@/lib/functions";
 import { useEffect, useState } from "react";
 import ContingentForm from "./ContingentForm";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 const UnregisteredContingentInfo = ({
-  championship,
+  championshipId,
 }: {
-  championship: Championship;
+  championshipId: string;
 }) => {
-  const [disableAdd, setDisableAdd] = useState(false);
-  const [locked, setLocked] = useState(false);
   const unregisteredContingent = useSelector(
     (state: RootState) => state.contingent.unregistered
   );
@@ -46,19 +45,11 @@ const UnregisteredContingentInfo = ({
 
   if (!unregisteredContingent) return null;
 
-  useEffect(() => {
-    const now = Date.now();
-    if (now > championship.register.end) {
-      setDisableAdd(true);
-      if (now > championship.editLimit) {
-        setLocked(true);
-      }
-    }
-  }, []);
+  const championship = getChampionship(championshipId) as Championship;
 
-  // const now = Date.now();
-  // const disableAdd = now > championship.register.end;
-  // const locked = disableAdd && now > championship.editLimit;
+  const now = Date.now();
+  const disableAdd = now > championship.register.end;
+  const locked = disableAdd && now > championship.editLimit;
 
   const handleRegister = async () => {
     if (disableAdd) return;

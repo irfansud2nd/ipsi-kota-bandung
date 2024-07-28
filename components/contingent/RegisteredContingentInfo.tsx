@@ -17,11 +17,12 @@ import { getTotalMatchCost } from "@/lib/athlete/external/athleteFunctions";
 import { formatToRupiah } from "@/lib/functions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
 import { Payment } from "@/lib/payment/paymentConstants";
+import { getChampionship } from "@/lib/event/eventFunctions";
 
 const RegisteredContingentInfo = ({
-  championship,
+  championshipId,
 }: {
-  championship: Championship;
+  championshipId: string;
 }) => {
   const registeredContingent = useSelector(
     (state: RootState) => state.contingent.registered
@@ -40,9 +41,12 @@ const RegisteredContingentInfo = ({
 
   if (!registeredContingent) return null;
 
+  const championship = getChampionship(championshipId) as Championship;
+
+  const now = Date.now();
+
   const locked =
-    Date.now() > championship.register.end &&
-    Date.now() > championship.editLimit;
+    now > championship.register.end && now > championship.editLimit;
 
   const handleUnregister = async () => {
     if (locked) return;
