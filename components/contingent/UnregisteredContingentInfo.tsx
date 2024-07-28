@@ -15,19 +15,22 @@ import {
 } from "@/lib/redux/championship/register/contingentSlice";
 import { toastError } from "@/lib/form/formFunctions";
 import { Championship } from "@/lib/event/eventConstants";
-import ContingentForm from "./ContingentForm";
 import { deleteFiles } from "@/lib/actions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
 import { deleteAllOficialsRedux } from "@/lib/redux/championship/register/officialSlice";
 import useConfirmation from "@/hooks/useConfirmation";
 import HorizontalTable from "./HorizontalTable";
 import { formatDate, getFileUrl } from "@/lib/functions";
+import { useEffect, useState } from "react";
+import ContingentForm from "./ContingentForm";
 
 const UnregisteredContingentInfo = ({
   championship,
 }: {
   championship: Championship;
 }) => {
+  const [disableAdd, setDisableAdd] = useState(false);
+  const [locked, setLocked] = useState(false);
   const unregisteredContingent = useSelector(
     (state: RootState) => state.contingent.unregistered
   );
@@ -43,8 +46,19 @@ const UnregisteredContingentInfo = ({
 
   if (!unregisteredContingent) return null;
 
-  const disableAdd = Date.now() > championship.register.end;
-  const locked = disableAdd && Date.now() > championship.editLimit;
+  useEffect(() => {
+    const now = Date.now();
+    if (now > championship.register.end) {
+      setDisableAdd(true);
+      if (now > championship.editLimit) {
+        setLocked(true);
+      }
+    }
+  }, []);
+
+  // const now = Date.now();
+  // const disableAdd = now > championship.register.end;
+  // const locked = disableAdd && now > championship.editLimit;
 
   const handleRegister = async () => {
     if (disableAdd) return;
@@ -138,13 +152,13 @@ const UnregisteredContingentInfo = ({
         <span className="font-semibold"> {unregisteredContingent.name} </span>!
       </h1>
       <div className="flex gap-2 justify-center mt-2">
-        {/* {!disableAdd && (
+        {!disableAdd && (
           <ContingentForm
             locked={disableAdd}
             championshipId={championship.id}
             contingentToEdit={unregisteredContingent}
           />
-        )} */}
+        )}
         {!locked && (
           <Button variant={"destructive"} onClick={handleDelete}>
             Hapus Kontingen
