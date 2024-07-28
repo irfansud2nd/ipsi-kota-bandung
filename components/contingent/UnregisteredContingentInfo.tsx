@@ -142,19 +142,6 @@ const UnregisteredContingentInfo = ({
         Selamat Datang Kontingen
         <span className="font-semibold"> {unregisteredContingent.name} </span>!
       </h1>
-      <p>{locked ? "Locked" : "Unlocked"}</p>
-      <p>{disableAdd ? "Disable Add" : "Able Add"}</p>
-      <p>
-        Now: {Date.now()} | {formatDate(Date.now())}
-      </p>
-      <p>
-        register.end: {championship.register.end} |
-        {formatDate(championship.register.end)}
-      </p>
-      <p>
-        editLimit: {championship.editLimit} |{" "}
-        {formatDate(championship.editLimit)}
-      </p>
       <div className="flex gap-2 justify-center mt-2">
         {!disableAdd && (
           <ContingentForm
