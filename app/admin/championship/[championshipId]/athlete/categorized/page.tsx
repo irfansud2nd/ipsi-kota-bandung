@@ -25,7 +25,8 @@ const page = async ({ params, searchParams }: Props) => {
   const { schema, type, level, category, gender } = searchParams;
   const page = Number(searchParams.page) || 1;
   const limit = 10;
-  const showAll = searchParams.showAll == "true";
+  // const showAll = searchParams.showAll == "true";
+  const showAll = true;
   const url = `categorized?schema=${schema}&type=${type}&level=${level}&category=${category}&gender=${gender}`;
 
   let matchBaseds: MatchBased[] = [];
