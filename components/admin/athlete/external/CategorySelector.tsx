@@ -140,6 +140,7 @@ const CategorySelector = ({ championshipId, url, hide }: Props) => {
       <TableDownloadButton
         fileName={`${schema} ${type} ${level} ${category} ${gender} - ${championship.title}`}
         className="mb-1"
+        disabled={!category}
       />
     </div>
   );
