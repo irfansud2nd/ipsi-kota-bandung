@@ -37,7 +37,11 @@ const AthleteTable = ({ athletes }: { athletes: Athlete[] }) => {
           <TableRow key={athlete.id}>
             <TableCell>{i + 1}</TableCell>
             <TableCell>{athlete.name}</TableCell>
-            <TableCell>{athlete.nik}</TableCell>
+            <TableCell>
+              <span className="hidden">'</span>
+              {athlete.nik}
+              <span className="hidden">'</span>
+            </TableCell>
             <TableCell>{athlete.gender}</TableCell>
             <TableCell>{athlete.address}</TableCell>
             <TableCell>{athlete.birth_place}</TableCell>

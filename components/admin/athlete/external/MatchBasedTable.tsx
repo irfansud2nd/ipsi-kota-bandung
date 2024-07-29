@@ -47,7 +47,11 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
             <TableCell>{i + 1}</TableCell>
             <TableCell>{matchBased.registration_id}</TableCell>
             <TableCell>{matchBased.name}</TableCell>
-            <TableCell>{matchBased.nik}</TableCell>
+            <TableCell>
+              <span className="hidden">'</span>
+              {matchBased.nik}
+              <span className="hidden">'</span>
+            </TableCell>
             <TableCell>{matchBased.gender}</TableCell>
             <TableCell>{matchBased.address}</TableCell>
             <TableCell>{matchBased.birth_place}</TableCell>
