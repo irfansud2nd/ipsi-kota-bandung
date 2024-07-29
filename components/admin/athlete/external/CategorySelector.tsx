@@ -18,6 +18,7 @@ import { getChampionship } from "@/lib/event/eventFunctions";
 import { toastError } from "@/lib/form/formFunctions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import TableDownloadButton from "../internal/attendance/TableDownloadButton";
 
 type Props = {
   championshipId: string;
@@ -135,7 +136,11 @@ const CategorySelector = ({ championshipId, url, hide }: Props) => {
       <Button onClick={handleSubmit} className="mb-1">
         Cari
       </Button>
-      <RefreshButton />
+      <RefreshButton className="mb-1" />
+      <TableDownloadButton
+        fileName={`${schema} ${type} ${level} ${category} ${gender} - ${championship.title}`}
+        className="mb-1"
+      />
     </div>
   );
 };
