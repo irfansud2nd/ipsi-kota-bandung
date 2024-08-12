@@ -113,7 +113,9 @@ const Card = ({ championship }: { championship: Championship }) => {
 };
 
 const OngoingChampionships = () => {
-  const ongoingChampionships = championships.filter((item) => item.showOnHome);
+  const ongoingChampionships = championships.filter(
+    (item) => item.showOnHome && Date.now() < item.date_end
+  );
 
   if (!ongoingChampionships.length) return null;
 

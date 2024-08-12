@@ -60,21 +60,21 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
     },
   ];
 
-  if (Date.now() >= championship.date_start) {
-    menus = [
-      ...menus,
-      {
-        label: "Jadwal Pertandingan",
-        href: "schedule",
-        icon: <FaThList />,
-      },
-      {
-        label: "Perolehan Medali",
-        href: "medal",
-        icon: <FaMedal />,
-      },
-    ];
-  }
+  // if (Date.now() >= championship.date_start) {
+  //   menus = [
+  //     ...menus,
+  //     {
+  //       label: "Jadwal Pertandingan",
+  //       href: "schedule",
+  //       icon: <FaThList />,
+  //     },
+  //     {
+  //       label: "Perolehan Medali",
+  //       href: "medal",
+  //       icon: <FaMedal />,
+  //     },
+  //   ];
+  // }
 
   return (
     <div

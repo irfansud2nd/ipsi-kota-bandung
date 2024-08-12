@@ -137,8 +137,12 @@ const EventDisplay = ({ event, preview }: Props) => {
         label: "Link Pendaftaran",
         icon: <FaRectangleList />,
         content:
-          Date.now() <= championship.register.start ? (
+          Date.now() < championship.register.start ? (
             <span className="text-muted-foreground">Belum dibuka</span>
+          ) : Date.now() > championship.date_end ? (
+            <span className="text-muted-foreground">
+              Kejuaraan telah berakhir
+            </span>
           ) : (
             <Link
               href={`/championship/${championship.id}/register`}

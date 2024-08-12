@@ -76,6 +76,7 @@ export const eventSchema = (ignoreImage: boolean = false) => {
 };
 
 export type Championship = Event & {
+  date_end: number;
   register: {
     start: number;
     end: number;
