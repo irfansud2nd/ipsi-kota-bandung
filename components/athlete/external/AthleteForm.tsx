@@ -6,7 +6,6 @@ import InputText from "@/components/inputs/InputText";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { apiProtect } from "@/lib/admin/adminActions";
 import {
   Athlete,
   athleteGender,

@@ -48,9 +48,6 @@ export const toastError = (error: any, id?: string | number) => {
     code = getNestedProperty(error, "code") ?? undefined;
   }
 
-  // console.log({ error });
-  // console.log({ message });
-  // console.log({ code });
   let string = message;
   if (code) string += ` | ${code}`;
 

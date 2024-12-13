@@ -2,7 +2,6 @@ import {
   AthleteAtEvent,
   Athlete,
   RegisteredAthlete,
-  athleteInitialValue,
   MatchBased,
 } from "@/lib/athlete/external/athleteConstants";
 import { compare, reduceData } from "@/lib/functions";
