@@ -43,7 +43,7 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
   ];
 
   return (
-    <div className="border border-input bg-transparent rounded-md w-fit mb-1">
+    <div className="border border-input bg-transparent rounded-md w-fit">
       {buttons.map((button) => (
         <Toggle
           size={"sm"}

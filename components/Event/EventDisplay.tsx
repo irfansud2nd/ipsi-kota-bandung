@@ -6,6 +6,7 @@ import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaClock, FaRectangleList, FaUser } from "react-icons/fa6";
 import { IoDocumentText, IoLocationSharp } from "react-icons/io5";
+import RichTextDisplay from "../ui/RichTextDisplay";
 
 type Props = {
   event: Event;
@@ -193,7 +194,11 @@ const EventDisplay = ({ event, preview }: Props) => {
       {event.description.length ? (
         <div className="mt-5">
           <h3 className="font-bold text-xl">Tentang {event.title}</h3>
-          <p>{event.description}</p>
+          <RichTextDisplay
+            className="text-justify"
+            text={event.description}
+            fallback="Konten"
+          />
         </div>
       ) : null}
     </div>

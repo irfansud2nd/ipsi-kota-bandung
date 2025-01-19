@@ -85,4 +85,7 @@
   .rich_text > p {
     @apply mb-2;
   }
+  .rich_text a {
+    @apply bg-green-500 px-4 text-white font-semibold py-2 m-1 rounded;
+  }
 }
