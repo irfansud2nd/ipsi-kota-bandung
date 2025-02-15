@@ -94,12 +94,15 @@ export const getStartEndOfDay = (date?: string | number) => {
   return { start: start.getTime(), end: end.getTime() };
 };
 
-export const reduceData = (data: any[], key: string = "id") => {
+export const reduceData = <T extends Record<string, any>>(
+  data: T[],
+  key: keyof T = "id"
+): T[] => {
   const reducedData = Object.values(
     data.reduce((acc, obj) => {
       acc[obj[key]] = obj;
       return acc;
-    }, {} as any)
+    }, {} as Record<string, T>)
   );
   return reducedData;
 };

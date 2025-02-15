@@ -1,4 +1,4 @@
-import EventDisplay from "@/components/Event/EventDisplay";
+import EventDisplay from "@/components/event/EventDisplay";
 import Container from "@/components/ui/Container";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -17,7 +17,7 @@ import {
   getEvents,
 } from "@/lib/event/eventFunctions";
 import Link from "next/link";
-import EventCard from "@/components/Event/EventCard";
+import EventCard from "@/components/event/EventCard";
 import { baseUrl } from "@/lib/constants";
 
 type Props = {

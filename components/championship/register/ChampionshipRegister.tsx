@@ -1,5 +1,4 @@
 "use client";
-
 import Contingent from "@/components/contingent/ContingentInfo";
 import Loading from "@/components/ui/Loading";
 import { getAthtleteAtEventsByContingentRegistrationId } from "@/lib/athlete/external/athleteActions";
@@ -36,7 +35,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
     official: false,
     payment: false,
   });
-  // const [contingentFetched, setContingentFetched] = useState(false);
+
   const [readyToFetch, setReadyToFetch] = useState(false);
   const [returnWithoutFetch, setReturnWithoutFetch] = useState(false);
 
@@ -59,7 +58,6 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
 
   const fetchContingent = async () => {
     // console.log("fetchContingent");
-
     try {
       const { contingent, contingentAtEvents } = await getContingentInfoByEmail(
         userEmail

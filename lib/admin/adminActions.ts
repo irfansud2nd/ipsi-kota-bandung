@@ -14,6 +14,7 @@ import { decode, sign } from "jsonwebtoken";
 import { GroupedLinks, Links, ServerAction } from "../constants";
 import { cache } from "react";
 import { action } from "../functions";
+import { getAdminServerSession } from "./adminSession";
 
 // SPECIAL  USER
 // CREATE
@@ -139,62 +140,6 @@ export const deleteSpecialUserSql = async (
 };
 
 // OTHERS
-export const isAuthorized = async (options?: {
-  ignoreJwt?: boolean;
-  roles?: SpecialUserRole[];
-  noFetch?: boolean;
-}) => {
-  type Result = {
-    roles: SpecialUserRole[];
-    token: string;
-    permitted: boolean;
-    name?: string;
-    image?: string;
-  };
-
-  let result: Result = {
-    roles: [],
-    token: "",
-    permitted: false,
-  };
-
-  const session: any = await getServerSession(authOptions);
-  if (!session) return result;
-
-  if (!options?.ignoreJwt) {
-    // console.log("CHECK TOKEN");
-    const authorizedToken = session?.user?.authorizedToken;
-    if (authorizedToken) {
-      const data: any = decode(authorizedToken);
-      result = data;
-      options?.roles &&
-        (result.permitted = isPermitted(data.roles, options.roles));
-      return result;
-    }
-  }
-
-  if (options?.noFetch) return result;
-
-  // console.log("FETCH SPECIAL USERS");
-  const { data, error } = await supabase
-    .from("special_users")
-    .select()
-    .eq("email", session?.user?.email);
-
-  if (!data?.length) return result;
-
-  result.roles = data?.[0]?.roles;
-  result.name = data?.[0]?.name;
-  result.image = data?.[0]?.image;
-
-  const JWT_SECRET = process.env.JWT_SECRET as string;
-  const jwt = sign(result, JWT_SECRET);
-  result.token = jwt;
-  options?.roles &&
-    (result.permitted = isPermitted(data?.[0].roles, options.roles));
-
-  return result;
-};
 
 export const apiProtect = async (options?: {
   directory?: string;
@@ -238,7 +183,11 @@ export const apiProtect = async (options?: {
 
   !roles.includes("master") && roles.push("master");
 
-  const { permitted } = await isAuthorized({ roles, noFetch: true });
+  const adminSession = await getAdminServerSession();
+  if (!adminSession) return notAuthorized;
+
+  const permitted = adminSession.roles.some((role) => roles.includes(role));
+
   if (permitted) return initialResult;
 
   return notAuthorized;
@@ -260,10 +209,11 @@ export const getAdminLinks = async () => {
   };
 
   const session = await getServerSession(authOptions);
-  if (!session) return result;
+  const adminSession = await getAdminServerSession();
+  if (!session || !adminSession) return result;
 
   const { links, groupedLinks } = adminLinks;
-  const { roles } = await isAuthorized({ noFetch: true });
+  const { roles } = adminSession;
 
   result.links = links.filter(
     (link) =>

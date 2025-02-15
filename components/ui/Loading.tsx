@@ -1,4 +1,3 @@
-import { BiLoader } from "react-icons/bi";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiLoader2Fill } from "react-icons/ri";
 
@@ -19,7 +18,6 @@ const Loading = ({ full, text, className, success }: Props) => {
           {success ? (
             <FaCheckCircle className="text-green-500 size-10 sm:size-20" />
           ) : (
-            // <BiLoader className="animate-spin size-10 sm:size-20" />
             <img
               src="/images/logo-ipsi.png"
               className="aspect-square size-10 sm:size-20 animate-pulse"

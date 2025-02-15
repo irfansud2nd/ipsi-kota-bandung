@@ -10,15 +10,6 @@ import {
 import { formatDate, formatToRupiah } from "@/lib/functions";
 import { getUniquePaymentTotal } from "@/lib/payment/paymentFunctions";
 import ManagePaymentForm from "./ManagePaymentForm";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { MdMoreHoriz } from "react-icons/md";
 import DetailButton from "@/components/ui/DetailButton";
 
 type Props = {

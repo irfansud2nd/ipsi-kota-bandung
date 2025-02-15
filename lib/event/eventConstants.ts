@@ -176,7 +176,7 @@ export const championships: Championship[] = [
     description: "",
     register: {
       start: dateToNumber("2024-06-10"),
-      end: dateToNumber("2024-07-26", "13:00"),
+      end: dateToNumber("2024-12-26", "13:00"),
     },
     editLimit: dateToNumber("2024-07-28", "23:59"),
     athletes: 0,
@@ -249,7 +249,7 @@ export const championships: Championship[] = [
       checkLimit: false,
     },
     payment: {
-      closedAt: dateToNumber("2024-08-05", "16:00"),
+      closedAt: dateToNumber("2024-12-23", "16:00"),
       total: 0,
       confirmed: 0,
       target: {

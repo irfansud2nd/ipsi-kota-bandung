@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { deleteAdminSession } from "@/lib/admin/adminAuthActions";
 
 const LoginButton = ({ className }: { className?: string }) => {
   return (
@@ -32,6 +33,12 @@ const ProfileButton = ({
   mobile?: boolean;
 }) => {
   const session = useSession();
+
+  const logout = async () => {
+    await deleteAdminSession();
+    signOut();
+  };
+
   if (mobile) {
     return (
       <div className="flex gap-2 items-center border-b pb-1 mb-1">
@@ -48,7 +55,7 @@ const ProfileButton = ({
             </Avatar>
             <div>
               <p className="font-semibold">{session.data.user.email}</p>
-              <Button size={"sm"} variant={"outline"} onClick={() => signOut()}>
+              <Button size={"sm"} variant={"outline"} onClick={logout}>
                 Logout
               </Button>
             </div>
@@ -75,7 +82,7 @@ const ProfileButton = ({
       <DropdownMenuContent className={className}>
         <DropdownMenuLabel>{session.data.user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -13,7 +13,7 @@ import { Form, Formik, FormikProps } from "formik";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import EventDisplay from "@/components/Event/EventDisplay";
+import EventDisplay from "@/components/event/EventDisplay";
 import { sendEvent, updateEvent } from "@/lib/event/eventFunctions";
 
 const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {

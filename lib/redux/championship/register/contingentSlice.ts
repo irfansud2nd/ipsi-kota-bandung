@@ -1,5 +1,3 @@
-import { AthleteAtEvent } from "@/lib/athlete/external/athleteConstants";
-import { getMatchCost } from "@/lib/athlete/external/athleteFunctions";
 import {
   Contingent,
   ContingentAtEvent,

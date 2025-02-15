@@ -10,7 +10,6 @@ import {
 } from "../ui/dialog";
 import {
   Contingent,
-  ContingentSql,
   contingentInitialValue,
   contingentSchema,
 } from "@/lib/contingent/contingentConstants";
@@ -18,7 +17,6 @@ import InputText from "../inputs/InputText";
 import { useSession } from "next-auth/react";
 import {
   addContingentAndRegister,
-  contingentToContingenSql,
   updateContingent,
 } from "@/lib/contingent/contingentFunctions";
 import { useDispatch } from "react-redux";

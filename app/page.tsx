@@ -1,5 +1,5 @@
 "use server";
-import EventList from "@/components/Event/EventList";
+import EventList from "@/components/event/EventList";
 import NewsList from "@/components/news/NewsList";
 import HomeBanner from "@/components/home/HomeBanner";
 import HomeMenu from "@/components/home/HomeMenu";

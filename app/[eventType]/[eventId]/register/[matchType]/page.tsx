@@ -8,7 +8,7 @@ type Props = {
   params: { eventId: string; matchType: "fight" | "art" };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export function generateMetadata({ params }: Props): Metadata {
   return {
     title: `Kategori ${params.matchType == "fight" ? "Tanding" : "Seni"}`,
   };

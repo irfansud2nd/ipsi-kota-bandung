@@ -1,4 +1,4 @@
-import EventDisplay from "@/components/Event/EventDisplay";
+import EventDisplay from "@/components/event/EventDisplay";
 import { notFound } from "next/navigation";
 import React from "react";
 import { getChampionship } from "@/lib/event/eventFunctions";

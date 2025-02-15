@@ -2,11 +2,8 @@ import ShowAllButton from "@/components/admin/ShowAllButton";
 import TableDownloadButton from "@/components/admin/athlete/internal/attendance/TableDownloadButton";
 import ContingentTable from "@/components/admin/contingent/ContingentTable";
 import PagePagination from "@/components/ui/PagePagination";
-import { Button } from "@/components/ui/button";
 import { getContingents } from "@/lib/contingent/contingentActions";
-import { Contingent } from "@/lib/contingent/contingentConstants";
 import { fetchData } from "@/lib/functions";
-import Link from "next/link";
 
 const page = async ({
   searchParams,

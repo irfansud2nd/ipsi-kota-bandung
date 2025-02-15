@@ -24,7 +24,7 @@ const ChampionshipMenuAdmin = ({
         className={`w-full lg:px-2 ${
           onPage
             ? "lg:hidden"
-            : "h-full absolute top-0 left-0 pt-[140px] lg:pt-2 px-6"
+            : "h-full absolute top-0 left-0 pt-[90px] lg:pt-2 px-6"
         }`}
       >
         <div className="bg-white h-full">

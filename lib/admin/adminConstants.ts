@@ -4,7 +4,6 @@ import {
   internalAthleteRoles,
 } from "../athlete/internal/internalAthleteConstants";
 import { GroupedLinks, Links } from "../constants";
-import { championships } from "../event/eventConstants";
 
 export type SpecialUserRole =
   | InternalAthleteRole
@@ -12,6 +11,14 @@ export type SpecialUserRole =
   | "admin"
   | "eventAdmin"
   | "coach";
+
+export const specialUserRoles: SpecialUserRole[] = [
+  ...internalAthleteRoles,
+  "master",
+  "admin",
+  "eventAdmin",
+  "coach",
+];
 
 export type SpecialUserBase = {
   name: string;
@@ -65,28 +72,24 @@ export const roleAccess: {
   {
     role: "admin",
     dir: [
-      "news",
-      "event",
-      "announcement",
-      "employee",
-      "contingent",
-      "athlete",
-      "official",
+      "/news",
+      "/event",
+      "/announcement",
+      "/employee",
+      "/contingent",
+      "/athlete",
+      "/official",
     ],
   },
   {
-    role: "master",
-    dir: ["admin", "master", "adminEvent"],
-  },
-  {
     role: "coach",
-    dir: [...internalAthleteRoles],
+    dir: internalAthleteRoles.map((item) => `/specialuser/${item}`),
   },
   {
     role: "eventAdmin",
-    dir: ["championship", "contingent", "athlete", "payment"],
+    dir: ["/championship", "/contingent", "/athlete", "/official"],
   },
-  ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),
+  // ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),
 ];
 
 const links: Links = [
@@ -304,7 +307,7 @@ export const championshipAdminLinks: {
         },
         {
           href: "/categorized/count",
-          label: "Kuota Pertandingan Pertasi",
+          label: "Kuota Pertandingan Prestasi",
         },
       ],
     },

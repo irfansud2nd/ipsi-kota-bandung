@@ -1,4 +1,4 @@
-import EventList from "@/components/Event/EventList";
+import EventList from "@/components/event/EventList";
 import Container from "@/components/ui/Container";
 import PageBanner from "@/components/ui/PageBanner";
 import PagePagination from "@/components/ui/PagePagination";
