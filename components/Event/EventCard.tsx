@@ -84,7 +84,7 @@ const EventCard = ({ event, onAdmin }: Props) => {
           ) : (
             <>
               <FaClock className="size-5 mr-2 ml-auto text-green-500" />
-              <p>{formatDate(event.date_start, { hourOnly: true })}</p>
+              <p>{formatDate(event.time_start, { hourOnly: true })}</p>
             </>
           )}
         </div>

@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import EventDisplay from "@/components/Event/EventDisplay";
 import { sendEvent, updateEvent } from "@/lib/event/eventFunctions";
+import InputRichText from "@/components/inputs/InputRichText";
 
 const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
   const [changeImage, setChangeImage] = useState(false);
@@ -60,7 +61,7 @@ const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
                 />
                 <InputText
                   label="Penyelenggara"
-                  name="creator_name"
+                  name="organizer"
                   formik={props}
                 />
                 <InputText
@@ -96,11 +97,16 @@ const EventForm = ({ eventToEdit }: { eventToEdit?: Event }) => {
                   time
                   helperText="(opsional)"
                 />
-                <InputTextarea
+                <InputRichText
                   label="Deskripsi"
                   name="description"
                   formik={props}
                 />
+                {/* <InputTextarea
+                  label="Deskripsi"
+                  name="description"
+                  formik={props}
+                /> */}
               </div>
             </div>
             <div className="ml-auto w-fit flex gap-2">
