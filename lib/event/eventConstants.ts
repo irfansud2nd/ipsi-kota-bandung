@@ -278,125 +278,125 @@ export const championships: Championship[] = [
       "andra08malela@gmail.com",
     ],
   },
-  {
-    id: "usc-25",
-    title: "UNPAS Silat Championship 2025",
-    image: {
-      downloadUrl: "/images/championships/usc-25/thumbnail.png",
-    },
-    location_name: "GOR KONI Kota Bandung",
-    location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-    date_start: dateToNumber("2025-05-01"),
-    date_end: dateToNumber("2025-05-04"),
-    time_start: 0,
-    organizer: "",
-    created_by: "irfansud2nd@gmail.com",
-    created_at: dateToNumber("2025-02-15"),
-    description: "",
-    register: {
-      start: dateToNumber("2025-02-12"),
-      end: dateToNumber("2025-04-23", "23:59"),
-    },
-    editLimit: dateToNumber("2025-04-23", "23:59"),
-    athletes: 0,
-    matchCount: 0,
-    techmeet: {
-      date: dateToNumber("2025-04-24", "08:00"),
-      location: {
-        name: "GOR KONI Kota Bandung",
-        url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-      },
-    },
-    matchCategory: [
-      {
-        level: "Pra Usia Dini (6-8 Tahun)",
-        category: {
-          fight: generateKategoriPertandingan("P", 16, 2),
-          art: ["Tunggal"],
-        },
-        rookieOnly: true,
-      },
-      {
-        level: "Usia Dini (8-11 Tahun)",
-        category: {
-          fight: generateKategoriPertandingan("O", 26, 2, true),
-          art: ["Tunggal"],
-        },
-      },
-      {
-        level: "Pra Remaja (11-14 Tahun)",
-        category: {
-          fight: generateKategoriPertandingan("P", 30, 3, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        rookieOnly: true,
-      },
-      {
-        level: "Remaja (14-17 Tahun)",
-        category: {
-          fight: generateKategoriPertandingan("I", 39, 4, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
-        },
-        oneAthletePerCategory: true,
-      },
-      {
-        level: "Dewasa (17-30 Tahun)",
-        category: {
-          fight: generateKategoriPertandingan("J", 45, 5, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
-        },
-        oneAthletePerCategory: true,
-      },
-    ],
-    proposal:
-      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
-    status: {
-      checkLimit: false,
-    },
-    payment: {
-      closedAt: dateToNumber("2025-04-23", "16:00"),
-      total: 0,
-      confirmed: 0,
-      target: {
-        name: "Andra Ramdhan Malela Putera",
-        number: "0129228164100",
-        bank: "BJB",
-      },
-      contact: {
-        name: "Bob",
-        phoneNumber: "6285794163821",
-      },
-    },
-    matchCost: {
-      tanding: 350000,
-      tunggal: 350000,
-      ganda: 350000,
-      regu: 350000,
-    },
-    reserveForPal: false,
-    officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
-    showOnHome: true,
-    dialogOnHome: false,
-    testerEmail: [
-      "irfansud2nd@gmail.com",
-      "iqbalbobalfarisy@gmail.com",
-      "andra08malela@gmail.com",
-    ],
-  },
+  // {
+  //   id: "usc-25",
+  //   title: "UNPAS Silat Championship 2025",
+  //   image: {
+  //     downloadUrl: "/images/championships/usc-25/thumbnail.png",
+  //   },
+  //   location_name: "GOR KONI Kota Bandung",
+  //   location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+  //   date_start: dateToNumber("2025-05-01"),
+  //   date_end: dateToNumber("2025-05-04"),
+  //   time_start: 0,
+  //   organizer: "",
+  //   created_by: "irfansud2nd@gmail.com",
+  //   created_at: dateToNumber("2025-02-15"),
+  //   description: "",
+  //   register: {
+  //     start: dateToNumber("2025-02-12"),
+  //     end: dateToNumber("2025-04-23", "23:59"),
+  //   },
+  //   editLimit: dateToNumber("2025-04-23", "23:59"),
+  //   athletes: 0,
+  //   matchCount: 0,
+  //   techmeet: {
+  //     date: dateToNumber("2025-04-24", "08:00"),
+  //     location: {
+  //       name: "GOR KONI Kota Bandung",
+  //       url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+  //     },
+  //   },
+  //   matchCategory: [
+  //     {
+  //       level: "Pra Usia Dini (6-8 Tahun)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("P", 16, 2),
+  //         art: ["Tunggal"],
+  //       },
+  //       rookieOnly: true,
+  //     },
+  //     {
+  //       level: "Usia Dini (8-11 Tahun)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("O", 26, 2, true),
+  //         art: ["Tunggal"],
+  //       },
+  //     },
+  //     {
+  //       level: "Pra Remaja (11-14 Tahun)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("P", 30, 3, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       rookieOnly: true,
+  //     },
+  //     {
+  //       level: "Remaja (14-17 Tahun)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("I", 39, 4, true, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       limit: {
+  //         paid: true,
+  //         tanding: 16,
+  //         tunggal: 16,
+  //         ganda: 8,
+  //         regu: 8,
+  //       },
+  //       oneAthletePerCategory: true,
+  //     },
+  //     {
+  //       level: "Dewasa (17-30 Tahun)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("J", 45, 5, true, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       limit: {
+  //         paid: true,
+  //         tanding: 16,
+  //         tunggal: 16,
+  //         ganda: 8,
+  //         regu: 8,
+  //       },
+  //       oneAthletePerCategory: true,
+  //     },
+  //   ],
+  //   proposal:
+  //     "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
+  //   status: {
+  //     checkLimit: false,
+  //   },
+  //   payment: {
+  //     closedAt: dateToNumber("2025-04-23", "16:00"),
+  //     total: 0,
+  //     confirmed: 0,
+  //     target: {
+  //       name: "Andra Ramdhan Malela Putera",
+  //       number: "0129228164100",
+  //       bank: "BJB",
+  //     },
+  //     contact: {
+  //       name: "Bob",
+  //       phoneNumber: "6285794163821",
+  //     },
+  //   },
+  //   matchCost: {
+  //     tanding: 350000,
+  //     tunggal: 350000,
+  //     ganda: 350000,
+  //     regu: 350000,
+  //   },
+  //   reserveForPal: false,
+  //   officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
+  //   showOnHome: true,
+  //   dialogOnHome: false,
+  //   testerEmail: [
+  //     "irfansud2nd@gmail.com",
+  //     "iqbalbobalfarisy@gmail.com",
+  //     "andra08malela@gmail.com",
+  //   ],
+  // },
 ];
 
 export type MatchCategory = {
