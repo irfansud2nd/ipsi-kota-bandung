@@ -174,19 +174,21 @@ Terimakasih.`,
                     </Link>
                   </Button>
                 </div>
-                <div className="w-full h-full flex flex-col justify-around items-center border rounded">
-                  <p className="font-semibold">Grup Official</p>
-                  <Button asChild>
-                    <Link
-                      href={championship.officialGroupLink}
-                      target="_blank"
-                      className="flex items-center gap-2"
-                    >
-                      <FaWhatsapp className="size-6" />
-                      Grup Official
-                    </Link>
-                  </Button>
-                </div>
+                {championship.officialGroupLink && (
+                  <div className="w-full h-full flex flex-col justify-around items-center border rounded">
+                    <p className="font-semibold">Grup Official</p>
+                    <Button asChild>
+                      <Link
+                        href={championship.officialGroupLink}
+                        target="_blank"
+                        className="flex items-center gap-2"
+                      >
+                        <FaWhatsapp className="size-6" />
+                        Grup Official
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
               <div className="border rounded p-2">
                 <div className="flex items-center gap-2">

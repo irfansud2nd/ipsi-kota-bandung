@@ -413,12 +413,15 @@ export const getMatchCategory = (
 };
 
 export const getLevel = (rookie: boolean, matchCategory: MatchCategory) => {
-  const allLevels = matchCategory.map((item) => item.level);
   const professionalLevels = matchCategory
     .filter((item) => item.rookieOnly != true)
     .map((item) => item.level);
 
-  return rookie ? allLevels : professionalLevels;
+  const rookieLevels = matchCategory
+    .filter((item) => item.proOnly != true)
+    .map((item) => item.level);
+
+  return rookie ? rookieLevels : professionalLevels;
 };
 
 export const isMatchSame = (item1: MatchBased, item2: MatchBased) => {
