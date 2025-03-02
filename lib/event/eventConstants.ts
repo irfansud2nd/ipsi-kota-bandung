@@ -278,130 +278,130 @@ export const championships: Championship[] = [
       "andra08malela@gmail.com",
     ],
   },
-  {
-    id: "usc-25",
-    title: "UNPAS Silat Championship 2025",
-    image: {
-      downloadUrl: "/images/championships/usc-25/thumbnail.png",
-    },
-    location_name: "GOR KONI Kota Bandung",
-    location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-    date_start: dateToNumber("2025-05-01"),
-    date_end: dateToNumber("2025-05-04"),
-    time_start: 0,
-    organizer: "",
-    created_by: "irfansud2nd@gmail.com",
-    created_at: dateToNumber("2025-02-15"),
-    description: "",
-    register: {
-      start: dateToNumber("2025-02-12"),
-      end: dateToNumber("2025-04-23", "23:59"),
-    },
-    editLimit: dateToNumber("2025-04-23", "23:59"),
-    athletes: 0,
-    matchCount: 0,
-    techmeet: {
-      date: dateToNumber("2025-04-24", "08:00"),
-      location: {
-        name: "GOR KONI Kota Bandung",
-        url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
-      },
-    },
-    matchCategory: [
-      {
-        level: "Usia Dini I (SD Kelas 1, 2, & 3)",
-        category: {
-          fight: generateKategoriPertandingan("P", 16, 2),
-          art: ["Tunggal"],
-        },
-        rookieOnly: true,
-      },
-      {
-        level: "Usia Dini II (SD Kelas 4, 5, & 6)",
-        category: {
-          fight: generateKategoriPertandingan("O", 26, 2, true),
-          art: ["Tunggal"],
-        },
-        proOnly: true,
-        oneAthletePerCategory: true,
-      },
-      {
-        level: "SMP",
-        category: {
-          fight: generateKategoriPertandingan("I", 39, 4, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        proOnly: true,
-        oneAthletePerCategory: true,
-      },
-      {
-        level: "SMA",
-        category: {
-          fight: generateKategoriPertandingan("J", 45, 5, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
-        },
-        proOnly: true,
-        oneAthletePerCategory: true,
-      },
-      {
-        level: "Mahasiswa",
-        category: {
-          fight: generateKategoriPertandingan("J", 45, 5, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
-        },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
-        },
-        proOnly: true,
-        oneAthletePerCategory: true,
-      },
-    ],
-    proposal:
-      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20USC%202025.pdf?alt=media&token=4c36b6ee-47f4-48cd-b4c7-6fa402de1078",
-    status: {
-      checkLimit: false,
-    },
-    payment: {
-      closedAt: dateToNumber("2025-04-23", "16:00"),
-      total: 0,
-      confirmed: 0,
-      target: {
-        name: "SYAFIRA NASHWA H",
-        number: "001001647471312",
-        bank: "RAYA",
-      },
-      contact: {
-        name: "Hanna",
-        phoneNumber: "6281394706019",
-      },
-    },
-    matchCost: {
-      tanding: 350000,
-      tunggal: 350000,
-      ganda: 350000,
-      regu: 350000,
-    },
-    reserveForPal: false,
-    // officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
-    showOnHome: true,
-    dialogOnHome: false,
-    testerEmail: [
-      "irfansud2nd@gmail.com",
-      "iqbalbobalfarisy@gmail.com",
-      "andra08malela@gmail.com",
-    ],
-  },
+  // {
+  //   id: "usc-25",
+  //   title: "UNPAS Silat Championship 2025",
+  //   image: {
+  //     downloadUrl: "/images/championships/usc-25/thumbnail.png",
+  //   },
+  //   location_name: "GOR KONI Kota Bandung",
+  //   location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+  //   date_start: dateToNumber("2025-05-01"),
+  //   date_end: dateToNumber("2025-05-04"),
+  //   time_start: 0,
+  //   organizer: "",
+  //   created_by: "irfansud2nd@gmail.com",
+  //   created_at: dateToNumber("2025-02-15"),
+  //   description: "",
+  //   register: {
+  //     start: dateToNumber("2025-02-12"),
+  //     end: dateToNumber("2025-04-23", "23:59"),
+  //   },
+  //   editLimit: dateToNumber("2025-04-23", "23:59"),
+  //   athletes: 0,
+  //   matchCount: 0,
+  //   techmeet: {
+  //     date: dateToNumber("2025-04-24", "08:00"),
+  //     location: {
+  //       name: "GOR KONI Kota Bandung",
+  //       url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+  //     },
+  //   },
+  //   matchCategory: [
+  //     {
+  //       level: "Usia Dini I (SD Kelas 1, 2, & 3)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("P", 16, 2),
+  //         art: ["Tunggal"],
+  //       },
+  //       rookieOnly: true,
+  //     },
+  //     {
+  //       level: "Usia Dini II (SD Kelas 4, 5, & 6)",
+  //       category: {
+  //         fight: generateKategoriPertandingan("O", 26, 2, true),
+  //         art: ["Tunggal"],
+  //       },
+  //       proOnly: true,
+  //       oneAthletePerCategory: true,
+  //     },
+  //     {
+  //       level: "SMP",
+  //       category: {
+  //         fight: generateKategoriPertandingan("I", 39, 4, true, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       proOnly: true,
+  //       oneAthletePerCategory: true,
+  //     },
+  //     {
+  //       level: "SMA",
+  //       category: {
+  //         fight: generateKategoriPertandingan("J", 45, 5, true, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       limit: {
+  //         paid: true,
+  //         tanding: 16,
+  //         tunggal: 16,
+  //         ganda: 8,
+  //         regu: 8,
+  //       },
+  //       proOnly: true,
+  //       oneAthletePerCategory: true,
+  //     },
+  //     {
+  //       level: "Mahasiswa",
+  //       category: {
+  //         fight: generateKategoriPertandingan("J", 45, 5, true, true),
+  //         art: ["Tunggal", "Ganda", "Regu"],
+  //       },
+  //       limit: {
+  //         paid: true,
+  //         tanding: 16,
+  //         tunggal: 16,
+  //         ganda: 8,
+  //         regu: 8,
+  //       },
+  //       proOnly: true,
+  //       oneAthletePerCategory: true,
+  //     },
+  //   ],
+  //   proposal:
+  //     "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20USC%202025.pdf?alt=media&token=4c36b6ee-47f4-48cd-b4c7-6fa402de1078",
+  //   status: {
+  //     checkLimit: false,
+  //   },
+  //   payment: {
+  //     closedAt: dateToNumber("2025-04-23", "16:00"),
+  //     total: 0,
+  //     confirmed: 0,
+  //     target: {
+  //       name: "SYAFIRA NASHWA H",
+  //       number: "001001647471312",
+  //       bank: "RAYA",
+  //     },
+  //     contact: {
+  //       name: "Hanna",
+  //       phoneNumber: "6281394706019",
+  //     },
+  //   },
+  //   matchCost: {
+  //     tanding: 350000,
+  //     tunggal: 350000,
+  //     ganda: 350000,
+  //     regu: 350000,
+  //   },
+  //   reserveForPal: false,
+  //   // officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
+  //   showOnHome: true,
+  //   dialogOnHome: false,
+  //   testerEmail: [
+  //     "irfansud2nd@gmail.com",
+  //     "iqbalbobalfarisy@gmail.com",
+  //     "andra08malela@gmail.com",
+  //   ],
+  // },
 ];
 
 export type MatchCategory = {
