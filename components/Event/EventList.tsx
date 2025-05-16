@@ -3,6 +3,7 @@ import EventCard from "./EventCard";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Championship, Event } from "@/lib/event/eventConstants";
+import { compare } from "@/lib/functions";
 
 type Props = {
   events: (Event | Championship)[];
@@ -31,7 +32,7 @@ const EventList = ({ onHome, events, championship, onAdmin }: Props) => {
       )}
       {events.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {events?.map((event) => (
+          {events.sort(compare("created_at", "desc")).map((event) => (
             <EventCard event={event} key={event.id} onAdmin={onAdmin} />
           ))}
         </div>

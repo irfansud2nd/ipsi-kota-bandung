@@ -164,7 +164,7 @@ const EventDisplay = ({ event, preview }: Props) => {
         {showImage ? (
           <img
             src={imageUrl}
-            className="w-full h-fit my-auto aspect-video col-span-2 rounded-xl object-cover object-center border"
+            className="w-full h-fit my-auto aspect-video col-span-2 rounded-xl object-contain object-center border"
           />
         ) : (
           <div className="w-full h-fit my-auto bg-gray-200 aspect-video flex justify-center items-center text-5xl font-extrabold col-span-2 rounded-xl">
