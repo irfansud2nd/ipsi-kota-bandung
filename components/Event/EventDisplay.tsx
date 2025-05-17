@@ -7,6 +7,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaClock, FaRectangleList, FaUser } from "react-icons/fa6";
 import { IoDocumentText, IoLocationSharp } from "react-icons/io5";
 import RichTextDisplay from "../ui/RichTextDisplay";
+import { getProposal } from "@/lib/event/eventFunctions";
 
 type Props = {
   event: Event;
@@ -124,12 +125,13 @@ const EventDisplay = ({ event, preview }: Props) => {
         label: "Proposal",
         icon: <IoDocumentText />,
         content: championship.proposal ? (
-          <Link
-            href={championship.proposal}
+          <a
+            href={getProposal(championship.id)}
             className="hover:text-green-400 transition"
+            download
           >
             Klik disini
-          </Link>
+          </a>
         ) : (
           <span className="text-muted-foreground">Belum tersedia</span>
         ),

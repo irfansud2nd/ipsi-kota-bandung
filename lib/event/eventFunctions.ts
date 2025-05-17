@@ -180,3 +180,7 @@ export const eventToEventSql = (event: Event) => {
   };
   return result;
 };
+
+export const getProposal = (championshipId: string) => {
+  return `/proposals/${championshipId}.pdf`;
+};

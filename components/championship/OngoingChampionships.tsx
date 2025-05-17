@@ -12,6 +12,7 @@ import {
 } from "../ui/tooltip";
 import Link from "next/link";
 import { FaRectangleList } from "react-icons/fa6";
+import { getProposal } from "@/lib/event/eventFunctions";
 
 const Card = ({ championship }: { championship: Championship }) => {
   const registrationDisabled = Date.now() <= championship.register.start;
@@ -97,9 +98,9 @@ const Card = ({ championship }: { championship: Championship }) => {
           asChild={!!championship.proposal}
           disabled={!championship.proposal}
         >
-          <Link href={championship.proposal} target="_blank">
+          <a href={getProposal(championship.id)} download>
             Proposal
-          </Link>
+          </a>
         </Button>
         {/* REGISTRATION LINK */}
         <Button asChild={!registrationDisabled} disabled={registrationDisabled}>
