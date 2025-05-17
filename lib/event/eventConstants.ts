@@ -243,8 +243,7 @@ export const championships: Championship[] = [
         oneAthletePerCategory: true,
       },
     ],
-    proposal:
-      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT.pdf?alt=media&token=468ece91-8965-4ad4-994b-22dc6fdcd9e1",
+    proposal: "#",
     status: {
       checkLimit: false,
     },
