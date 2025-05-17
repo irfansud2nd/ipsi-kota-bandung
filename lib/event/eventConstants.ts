@@ -295,7 +295,7 @@ export const championships: Championship[] = [
     description: "",
     register: {
       start: dateToNumber("2025-06-01"),
-      end: dateToNumber("2025-08-24", "23:59"),
+      end: dateToNumber("2025-07-24", "23:59"),
     },
     editLimit: dateToNumber("2025-08-01", "23:59"),
     athletes: 0,
@@ -363,7 +363,7 @@ export const championships: Championship[] = [
       },
     ],
     proposal:
-      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT%202025.pdf?alt=media&token=9beecf73-4881-4633-bcca-a6ec7304cbcd",
+      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT%202025.pdf?alt=media&token=ba2cd112-0f97-410c-a24b-f36cd2c0b3be",
     status: {
       checkLimit: false,
     },
