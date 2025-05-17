@@ -363,7 +363,7 @@ export const championships: Championship[] = [
       },
     ],
     proposal:
-      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT%202025.pdf?alt=media&token=ba2cd112-0f97-410c-a24b-f36cd2c0b3be",
+      "https://firebasestorage.googleapis.com/v0/b/ipsi-bandung.appspot.com/o/proposal%2FPROPOSAL%20BANDUNG%20OPEN%20PENCAK%20SILAT%20TOURNAMENT%202025.pdf?alt=media&token=49f649f0-1886-4d64-90a9-96015813c21e",
     status: {
       checkLimit: false,
     },
