@@ -37,21 +37,21 @@ const links: Links = [
     href: "/championship",
     label: "Kejuaraan",
   },
-  {
-    href: "/employee",
-    label: "Pengurus",
-  },
+  // {
+  //   href: "/employee",
+  //   label: "Pengurus",
+  // },
 ];
 
 const groupedLinks: GroupedLinks = [
-  {
-    title: "Atlet",
-    prefix: "/athlete",
-    links: internalAthleteRoles.map((item) => ({
-      href: "/" + item,
-      label: getSpecialUserLabel(item).replace("Atlet ", ""),
-    })),
-  },
+  // {
+  //   title: "Atlet",
+  //   prefix: "/athlete",
+  //   links: internalAthleteRoles.map((item) => ({
+  //     href: "/" + item,
+  //     label: getSpecialUserLabel(item).replace("Atlet ", ""),
+  //   })),
+  // },
 ];
 
 export const clientLinks = { links, groupedLinks };
