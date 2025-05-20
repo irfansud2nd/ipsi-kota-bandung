@@ -308,7 +308,7 @@ export const championships: Championship[] = [
     },
     matchCategory: [
       {
-        level: "Pra Usia Dini (6-8 Tahun)",
+        level: "Usia Dini I (SD Kelas 1, 2, 3)",
         category: {
           fight: generateKategoriPertandingan("P", 16, 2),
           art: ["Tunggal"],
@@ -316,17 +316,18 @@ export const championships: Championship[] = [
         rookieOnly: true,
       },
       {
-        level: "Usia Dini (8-11 Tahun)",
+        level: "Usia Dini II (SD Kelas 4, 5, 6)",
         category: {
           fight: generateKategoriPertandingan("O", 26, 2, true),
           art: ["Tunggal"],
         },
+        rookieOnly: true,
       },
       {
-        level: "Pra Remaja (11-14 Tahun)",
+        level: "Pra Remaja (SMP)",
         category: {
           fight: generateKategoriPertandingan("P", 30, 3, true),
-          art: ["Tunggal", "Ganda", "Regu"],
+          art: ["Tunggal"],
         },
         rookieOnly: true,
       },
@@ -334,31 +335,49 @@ export const championships: Championship[] = [
         level: "Remaja (14-17 Tahun)",
         category: {
           fight: generateKategoriPertandingan("I", 39, 4, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
+          art: ["Tunggal"],
         },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
-        },
-        oneAthletePerCategory: true,
+        rookieOnly: true,
       },
       {
-        level: "Dewasa (17-30 Tahun)",
+        level: "Dewasa (Mahasiswa & Umum)",
         category: {
           fight: generateKategoriPertandingan("J", 45, 5, true, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
-        limit: {
-          paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
+        rookieOnly: true,
+      },
+      {
+        level: "SD (Kelas 4, 5, 6)",
+        category: {
+          fight: generateKategoriPertandingan("O", 26, 2, true),
+          art: ["Tunggal"],
         },
-        oneAthletePerCategory: true,
+        proOnly: true,
+      },
+      {
+        level: "SMP",
+        category: {
+          fight: generateKategoriPertandingan("P", 30, 3, true),
+          art: ["Tunggal"],
+        },
+        proOnly: true,
+      },
+      {
+        level: "SMA",
+        category: {
+          fight: generateKategoriPertandingan("I", 39, 4, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        proOnly: true,
+      },
+      {
+        level: "Mahasiswa & Umum (17 - 30 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("J", 45, 5, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        proOnly: true,
       },
     ],
     proposal:
