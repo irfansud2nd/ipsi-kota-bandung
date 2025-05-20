@@ -22,14 +22,19 @@ export const addOfficial = async (officialData: Official) => {
   let official: Official = { ...officialData, id };
   official.created_at = Date.now();
 
-  const { imageUrl } = getFileUrl("official", id);
+  const { imageUrl, certificateUrl } = getFileUrl("official", id);
 
   try {
     if (!official.contingent_id)
       throw { message: "ID Kontingen tidak ditemukan" };
+
     if (!official.contingent_name)
       throw { message: "Nama Kontingen tidak ditemukan" };
+
     if (!official.image.file) throw { message: "Pas foto tidak ditemukan" };
+
+    if (!official.certificate_file.file)
+      throw { message: "Sertifikat tidak ditemukan" };
 
     const response = await apiProtect();
     if (response) throw response;
@@ -39,7 +44,15 @@ export const addOfficial = async (officialData: Official) => {
     official.image.downloadUrl = await sendFile(official.image.file, imageUrl);
     delete official.image.file;
 
-    // SEND ATHLETE
+    // SEND IMAGE
+    toast.loading("Mengunggah sertifikat official", { id: toastId });
+    official.certificate_file.downloadUrl = await sendFile(
+      official.certificate_file.file,
+      certificateUrl
+    );
+    delete official.image.file;
+
+    // SEND OFFICIAL
     toast.loading("Mendaftarkan official", { id: toastId });
     const { error } = await addOfficialSql(officialToOfficialSql(official));
     if (error) throw error;
@@ -144,15 +157,22 @@ export const deleteOfficial = async (official: Official) => {
 
     // DELETE IMAGE
     toast.loading("Menghapus pas foto official", { id: toastId });
-    const { error: deleteFileError } = await deleteFile(imageUrl);
-    if (deleteFileError) throw deleteFileError;
+    const { error: deleteImageError } = await deleteFile(imageUrl);
+    if (deleteImageError) throw deleteImageError;
+
+    // DELETE CERTIFICATE
+    if (official.certificate_file.downloadUrl) {
+      toast.loading("Menghapus sertifikat official", { id: toastId });
+      const { error: deleteCertificateError } = await deleteFile(imageUrl);
+      if (deleteCertificateError) throw deleteCertificateError;
+    }
 
     // DELETE ATHLETE
     toast.loading("Menghapus official", { id: toastId });
     const { error: deleteOfficialSqlError } = await deleteOfficialSql(
       officialToOfficialSql(official)
     );
-    if (deleteFileError) throw deleteOfficialSqlError;
+    if (deleteOfficialSqlError) throw deleteOfficialSqlError;
 
     // FINISH
     toast.success("Official berhasil dihapus", { id: toastId });
@@ -169,6 +189,9 @@ export const officialSqlToOfficial = (officialSql: OfficialSql) => {
     image: {
       downloadUrl: officialSql.image,
     },
+    certificate_file: {
+      downloadUrl: officialSql.certificate_file,
+    },
   };
   return result;
 };
@@ -177,6 +200,7 @@ export const officialToOfficialSql = (official: Official) => {
   const result: OfficialSql = {
     ...official,
     image: official.image.downloadUrl,
+    certificate_file: official.certificate_file.downloadUrl,
   };
   return result;
 };

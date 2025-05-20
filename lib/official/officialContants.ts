@@ -9,16 +9,22 @@ export type OfficialBase = {
   gender: string;
   contingent_id: string;
   contingent_name: string;
+  phone_number: string;
   position: string;
   created_at: number;
 };
 
 export type OfficialSql = OfficialBase & {
   image: string;
+  certificate_file: string;
 };
 
 export type Official = OfficialBase & {
   image: {
+    file?: File;
+    downloadUrl: string;
+  };
+  certificate_file: {
     file?: File;
     downloadUrl: string;
   };
@@ -27,6 +33,7 @@ export type Official = OfficialBase & {
 export const officialInitialValue: Official = {
   id: "",
   name: "",
+  phone_number: "",
   gender: adultGender[0],
   contingent_id: "",
   contingent_name: "",
@@ -35,20 +42,39 @@ export const officialInitialValue: Official = {
   image: {
     downloadUrl: "",
   },
+  certificate_file: {
+    downloadUrl: "",
+  },
 };
 
-export const officialSchema = (ignoreImage?: boolean) => {
+export const officialSchema = (ignore?: {
+  image: boolean;
+  certificateFile: boolean;
+}) => {
   let schema = yup.object({
     name: yup.string().required("Tolong lengkapi nama lengkap"),
     contingent_name: yup
       .string()
       .required("Tolong daftarkan kontingen terlebih dahulu"),
+    phone_number: yup
+      .number()
+      .typeError("No HP mengandung huruf")
+      .required("Tolong lengkapi No HP"),
   });
 
-  if (!ignoreImage)
+  if (!ignore?.image)
     schema = schema.concat(
       yup.object({
         image: yup.object({
+          file: imageSchema(1),
+        }),
+      })
+    );
+
+  if (!ignore?.certificateFile)
+    schema = schema.concat(
+      yup.object({
+        certificate_file: yup.object({
           file: imageSchema(1),
         }),
       })

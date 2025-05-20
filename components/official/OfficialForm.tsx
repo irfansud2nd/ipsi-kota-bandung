@@ -28,7 +28,10 @@ import { Championship } from "@/lib/event/eventConstants";
 
 const OfficialForm = ({ championshipId }: { championshipId: string }) => {
   const [open, setOpen] = useState(false);
-  const [imageChanging, setimageChanging] = useState(false);
+  const [fileChanging, setFileChanging] = useState({
+    image: false,
+    certificateFile: false,
+  });
 
   const officialToEdit = useSelector(
     (state: RootState) => state.official.officialToEdit
@@ -51,8 +54,20 @@ const OfficialForm = ({ championshipId }: { championshipId: string }) => {
   };
 
   useEffect(() => {
-    if (officialToEdit) setOpen(true);
+    if (officialToEdit) {
+      setOpen(true);
+      if (!officialToEdit.certificate_file.downloadUrl) {
+        setFileChanging((prev) => ({
+          ...prev,
+          certificateFile: false,
+        }));
+      }
+    }
   }, [officialToEdit]);
+
+  useEffect(() => {
+    console.log(fileChanging);
+  }, [fileChanging]);
 
   const championship = getChampionship(championshipId) as Championship;
   const disableAdd = Date.now() > championship.register.end;
@@ -98,12 +113,19 @@ const OfficialForm = ({ championshipId }: { championshipId: string }) => {
             } finally {
             }
           }}
-          validationSchema={officialSchema(officialToEdit && !imageChanging)}
+          validationSchema={officialSchema(
+            officialToEdit ? fileChanging : undefined
+          )}
         >
           {(props: FormikProps<Official>) => {
             return (
               <Form className="flex flex-col">
                 <InputText label="Nama Lengkap" name="name" formik={props} />
+                <InputText
+                  label="Nomor Telepon"
+                  name="phone_number"
+                  formik={props}
+                />
                 <InputSelect
                   label="Jenis Kelamin"
                   name="gender"
@@ -126,7 +148,30 @@ const OfficialForm = ({ championshipId }: { championshipId: string }) => {
                   label="Pas Foto"
                   name="image"
                   formik={props}
-                  isFileChanging={(value) => setimageChanging(value)}
+                  isFileChanging={(value) =>
+                    setFileChanging((prev) => ({ ...prev, image: !value }))
+                  }
+                />
+                <InputFile
+                  label="Sertifikat"
+                  name="certificate_file"
+                  formik={props}
+                  isFileChanging={(value) => {
+                    if (
+                      officialToEdit &&
+                      !officialToEdit.certificate_file.downloadUrl
+                    ) {
+                      setFileChanging((prev) => ({
+                        ...prev,
+                        certificateFile: false,
+                      }));
+                    } else {
+                      setFileChanging((prev) => ({
+                        ...prev,
+                        certificateFile: !value,
+                      }));
+                    }
+                  }}
                 />
                 <Button type="submit" className="ml-auto">
                   Simpan

@@ -112,6 +112,7 @@ export const getFileUrl = (
     imageUrl: `${type}/image/${id}`,
     kkUrl: `${type}/kk/${id}`,
     ktpUrl: `${type}/ktp/${id}`,
+    certificateUrl: `${type}/certificate/${id}`,
     proofUrl: `${type}/${id}`,
   };
 };

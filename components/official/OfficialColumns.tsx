@@ -47,6 +47,10 @@ export const OfficialColumn = (championshipId: string) => {
       header: "Jabatan",
     },
     {
+      accessorKey: "phone_number",
+      header: "Nomor Telepon",
+    },
+    {
       header: "Aksi",
       id: "Aksi",
       cell: ({ row }) => {
