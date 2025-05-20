@@ -3,6 +3,7 @@ import ChampionshipRegister from "@/components/championship/register/Championshi
 import ChampionshipMenu from "@/components/championship/register/menu/ChampionshipMenu";
 import ReduxProvider from "@/components/providers/ReduxProvider";
 import PageInfo from "@/components/ui/PageInfo";
+import { authOptions } from "@/lib/auth/authOptions";
 import { baseUrl } from "@/lib/constants";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { formatDate } from "@/lib/functions";
@@ -48,18 +49,25 @@ const layout = async ({
   if (params.eventType != "championship") return notFound();
 
   const championship = getChampionship(params.eventId);
+
   if (!championship) return notFound();
 
-  if (Date.now() <= championship.register.start)
-    return (
-      <PageInfo
-        type="sorry"
-        text={`Maaf, pendaftaran baru bisa di lakukan tanggal ${formatDate(
-          championship.register.start,
-          { withoutHour: true, longMonth: true }
-        )}  ya!`}
-      />
-    );
+  if (Date.now() <= championship.register.start) {
+    const session = await getServerSession(authOptions);
+    const email = session?.user?.email || "";
+
+    if (!email || !championship.testerEmail?.includes(email)) {
+      return (
+        <PageInfo
+          type="sorry"
+          text={`Maaf, pendaftaran baru bisa di lakukan tanggal ${formatDate(
+            championship.register.start,
+            { withoutHour: true, longMonth: true }
+          )}  ya!`}
+        />
+      );
+    }
+  }
 
   return (
     <IsLoggedIn>
