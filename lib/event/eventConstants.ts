@@ -195,7 +195,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 16, 2),
           art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "Usia Dini (8-11 Tahun)",
@@ -203,6 +203,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("O", 26, 2, true),
           art: ["Tunggal"],
         },
+        schema: "BOTH",
       },
       {
         level: "Pra Remaja (11-14 Tahun)",
@@ -210,7 +211,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 30, 3, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "Remaja (14-17 Tahun)",
@@ -218,6 +219,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("I", 39, 4, true, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
+        schema: "BOTH",
         limit: {
           paid: true,
           tanding: 16,
@@ -233,6 +235,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("J", 45, 5, true, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
+        schema: "BOTH",
         limit: {
           paid: true,
           tanding: 16,
@@ -313,7 +316,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 16, 2),
           art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "Usia Dini II (SD Kelas 4, 5, 6)",
@@ -321,7 +324,7 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("O", 26, 2, true),
           art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "Pra Remaja (SMP)",
@@ -329,23 +332,23 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 30, 3, true),
           art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
-        level: "Remaja (14-17 Tahun)",
+        level: "Remaja (SMA)",
         category: {
           fight: generateKategoriPertandingan("I", 39, 4, true, true),
           art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "Dewasa (Mahasiswa & Umum)",
         category: {
           fight: generateKategoriPertandingan("J", 45, 5, true, true),
-          art: ["Tunggal", "Ganda", "Regu"],
+          art: ["Tunggal"],
         },
-        rookieOnly: true,
+        schema: "ROOKIE",
       },
       {
         level: "SD (Kelas 4, 5, 6)",
@@ -353,7 +356,15 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("O", 26, 2, true),
           art: ["Tunggal"],
         },
-        proOnly: true,
+        schema: "PRO",
+        oneAthletePerCategory: true,
+        limit: {
+          paid: true,
+          tanding: 32,
+          tunggal: 32,
+          ganda: 32,
+          regu: 32,
+        },
       },
       {
         level: "SMP",
@@ -361,7 +372,15 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 30, 3, true),
           art: ["Tunggal"],
         },
-        proOnly: true,
+        schema: "PRO",
+        oneAthletePerCategory: true,
+        limit: {
+          paid: true,
+          tanding: 32,
+          tunggal: 32,
+          ganda: 32,
+          regu: 32,
+        },
       },
       {
         level: "SMA",
@@ -369,7 +388,15 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("I", 39, 4, true, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
-        proOnly: true,
+        schema: "PRO",
+        oneAthletePerCategory: true,
+        limit: {
+          paid: true,
+          tanding: 32,
+          tunggal: 32,
+          ganda: 32,
+          regu: 32,
+        },
       },
       {
         level: "Mahasiswa & Umum (17 - 30 Tahun)",
@@ -377,7 +404,15 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("J", 45, 5, true, true),
           art: ["Tunggal", "Ganda", "Regu"],
         },
-        proOnly: true,
+        schema: "PRO",
+        oneAthletePerCategory: true,
+        limit: {
+          paid: true,
+          tanding: 32,
+          tunggal: 32,
+          ganda: 32,
+          regu: 32,
+        },
       },
     ],
     proposal:
@@ -547,8 +582,7 @@ export type MatchCategory = {
     fight: string[];
     art: ("Tunggal" | "Ganda" | "Regu")[];
   };
-  rookieOnly?: boolean;
-  proOnly?: boolean;
+  schema: "ROOKIE" | "PRO" | "BOTH";
   limit?: {
     paid: boolean;
     tanding: number;

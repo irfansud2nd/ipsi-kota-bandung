@@ -408,20 +408,22 @@ export const getMatchCategory = (
   const categories = matchCategory.find(
     (item) => item.level == level
   )?.category;
+
   const result = type == matchType[0] ? categories?.fight : categories?.art;
+
   return result ?? [];
 };
 
 export const getLevel = (rookie: boolean, matchCategory: MatchCategory) => {
-  const professionalLevels = matchCategory
-    .filter((item) => item.rookieOnly != true)
+  const levels = matchCategory
+    .filter((item) =>
+      rookie
+        ? item.schema == "BOTH" || item.schema == "ROOKIE"
+        : item.schema == "BOTH" || item.schema == "PRO"
+    )
     .map((item) => item.level);
 
-  const rookieLevels = matchCategory
-    .filter((item) => item.proOnly != true)
-    .map((item) => item.level);
-
-  return rookie ? rookieLevels : professionalLevels;
+  return levels;
 };
 
 export const isMatchSame = (item1: MatchBased, item2: MatchBased) => {

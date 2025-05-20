@@ -58,7 +58,7 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
   const userEmail = session.data?.user?.email as string;
 
   const fetchContingent = async () => {
-    // console.log("fetchContingent");
+    console.log("fetchContingent");
 
     try {
       const { contingent, contingentAtEvents } = await getContingentInfoByEmail(
@@ -81,6 +81,15 @@ const ChampionshipRegister = ({ children, championshipId }: Props) => {
           championshipId,
         })
       );
+
+      if (
+        !contingentAtEvents.find(
+          (item) => item.championship_id == championshipId
+        )
+      ) {
+        setAllFetched();
+        return;
+      }
 
       setFetched((prev) => ({ ...prev, contingent: true }));
     } catch (error) {

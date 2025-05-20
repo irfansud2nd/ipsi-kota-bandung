@@ -157,7 +157,8 @@ export const isLevelRookieOnly = (
   championship: Championship
 ) => {
   if (
-    championship.matchCategory.find((item) => item.level == level)?.rookieOnly
+    championship.matchCategory.find((item) => item.level == level)?.schema ==
+    "ROOKIE"
   )
     return true;
   return false;

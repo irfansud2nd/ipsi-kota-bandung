@@ -36,7 +36,7 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
 
     matchType.map((type) =>
       matchCategory
-        .filter((item) => !item.rookieOnly)
+        .filter((item) => item.schema != "ROOKIE")
         .map((matchCategory) =>
           matchCategory.category[type == matchType[0] ? "fight" : "art"].map(
             (category) => {

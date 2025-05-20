@@ -51,7 +51,7 @@ const CategorizedCountTable = ({
           label="Kelompok Usia"
           options={[
             ...championship.matchCategory
-              .filter((item) => !item.rookieOnly)
+              .filter((item) => item.schema != "ROOKIE")
               .map((item) => item.level),
             "Semua",
           ]}

@@ -127,7 +127,7 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
         let id = "Tanding";
         id += ` ${gender}`;
         id += ` ${match.level.replace(/\s*\(.*?\)\s*/g, "")}`;
-        if (!match.rookieOnly) {
+        if (match.schema != "ROOKIE") {
           matchSchema.map((item) => {
             let idScm = id;
             idScm += ` ${item}`;
@@ -144,7 +144,7 @@ const PaymentInvoice = ({ payment }: { payment: Payment }) => {
           id += changeCategorylabel(artCategory);
           id += ` ${gender}`;
           id += ` ${match.level.replace(/\s*\(.*?\)\s*/g, "")}`;
-          if (!match.rookieOnly) {
+          if (match.schema != "ROOKIE") {
             matchSchema.map((item) => {
               let idScm = id;
               idScm += ` ${item}`;
