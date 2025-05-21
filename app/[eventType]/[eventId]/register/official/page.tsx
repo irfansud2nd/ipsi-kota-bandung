@@ -23,7 +23,9 @@ const page = ({ params }: { params: { eventId: string } }) => {
         </div>
         {groupLink && (
           <Button className="sm:ml-2 sm:mr-auto" asChild>
-            <Link href={groupLink}>Grup Official</Link>
+            <Link href={groupLink} target="_blank">
+              Grup Official
+            </Link>
           </Button>
         )}
         <OfficialForm championshipId={params.eventId} />
