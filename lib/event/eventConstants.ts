@@ -441,7 +441,7 @@ export const championships: Championship[] = [
       regu: 375000,
     },
     reserveForPal: false,
-    // officialGroupLink: "https://chat.whatsapp.com/FD4me26mk1FD7FOC1dMDoR",
+    officialGroupLink: "https://chat.whatsapp.com/DExK59aj2Vs8SJTA84UnXi",
     showOnHome: true,
     dialogOnHome: false,
     testerEmail: [
