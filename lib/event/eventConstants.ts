@@ -314,7 +314,7 @@ export const championships: Championship[] = [
         level: "Usia Dini I (SD Kelas 1, 2, 3)",
         category: {
           fight: generateKategoriPertandingan("P", 16, 2),
-          art: ["Tunggal"],
+          art: ["Tunggal", "Tunggal Tangan Kosong", "Tunggal Bersenjata"],
         },
         schema: "ROOKIE",
       },
@@ -324,6 +324,8 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("O", 26, 2, true),
           art: [
             "Tunggal",
+            "Tunggal Tangan Kosong",
+            "Tunggal Bersenjata",
             "Ganda Tangan Kosong",
             "Ganda Bersenjata",
             "Regu A (1-6)",
@@ -338,6 +340,8 @@ export const championships: Championship[] = [
           fight: generateKategoriPertandingan("P", 30, 3, true),
           art: [
             "Tunggal",
+            "Tunggal Tangan Kosong",
+            "Tunggal Bersenjata",
             "Ganda Tangan Kosong",
             "Ganda Bersenjata",
             "Regu A (1-6)",
@@ -350,7 +354,7 @@ export const championships: Championship[] = [
         level: "Remaja (SMA)",
         category: {
           fight: generateKategoriPertandingan("I", 39, 4, true, true),
-          art: ["Tunggal"],
+          art: ["Tunggal", "Tunggal Tangan Kosong", "Tunggal Bersenjata"],
         },
         schema: "ROOKIE",
       },
@@ -358,7 +362,7 @@ export const championships: Championship[] = [
         level: "Dewasa (Mahasiswa & Umum)",
         category: {
           fight: generateKategoriPertandingan("J", 45, 5, true, true),
-          art: ["Tunggal"],
+          art: ["Tunggal", "Tunggal Tangan Kosong", "Tunggal Bersenjata"],
         },
         schema: "ROOKIE",
       },
