@@ -322,7 +322,13 @@ export const championships: Championship[] = [
         level: "Usia Dini II (SD Kelas 4, 5, 6)",
         category: {
           fight: generateKategoriPertandingan("O", 26, 2, true),
-          art: ["Tunggal"],
+          art: [
+            "Tunggal",
+            "Ganda Tangan Kosong",
+            "Ganda Bersenjata",
+            "Regu A (1-6)",
+            "Regu B(7-12)",
+          ],
         },
         schema: "ROOKIE",
       },
@@ -330,7 +336,13 @@ export const championships: Championship[] = [
         level: "Pra Remaja (SMP)",
         category: {
           fight: generateKategoriPertandingan("P", 30, 3, true),
-          art: ["Tunggal"],
+          art: [
+            "Tunggal",
+            "Ganda Tangan Kosong",
+            "Ganda Bersenjata",
+            "Regu A (1-6)",
+            "Regu B (7-12)",
+          ],
         },
         schema: "ROOKIE",
       },
@@ -580,7 +592,7 @@ export type MatchCategory = {
   level: string;
   category: {
     fight: string[];
-    art: ("Tunggal" | "Ganda" | "Regu")[];
+    art: string[];
   };
   schema: "ROOKIE" | "PRO" | "BOTH";
   limit?: {
