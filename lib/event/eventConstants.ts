@@ -296,7 +296,7 @@ export const championships: Championship[] = [
     created_at: dateToNumber("2025-05-16"),
     description: "",
     register: {
-      start: dateToNumber("2025-06-01"),
+      start: dateToNumber("2025-06-01", "12:00"),
       end: dateToNumber("2025-07-24", "23:59"),
     },
     editLimit: dateToNumber("2025-08-01", "23:59"),
