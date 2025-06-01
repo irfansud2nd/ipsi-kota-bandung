@@ -33,8 +33,8 @@ export const addOfficial = async (officialData: Official) => {
 
     if (!official.image.file) throw { message: "Pas foto tidak ditemukan" };
 
-    if (!official.certificate_file.file)
-      throw { message: "Sertifikat tidak ditemukan" };
+    // if (!official.certificate_file.file)
+    //   throw { message: "Sertifikat tidak ditemukan" };
 
     const response = await apiProtect();
     if (response) throw response;
@@ -44,13 +44,15 @@ export const addOfficial = async (officialData: Official) => {
     official.image.downloadUrl = await sendFile(official.image.file, imageUrl);
     delete official.image.file;
 
-    // SEND IMAGE
-    toast.loading("Mengunggah sertifikat official", { id: toastId });
-    official.certificate_file.downloadUrl = await sendFile(
-      official.certificate_file.file,
-      certificateUrl
-    );
-    delete official.image.file;
+    // SEND CERTIFICATE
+    if (official.certificate_file.file) {
+      toast.loading("Mengunggah sertifikat official", { id: toastId });
+      official.certificate_file.downloadUrl = await sendFile(
+        official.certificate_file.file,
+        certificateUrl
+      );
+      delete official.certificate_file.file;
+    }
 
     // SEND OFFICIAL
     toast.loading("Mendaftarkan official", { id: toastId });
@@ -116,7 +118,7 @@ export const getOfficialsByContingentId = async (contingentId: string) => {
 // UPDATE
 export const updateOfficial = async (official: Official) => {
   const toastId = toast.loading("Memperbahrui official");
-  const { imageUrl } = getFileUrl("official", official.id);
+  const { imageUrl, certificateUrl } = getFileUrl("official", official.id);
 
   try {
     const response = await apiProtect();
@@ -132,7 +134,27 @@ export const updateOfficial = async (official: Official) => {
       delete official.image.file;
     }
 
-    // UPDATE ATHLETE
+    if (official.image.file) {
+      // UPDATE IMAGE
+      toast.loading("Memperbaharui pas foto official", { id: toastId });
+      official.image.downloadUrl = await sendFile(
+        official.image.file,
+        imageUrl
+      );
+      delete official.image.file;
+    }
+
+    if (official.certificate_file.file) {
+      // UPDATE CERcertificate_file
+      toast.loading("Memperbaharui pas foto official", { id: toastId });
+      official.certificate_file.downloadUrl = await sendFile(
+        official.certificate_file.file,
+        certificateUrl
+      );
+      delete official.certificate_file.file;
+    }
+
+    // UPDATE OFFICIAL
     toast.loading("Memperbaharui official", { id: toastId });
     const { error } = await updateOfficialSql(officialToOfficialSql(official));
     if (error) throw error;
@@ -149,7 +171,7 @@ export const updateOfficial = async (official: Official) => {
 export const deleteOfficial = async (official: Official) => {
   const toastId = toast.loading("Menghapus Official");
 
-  const { imageUrl } = getFileUrl("official", official.id);
+  const { imageUrl, certificateUrl } = getFileUrl("official", official.id);
 
   try {
     const response = await apiProtect();
@@ -163,7 +185,9 @@ export const deleteOfficial = async (official: Official) => {
     // DELETE CERTIFICATE
     if (official.certificate_file.downloadUrl) {
       toast.loading("Menghapus sertifikat official", { id: toastId });
-      const { error: deleteCertificateError } = await deleteFile(imageUrl);
+      const { error: deleteCertificateError } = await deleteFile(
+        certificateUrl
+      );
       if (deleteCertificateError) throw deleteCertificateError;
     }
 

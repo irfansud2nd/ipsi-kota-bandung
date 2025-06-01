@@ -71,14 +71,14 @@ export const officialSchema = (ignore?: {
       })
     );
 
-  if (!ignore?.certificateFile)
-    schema = schema.concat(
-      yup.object({
-        certificate_file: yup.object({
-          file: imageSchema(1),
-        }),
-      })
-    );
+  // if (!ignore?.certificateFile)
+  //   schema = schema.concat(
+  //     yup.object({
+  //       certificate_file: yup.object({
+  //         file: imageSchema(1),
+  //       }),
+  //     })
+  //   );
 
   return schema;
 };
