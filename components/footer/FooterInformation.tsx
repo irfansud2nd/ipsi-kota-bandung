@@ -25,14 +25,14 @@ const FooterInformation = () => {
       alt: "logo bpjs",
       landscape: true,
     },
-    {
-      src: "/images/logo-ars.png",
-      alt: "logo ars",
-    },
-    {
-      src: "/images/logo-mills.png",
-      alt: "logo mills",
-    },
+    // {
+    //   src: "/images/logo-ars.png",
+    //   alt: "logo ars",
+    // },
+    // {
+    //   src: "/images/logo-mills.png",
+    //   alt: "logo mills",
+    // },
   ];
 
   const socmeds = [
