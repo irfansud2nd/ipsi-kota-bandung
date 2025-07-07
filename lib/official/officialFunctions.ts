@@ -5,6 +5,7 @@ import {
   deleteOfficialSql,
   getOfficialsSql,
   getOfficialsSqlByContingentId,
+  getRegisteredOfficialsSql,
   updateOfficialSql,
 } from "./officialActions";
 import { Official, OfficialSql } from "./officialContants";
@@ -81,6 +82,35 @@ export const getOfficials = async (
     const { result: officialsSql, error } = await getOfficialsSql(
       page,
       limit,
+      showAll
+    );
+    if (error) throw error;
+
+    const officials = officialsSql.map((officialSql) =>
+      officialSqlToOfficial(officialSql)
+    );
+
+    return officials;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// READ
+export const getRegisteredOfficials = async (
+  page: number,
+  limit: number,
+  championdhipId: string,
+  showAll: boolean = false
+) => {
+  try {
+    const response = await apiProtect({ directory: "official" });
+    if (response) throw response;
+
+    const { result: officialsSql, error } = await getRegisteredOfficialsSql(
+      page,
+      limit,
+      championdhipId,
       showAll
     );
     if (error) throw error;

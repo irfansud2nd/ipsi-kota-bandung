@@ -52,6 +52,40 @@ export const getOfficialsSqlByContingentId = async (
   }
 };
 
+export const getRegisteredOfficialsSql = async (
+  page: number,
+  limit: number,
+  championshipId: string,
+  showAll: boolean = false
+): Promise<ServerAction<OfficialSql[]>> => {
+  try {
+    const response = await apiProtect({ directory: "official" });
+    if (response) throw new Error(response.message);
+
+    let params = {
+      pg: page,
+      lmt: limit,
+      champ_id: championshipId,
+    };
+
+    if (showAll) {
+      params.lmt = 500;
+    }
+
+    let getData = supabase
+      .rpc("get_registered_athletes", params)
+      .returns<OfficialSql[]>();
+
+    const { data, error } = await getData;
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // CREATE
 export const addOfficialSql = async (
   officialSql: OfficialSql
