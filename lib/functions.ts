@@ -15,32 +15,43 @@ export const formatDate = (
     monthNumber?: boolean;
   }
 ) => {
-  const formattedDate = new Date(inputDate);
-  const date = formattedDate.getDate().toString().padStart(2, "0");
-  let year = formattedDate.getFullYear().toString();
-  const month = {
-    string: formattedDate.toLocaleString("id", {
-      month: options?.longMonth ? "long" : "short",
-    }),
-    number: (formattedDate.getMonth() + 1).toString().padStart(2, "0"),
-  };
-  const hour = formattedDate.getHours().toString().padStart(2, "0");
-  const minute = formattedDate.getMinutes().toString().padStart(2, "0");
+  const dateObj = new Date(inputDate);
+  const timeZone = "Asia/Jakarta";
 
-  let result = `${date} ${options?.monthNumber ? month.number : month.string} `;
+  const parts = new Intl.DateTimeFormat("id-ID", {
+    timeZone,
+    day: "2-digit",
+    month: options?.monthNumber
+      ? "2-digit"
+      : options?.longMonth
+      ? "long"
+      : "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(dateObj);
 
-  if (options?.shortYear) year = year.substring(year.length - 2);
+  const getPart = (type: string) =>
+    parts.find((part) => part.type === type)?.value || "";
 
-  !options?.withoutYear && (result += `${year}`);
+  const day = getPart("day");
+  let month = getPart("month");
+  let year = getPart("year");
+  const hour = getPart("hour");
+  const minute = getPart("minute");
 
-  !options?.withoutHour && (result += ` - ${hour}:${minute}`);
+  if (options?.shortYear) year = year.slice(-2);
 
-  options?.hourOnly && (result = `${hour}:${minute}`);
+  let result = `${day} ${month} `;
+  if (!options?.withoutYear) result += `${year}`;
+  if (!options?.withoutHour) result += ` - ${hour}:${minute}`;
+  if (options?.hourOnly) result = `${hour}:${minute}`;
 
   if (options?.htmlFormat) {
-    result = `${year}-${month.number}-${date} 00:01`;
-    options.withoutHour && (result = result.replace(" 00:01", ""));
-    options?.hourOnly && (result = `${hour}:${minute}`);
+    result = `${year}-${getPart("month")}-${day} 00:01`;
+    if (options.withoutHour) result = result.replace(" 00:01", "");
+    if (options?.hourOnly) result = `${hour}:${minute}`;
     if (!inputDate) result = "";
   }
 
