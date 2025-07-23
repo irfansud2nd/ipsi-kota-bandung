@@ -440,11 +440,11 @@ export const countDuplicateMatch = async (
 
 export const countMatchByChampionshipId = async (
   championshipId: string
-): Promise<ServerAction<number>> => {
+): Promise<ServerAction<{ total: number; rookie: number; pro: number }>> => {
   try {
     const { data, error } = await supabase
       .rpc("count_match_by_championship_id", { champ_id: championshipId })
-      .returns<number>();
+      .returns<{ total: number; rookie: number; pro: number }>();
 
     if (error) throw new Error(error.message);
 
@@ -456,11 +456,11 @@ export const countMatchByChampionshipId = async (
 
 export const countAthleteByChampionshipId = async (
   championshipId: string
-): Promise<ServerAction<number>> => {
+): Promise<ServerAction<{ total: number; rookie: number; pro: number }>> => {
   try {
     const { data, error } = await supabase
       .rpc("count_athlete_by_championship_id", { champ_id: championshipId })
-      .returns<number>();
+      .returns<{ total: number; rookie: number; pro: number }>();
 
     if (error) throw new Error(error.message);
 

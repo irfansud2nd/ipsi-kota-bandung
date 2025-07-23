@@ -10,10 +10,10 @@ type Props = {
 
 const CountDisplay = ({ title, count, className, withoutRefresh }: Props) => {
   return (
-    <div className={`flex justify-center items-center ${className}`}>
+    <div className={`mx-auto my-auto ${className}`}>
       <Card>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="text-center">{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col justify-center gap-y-3">
           <p className="text-center text-2xl font-bold">{count}</p>

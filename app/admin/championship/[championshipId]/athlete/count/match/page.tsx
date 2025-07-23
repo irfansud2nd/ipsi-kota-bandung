@@ -7,6 +7,24 @@ const page = async ({ params }: { params: { championshipId: string } }) => {
     countMatchByChampionshipId(params.championshipId)
   );
 
-  return <CountDisplay title="Jumlah Pertandingan" count={matchCount} />;
+  return (
+    <div className="grid md:grid-cols-3 justify-center items-center">
+      <CountDisplay
+        title="Jumlah Pertandingan"
+        count={matchCount.total}
+        className="w-[250px]"
+      />
+      <CountDisplay
+        title="Jumlah Pertandingan Pemula"
+        count={matchCount.rookie}
+        className="w-[250px]"
+      />
+      <CountDisplay
+        title="Jumlah Pertandingan Prestasi"
+        count={matchCount.pro}
+        className="w-[250px]"
+      />
+    </div>
+  );
 };
 export default page;
