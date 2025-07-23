@@ -98,7 +98,7 @@ const Card = ({ championship }: { championship: Championship }) => {
           asChild={!!championship.proposal}
           disabled={!championship.proposal}
         >
-          <a href={getProposal(championship.id)} download>
+          <a href={championship.proposal} target="_blank">
             Proposal
           </a>
         </Button>

@@ -125,13 +125,16 @@ const EventDisplay = ({ event, preview }: Props) => {
         label: "Proposal",
         icon: <IoDocumentText />,
         content: championship.proposal ? (
-          <a
-            href={getProposal(championship.id)}
-            className="hover:text-green-400 transition"
-            download
-          >
+          // <a
+          //   href={getProposal(championship.id)}
+          //   className="hover:text-green-400 transition"
+          //   download
+          // >
+          //   Klik disini
+          // </a>
+          <Link href={championship.proposal} target="_blank">
             Klik disini
-          </a>
+          </Link>
         ) : (
           <span className="text-muted-foreground">Belum tersedia</span>
         ),
