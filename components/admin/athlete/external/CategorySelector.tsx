@@ -82,12 +82,22 @@ const CategorySelector = ({ championshipId, url, hide }: Props) => {
       }
     }
 
+    const searchParams = new URLSearchParams({
+      schema,
+      type,
+      level,
+      category,
+      gender,
+    }).toString();
+
+    let targetUrl = `${url}?${searchParams}`;
+
     // const targetUrl = `${url}?schema=${schema}&type=${type}&level=${level}&category=${category}&gender=${gender}&page=1`;
-    let targetUrl = `${url}?`;
-    params.map((item, i) => {
-      targetUrl += `${item.key}=${item.value}`;
-      if (i < params.length - 1) targetUrl += "&";
-    });
+    // let targetUrl = `${url}?`;
+    // params.map((item, i) => {
+    //   targetUrl += encodeURIComponent(`${item.key}=${item.value}`);
+    //   if (i < params.length - 1) targetUrl += "&";
+    // });
 
     router.push(targetUrl);
   };
