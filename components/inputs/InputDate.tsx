@@ -66,6 +66,7 @@ const InputDate = ({
         type={time ? "time" : "date"}
         value={formatDate(value, {
           htmlFormat: true,
+          monthNumber: true,
           hourOnly: time,
           withoutHour: true,
         })}
