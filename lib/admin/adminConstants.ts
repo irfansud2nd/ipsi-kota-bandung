@@ -303,8 +303,12 @@ export const championshipAdminLinks: {
           label: "Filter Kategori",
         },
         {
-          href: "/categorized/count",
-          label: "Kuota Pertandingan Pertasi",
+          href: "/categorized/count/rookie",
+          label: "Kuota Pertandingan Pemula",
+        },
+        {
+          href: "/categorized/count/pro",
+          label: "Kuota Pertandingan Prestasi",
         },
       ],
     },
