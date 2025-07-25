@@ -26,7 +26,7 @@ const TabsListComp = () => {
         <TabsTrigger value="unpaid">Menunggu Pembayaran</TabsTrigger>
         <TabsTrigger value="unconfirmed">Menunggu Konfirmasi</TabsTrigger>
         <TabsTrigger value="confirmed">Pembayaran Selesai</TabsTrigger>
-        <TabsTrigger value="invoice">Invoice</TabsTrigger>
+        {/* <TabsTrigger value="invoice">Invoice</TabsTrigger> */}
       </TabsList>
       {/* TABS LIST MOBILE */}
       <div className="block sm:hidden">
@@ -48,9 +48,9 @@ const TabsListComp = () => {
                 <TabsTrigger value="confirmed" asChild>
                   <SelectItem value="confirmed">Pembayaran Selesai</SelectItem>
                 </TabsTrigger>
-                <TabsTrigger value="invoice" asChild>
+                {/* <TabsTrigger value="invoice" asChild>
                   <SelectItem value="invoice">Invoice</SelectItem>
-                </TabsTrigger>
+                </TabsTrigger> */}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -83,9 +83,9 @@ const page = ({ params }: { params: { eventId: string } }) => {
           <TabsContent value="confirmed">
             <PaidTable confirmed />
           </TabsContent>
-          <TabsContent value="invoice">
+          {/* <TabsContent value="invoice">
             <InvoiceTable />
-          </TabsContent>
+          </TabsContent> */}
         </div>
       </Tabs>
     </div>
