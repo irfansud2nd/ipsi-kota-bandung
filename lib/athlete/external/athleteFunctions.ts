@@ -7,6 +7,7 @@ import {
   AthleteSql,
   AthleteAtEventSql,
   matchSchema,
+  athleteGender,
 } from "./athleteConstants";
 import { v4 } from "uuid";
 import { getFileUrl } from "@/lib/functions";
@@ -465,16 +466,19 @@ export const checkMatchBasedLimited = async (
   )?.limit;
   if (!limit) return;
 
-  let countLimit = limit.tanding;
+  let genderLimit =
+    matchBased.gender == athleteGender[0] ? limit.putra : limit.putri;
+
+  let countLimit = genderLimit.tanding;
   if (matchBased.category.includes("Ganda")) {
-    countLimit = limit.ganda;
+    countLimit = genderLimit.ganda;
     if (!isNewTeam(matchBaseds, matchBased, limit.paid)) countLimit += 1;
   }
   if (matchBased.category.includes("Regu")) {
-    countLimit = limit.regu;
+    countLimit = genderLimit.regu;
     if (!isNewTeam(matchBaseds, matchBased, limit.paid)) countLimit += 1;
   }
-  if (matchBased.category.includes("Tunggal")) countLimit = limit.tunggal;
+  if (matchBased.category.includes("Tunggal")) countLimit = genderLimit.tunggal;
 
   try {
     const { result: count, error: countError } = await countDuplicateMatch(
@@ -483,19 +487,19 @@ export const checkMatchBasedLimited = async (
     );
     if (countError) throw countError;
 
-    if (getChampionship(matchBased.championship_id)?.reserveForPal) {
-      const { result: palCount, error: palCountError } =
-        await countDuplicateMatch(matchBased, limit.paid, true);
-      if (palCountError) throw palCountError;
+    // if (getChampionship(matchBased.championship_id)?.reserveForPal) {
+    //   const { result: palCount, error: palCountError } =
+    //     await countDuplicateMatch(matchBased, limit.paid, true);
+    //   if (palCountError) throw palCountError;
 
-      if (
-        !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
-        count < countLimit &&
-        palCount < 1
-      ) {
-        countLimit -= 1;
-      }
-    }
+    //   if (
+    //     !matchBased.contingent_name.includes("PAL KOTA BANDUNG") &&
+    //     count < countLimit &&
+    //     palCount < 1
+    //   ) {
+    //     countLimit -= 1;
+    //   }
+    // }
 
     // console.log({ count, countLimit });
 

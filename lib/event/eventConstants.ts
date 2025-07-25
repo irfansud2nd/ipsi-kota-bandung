@@ -222,10 +222,18 @@ export const championships: Championship[] = [
         schema: "BOTH",
         limit: {
           paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
+          putra: {
+            tanding: 16,
+            tunggal: 16,
+            ganda: 8,
+            regu: 8,
+          },
+          putri: {
+            tanding: 16,
+            tunggal: 16,
+            ganda: 8,
+            regu: 8,
+          },
         },
         oneAthletePerCategory: true,
       },
@@ -238,10 +246,18 @@ export const championships: Championship[] = [
         schema: "BOTH",
         limit: {
           paid: true,
-          tanding: 16,
-          tunggal: 16,
-          ganda: 8,
-          regu: 8,
+          putra: {
+            tanding: 16,
+            tunggal: 16,
+            ganda: 8,
+            regu: 8,
+          },
+          putri: {
+            tanding: 16,
+            tunggal: 16,
+            ganda: 8,
+            regu: 8,
+          },
         },
         oneAthletePerCategory: true,
       },
@@ -297,7 +313,7 @@ export const championships: Championship[] = [
     description: "",
     register: {
       start: dateToNumber("2025-06-01"),
-      end: dateToNumber("2025-07-28", "23:59"),
+      end: dateToNumber("2025-07-24", "21:00"),
     },
     editLimit: dateToNumber("2025-08-01", "23:59"),
     athletes: 0,
@@ -374,10 +390,18 @@ export const championships: Championship[] = [
         oneAthletePerCategory: true,
         limit: {
           paid: true,
-          tanding: 32,
-          tunggal: 32,
-          ganda: 32,
-          regu: 32,
+          putra: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
+          putri: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
         },
       },
       {
@@ -390,10 +414,18 @@ export const championships: Championship[] = [
         oneAthletePerCategory: true,
         limit: {
           paid: true,
-          tanding: 32,
-          tunggal: 32,
-          ganda: 32,
-          regu: 32,
+          putra: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
+          putri: {
+            tanding: 32,
+            tunggal: 64,
+            ganda: 32,
+            regu: 32,
+          },
         },
       },
       {
@@ -406,10 +438,18 @@ export const championships: Championship[] = [
         oneAthletePerCategory: true,
         limit: {
           paid: true,
-          tanding: 32,
-          tunggal: 32,
-          ganda: 32,
-          regu: 32,
+          putra: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
+          putri: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
         },
       },
       {
@@ -422,10 +462,18 @@ export const championships: Championship[] = [
         oneAthletePerCategory: true,
         limit: {
           paid: true,
-          tanding: 32,
-          tunggal: 32,
-          ganda: 32,
-          regu: 32,
+          putra: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
+          putri: {
+            tanding: 32,
+            tunggal: 32,
+            ganda: 32,
+            regu: 32,
+          },
         },
       },
     ],
@@ -599,10 +647,18 @@ export type MatchCategory = {
   schema: "ROOKIE" | "PRO" | "BOTH";
   limit?: {
     paid: boolean;
-    tanding: number;
-    tunggal: number;
-    ganda: number;
-    regu: number;
+    putra: {
+      tanding: number;
+      tunggal: number;
+      ganda: number;
+      regu: number;
+    };
+    putri: {
+      tanding: number;
+      tunggal: number;
+      ganda: number;
+      regu: number;
+    };
   };
   oneAthletePerCategory?: boolean;
 }[];
