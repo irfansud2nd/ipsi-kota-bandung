@@ -84,7 +84,7 @@ export const roleAccess: {
   },
   {
     role: "eventAdmin",
-    dir: ["championship", "contingent", "athlete", "payment"],
+    dir: ["championship", "contingent", "athlete"],
   },
   ...internalAthleteRoles.map((athlete) => ({ role: athlete, dir: [athlete] })),
 ];
