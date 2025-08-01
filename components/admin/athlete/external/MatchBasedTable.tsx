@@ -79,12 +79,14 @@ const MatchBasedTable = ({ matchBaseds }: { matchBaseds: MatchBased[] }) => {
             <TableCell>{matchBased.phone_number}</TableCell>
             <TableCell>{formatDate(matchBased.created_at)}</TableCell>
             <TableCell>
+              <span className="hidden">{matchBased.image.downloadUrl}</span>
               <ShowFileButton
                 title={`Pas Foto ${matchBased.name}`}
                 src={matchBased.image.downloadUrl}
               />
             </TableCell>
             <TableCell>
+              <span className="hidden">{matchBased.kk.downloadUrl}</span>
               <ShowFileButton
                 title={`Kartu Keluarga ${matchBased.name}`}
                 src={matchBased.kk.downloadUrl}
