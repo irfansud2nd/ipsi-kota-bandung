@@ -483,7 +483,7 @@ export const championships: Championship[] = [
       checkLimit: false,
     },
     payment: {
-      closedAt: dateToNumber("2025-08-01", "23:59"),
+      closedAt: dateToNumber("2025-08-03", "23:59"),
       total: 0,
       confirmed: 0,
       target: {
