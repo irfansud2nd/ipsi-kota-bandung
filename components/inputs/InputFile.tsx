@@ -10,6 +10,7 @@ import { InputProps } from "@/lib/form/formConstants";
 import { Button } from "../ui/button";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import useShowFile from "@/hooks/useShowFile";
+import { useSession } from "next-auth/react";
 
 type Props = InputProps & {
   landscape?: boolean;
@@ -74,6 +75,18 @@ const InputFile = ({
   if (championship) {
     disableAdd = now > championship.register.end;
     disableEdit = now > championship.editLimit;
+
+    if ((disableAdd || disableEdit) && championship.privilegedEmail?.length) {
+      const session = useSession();
+      if (
+        championship.privilegedEmail.includes(
+          session.data?.user?.email as string
+        )
+      ) {
+        if (disableAdd) disableAdd = false;
+        if (disableEdit) disableEdit = false;
+      }
+    }
   }
 
   if (disableAdd && !showOnEditOnly && !disableEdit) {

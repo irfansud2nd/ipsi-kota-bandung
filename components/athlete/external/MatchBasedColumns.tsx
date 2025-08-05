@@ -27,13 +27,22 @@ import { toastError } from "@/lib/form/formFunctions";
 import { toast } from "sonner";
 import { Championship } from "@/lib/event/eventConstants";
 import OptionButton from "@/components/ui/OptionButton";
+import { useSession } from "next-auth/react";
 
 export const MatchBasedColumns = (championshipId: string, art?: boolean) => {
   const championship = getChampionship(championshipId) as Championship;
 
-  const locked =
+  let locked =
     Date.now() > championship.register.end &&
     Date.now() > championship.editLimit;
+
+  if (locked && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    )
+      locked = false;
+  }
 
   let columns: ColumnDef<MatchBased>[] = [
     {

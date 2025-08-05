@@ -70,8 +70,19 @@ const OfficialForm = ({ championshipId }: { championshipId: string }) => {
   }, [fileChanging]);
 
   const championship = getChampionship(championshipId) as Championship;
-  const disableAdd = Date.now() > championship.register.end;
-  const disableEdit = disableAdd && Date.now() > championship.editLimit;
+
+  let disableAdd = Date.now() > championship.register.end;
+  let disableEdit = disableAdd && Date.now() > championship.editLimit;
+
+  if ((disableAdd || disableEdit) && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    ) {
+      if (disableAdd) disableAdd = false;
+      if (disableEdit) disableEdit = false;
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>

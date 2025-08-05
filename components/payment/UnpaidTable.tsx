@@ -7,6 +7,7 @@ import { SelectableTable } from "../ui/SelectableTable";
 import { PaymentColumns } from "./PaymentColumns";
 import UnpaidBar from "./UnpaidBar";
 import { Championship } from "@/lib/event/eventConstants";
+import { useSession } from "next-auth/react";
 
 const UnpaidTable = ({ championshipId }: { championshipId: string }) => {
   const matchBased = useSelector(
@@ -14,7 +15,16 @@ const UnpaidTable = ({ championshipId }: { championshipId: string }) => {
   );
 
   const championship = getChampionship(championshipId) as Championship;
-  const closePayment = Date.now() > championship.payment.closedAt;
+  let closePayment = Date.now() > championship.payment.closedAt;
+
+  if (closePayment && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    ) {
+      closePayment = false;
+    }
+  }
 
   let unpaidMatchBaseds = matchBased.filter((item) => !item.payment_id);
   return (

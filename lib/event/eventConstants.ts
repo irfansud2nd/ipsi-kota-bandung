@@ -121,6 +121,7 @@ export type Championship = Event & {
   showOnHome?: boolean;
   dialogOnHome?: boolean;
   testerEmail?: string[];
+  privilegedEmail?: string[];
 };
 
 const generateKategoriPertandingan = (
@@ -297,6 +298,7 @@ export const championships: Championship[] = [
     ],
   },
   {
+    privilegedEmail: ["alfarizzi1804@gmail.com"],
     id: "bandung-open-25",
     title: "Bandung Pencak Silat Tournament 2025",
     image: {

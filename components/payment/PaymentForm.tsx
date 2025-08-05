@@ -40,6 +40,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { toastError } from "@/lib/form/formFunctions";
 import DisplayText from "../inputs/DisplayText";
 import Loading from "../ui/Loading";
+import { useSession } from "next-auth/react";
 
 const PaymentForm = ({
   selectedMatchBaseds,
@@ -63,7 +64,16 @@ const PaymentForm = ({
     registeredContingent.championship_id
   ) as Championship;
 
-  const closePayment = Date.now() > championship.payment.closedAt;
+  let closePayment = Date.now() > championship.payment.closedAt;
+
+  if (closePayment && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    ) {
+      closePayment = false;
+    }
+  }
 
   let initialValue: Payment = {
     ...paymentInitialValue,

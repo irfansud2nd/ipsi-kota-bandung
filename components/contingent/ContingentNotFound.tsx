@@ -6,13 +6,24 @@ import ContingentForm from "./ContingentForm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
 import { Championship } from "@/lib/event/eventConstants";
+import { useSession } from "next-auth/react";
 
 const ContingentNotFound = ({ championshipId }: { championshipId: string }) => {
   const championship = getChampionship(championshipId) as Championship;
-  const disableAdd = Date.now() > championship.register.end;
   const unregisteredContingent = useSelector(
     (state: RootState) => state.contingent.unregistered
   );
+
+  let disableAdd = Date.now() > championship.register.end;
+
+  if (disableAdd && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    ) {
+      disableAdd = false;
+    }
+  }
 
   if (unregisteredContingent) return null;
 

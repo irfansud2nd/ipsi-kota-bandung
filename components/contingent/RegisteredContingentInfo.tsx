@@ -18,6 +18,7 @@ import { formatToRupiah } from "@/lib/functions";
 import { deleteAllAthletesRedux } from "@/lib/redux/championship/register/athleteSlice";
 import { Payment } from "@/lib/payment/paymentConstants";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { useSession } from "next-auth/react";
 
 const RegisteredContingentInfo = ({
   championshipId,
@@ -45,8 +46,15 @@ const RegisteredContingentInfo = ({
 
   const now = Date.now();
 
-  const locked =
-    now > championship.register.end && now > championship.editLimit;
+  let locked = now > championship.register.end && now > championship.editLimit;
+
+  if (locked && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    )
+      locked = false;
+  }
 
   const handleUnregister = async () => {
     if (locked) return;

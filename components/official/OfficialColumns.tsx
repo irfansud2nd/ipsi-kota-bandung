@@ -19,13 +19,22 @@ import { FiMoreHorizontal } from "react-icons/fi";
 import { getChampionship } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import OptionButton from "../ui/OptionButton";
+import { useSession } from "next-auth/react";
 
 export const OfficialColumn = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
 
-  const locked =
+  let locked =
     Date.now() > championship.register.end &&
     Date.now() > championship.editLimit;
+
+  if (locked && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    )
+      locked = false;
+  }
 
   let columns: ColumnDef<Official>[] = [
     {

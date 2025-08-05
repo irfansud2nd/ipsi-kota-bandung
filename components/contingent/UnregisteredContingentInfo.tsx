@@ -24,6 +24,7 @@ import { formatDate, getFileUrl } from "@/lib/functions";
 import { useEffect, useState } from "react";
 import ContingentForm from "./ContingentForm";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { useSession } from "next-auth/react";
 
 const UnregisteredContingentInfo = ({
   championshipId,
@@ -48,8 +49,18 @@ const UnregisteredContingentInfo = ({
   const championship = getChampionship(championshipId) as Championship;
 
   const now = Date.now();
-  const disableAdd = now > championship.register.end;
-  const locked = disableAdd && now > championship.editLimit;
+  let disableAdd = now > championship.register.end;
+  let locked = disableAdd && now > championship.editLimit;
+
+  if ((disableAdd || locked) && championship.privilegedEmail?.length) {
+    const session = useSession();
+    if (
+      championship.privilegedEmail.includes(session.data?.user?.email as string)
+    ) {
+      if (disableAdd) disableAdd = false;
+      if (locked) locked = false;
+    }
+  }
 
   const handleRegister = async () => {
     if (disableAdd) return;

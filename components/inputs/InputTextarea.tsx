@@ -6,6 +6,7 @@ import { InputProps } from "@/lib/form/formConstants";
 import { Textarea } from "../ui/textarea";
 import { championships } from "@/lib/event/eventConstants";
 import { getChampionship } from "@/lib/event/eventFunctions";
+import { useSession } from "next-auth/react";
 
 type Props = InputProps;
 
@@ -34,6 +35,18 @@ const InputTextarea = ({
   if (championship) {
     disableAdd = now > championship.register.end;
     disableEdit = now > championship.editLimit;
+
+    if ((disableAdd || disableEdit) && championship.privilegedEmail?.length) {
+      const session = useSession();
+      if (
+        championship.privilegedEmail.includes(
+          session.data?.user?.email as string
+        )
+      ) {
+        if (disableAdd) disableAdd = false;
+        if (disableEdit) disableEdit = false;
+      }
+    }
   }
 
   if (disableAdd && !showOnEditOnly && !disableEdit) {
