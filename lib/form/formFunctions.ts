@@ -10,14 +10,18 @@ export const sendFile = async (file: File, directory: string) => {
   formData.append("file", file);
   formData.append("directory", directory);
   try {
-    const { result: downloadUrl, error } = await uploadFile(formData);
+    const { result, error } = await uploadFile(formData);
 
     if (error) throw error;
 
-    return downloadUrl;
+    return getPublicUrl(directory);
   } catch (error) {
     throw error;
   }
+};
+
+export const getPublicUrl = async (directory: string) => {
+  return `https://${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/ipsi-kota-bandung/${directory}`;
 };
 
 export const toastError = (error: any, id?: string | number) => {

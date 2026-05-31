@@ -10,6 +10,7 @@ import { storage } from "./database/firebase";
 import { imageMaxSize, imageSchema } from "./form/formConstants";
 import { ServerAction } from "./constants";
 import { action } from "./functions";
+import supabase from "./database/supabase";
 
 // DELETE FILE
 export const deleteFile = async (
@@ -27,7 +28,11 @@ export const deleteFile = async (
     const response = await apiProtect(params);
     if (response) throw new Error(response.message);
 
-    await deleteObject(ref(storage, directory));
+    const { data, error } = await supabase.storage
+      .from("ipsi-kota-bandung")
+      .remove([directory]);
+
+    if (error) throw error.message;
 
     return action.success("success");
   } catch (error) {
@@ -59,10 +64,15 @@ export const uploadFile = async (
     )
       throw new Error("Invalid file");
 
-    const snapshot = await uploadBytes(ref(storage, directory), file);
-    const downloadUrl = await getDownloadURL(snapshot.ref);
+    const { data, error } = await supabase.storage
+      .from("ipsi-kota-bandung")
+      .upload(directory, file, { upsert: true });
 
-    return action.success(downloadUrl);
+    console.log(error);
+
+    if (error) throw error.message;
+
+    return action.success("success");
   } catch (error) {
     return action.error(error);
   }
@@ -73,13 +83,13 @@ export const deleteFiles = async (
 ): Promise<ServerAction<string>> => {
   try {
     if (directories.length) {
-      const deletePromises = directories.map(async (directory) => {
-        const { error } = await deleteFile(directory);
-        if (error) throw error;
-      });
+      const { data, error } = await supabase.storage
+        .from("ipsi-kota-bandung")
+        .remove(directories);
 
-      await Promise.all(deletePromises);
+      if (error) throw error.message;
     }
+
     return action.success("success");
   } catch (error) {
     return action.error(error);
