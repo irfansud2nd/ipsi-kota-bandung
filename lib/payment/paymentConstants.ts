@@ -45,6 +45,6 @@ export const paymentSchema = yup.object({
     .typeError("No HP mengandung huruf")
     .required("Tolong lengkapi No HP"),
   image: yup.object({
-    file: imageSchema(1),
+    file: imageSchema(),
   }),
 });

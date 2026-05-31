@@ -123,7 +123,7 @@ const OngoingChampionships = () => {
   return (
     <Container className="px-5 md:px-10 mb-10 flex flex-col gap-5">
       {ongoingChampionships.map((championship) => (
-        <Card championship={championship} />
+        <Card championship={championship} key={championship.id} />
       ))}
     </Container>
   );

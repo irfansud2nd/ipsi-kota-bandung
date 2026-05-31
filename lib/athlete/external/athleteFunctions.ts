@@ -39,7 +39,7 @@ export const addAthlete = async (athleteData: Athlete) => {
   let athlete: Athlete = { ...athleteData, id };
   athlete.created_at = Date.now();
 
-  const { imageUrl, kkUrl } = getFileUrl("athlete", id);
+  const { imageUrl, kkUrl, idCardUrl } = getFileUrl("athlete", id);
 
   try {
     if (!athlete.contingent_id)
@@ -48,6 +48,7 @@ export const addAthlete = async (athleteData: Athlete) => {
       throw { message: "Nama Kontingen tidak ditemukan" };
     if (!athlete.image.file) throw { message: "Pas foto tidak ditemukan" };
     if (!athlete.kk.file) throw { message: "KK tidak ditemukan" };
+    if (!athlete.id_card.file) throw { message: "KTP/KIA tidak ditemukan" };
 
     const response = await apiProtect();
     if (response) throw response;
@@ -61,6 +62,14 @@ export const addAthlete = async (athleteData: Athlete) => {
     toast.loading("Mengunggah KK", { id: toastId });
     athlete.kk.downloadUrl = await sendFile(athlete.kk.file, kkUrl);
     delete athlete.kk.file;
+
+    // SEND KTP/KIA
+    toast.loading("Mengunggah KTP/KIA", { id: toastId });
+    athlete.id_card.downloadUrl = await sendFile(
+      athlete.id_card.file,
+      idCardUrl
+    );
+    delete athlete.id_card.file;
 
     // SEND ATHLETE
     toast.loading("Mendaftarkan atlet", { id: toastId });
@@ -152,7 +161,7 @@ export const getUnregisteredAthletes = async (
 // UPDATE
 export const updateAthlete = async (athlete: Athlete) => {
   const toastId = toast.loading("Memperbahrui atlet");
-  const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
+  const { imageUrl, kkUrl, idCardUrl } = getFileUrl("athlete", athlete.id);
 
   try {
     const response = await apiProtect();
@@ -170,6 +179,16 @@ export const updateAthlete = async (athlete: Athlete) => {
       toast.loading("Memperbaharui KK atlet", { id: toastId });
       athlete.kk.downloadUrl = await sendFile(athlete.kk.file, kkUrl);
       delete athlete.kk.file;
+    }
+
+    if (athlete.id_card.file) {
+      // UPDATE KK
+      toast.loading("Memperbaharui KTP/KIA atlet", { id: toastId });
+      athlete.id_card.downloadUrl = await sendFile(
+        athlete.id_card.file,
+        idCardUrl
+      );
+      delete athlete.id_card.file;
     }
 
     // UPDATE ATHLETE
@@ -190,7 +209,7 @@ export const updateAthlete = async (athlete: Athlete) => {
 export const deleteAthlete = async (athlete: Athlete) => {
   const toastId = toast.loading("Menghapus Atlet");
 
-  const { imageUrl, kkUrl } = getFileUrl("athlete", athlete.id);
+  const { imageUrl, kkUrl, idCardUrl } = getFileUrl("athlete", athlete.id);
 
   try {
     const response = await apiProtect();
@@ -205,6 +224,11 @@ export const deleteAthlete = async (athlete: Athlete) => {
     toast.loading("Menghapus KK", { id: toastId });
     const { error: deleteKkError } = await deleteFile(kkUrl);
     if (deleteKkError) throw deleteKkError;
+
+    // DELETE KTP/KIA
+    toast.loading("Menghapus KTP/KIA", { id: toastId });
+    const { error: deleteIdCardError } = await deleteFile(idCardUrl);
+    if (deleteIdCardError) throw deleteIdCardError;
 
     // DELETE ATHLETE
     toast.loading("Menghapus atlet", { id: toastId });
@@ -369,6 +393,9 @@ export const athleteSqlToAthlete = (athleteSql: AthleteSql) => {
     kk: {
       downloadUrl: athleteSql.kk,
     },
+    id_card: {
+      downloadUrl: athleteSql.id_card,
+    },
   };
   return result;
 };
@@ -378,6 +405,7 @@ export const athleteToAthleteSql = (athlete: Athlete) => {
     ...athlete,
     image: athlete.image.downloadUrl,
     kk: athlete.kk.downloadUrl,
+    id_card: athlete.id_card.downloadUrl,
   };
   return result;
 };

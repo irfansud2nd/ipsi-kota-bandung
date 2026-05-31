@@ -24,6 +24,7 @@ import { deleteAthlete } from "@/lib/athlete/external/athleteFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import OptionButton from "@/components/ui/OptionButton";
 import { useSession } from "next-auth/react";
+import { Badge } from "@/components/ui/badge";
 
 export const AthleteColumns = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -75,6 +76,21 @@ export const AthleteColumns = (championshipId: string) => {
       accessorKey: "weight",
       header: "Berat Badan",
       cell: ({ row }) => <div>{row.original.weight} KG</div>,
+    },
+    {
+      accessorKey: "file_completeness",
+      header: "Kelengkapan Berkas",
+      cell: ({ row }) => {
+        const isComplete =
+          row.original.image.downloadUrl &&
+          row.original.kk.downloadUrl &&
+          row.original.id_card.downloadUrl;
+        return (
+          <Badge variant={isComplete ? "default" : "destructive"}>
+            {!isComplete && "Tidak"} Lengkap
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: "created_at",

@@ -122,6 +122,7 @@ export type Championship = Event & {
   dialogOnHome?: boolean;
   testerEmail?: string[];
   privilegedEmail?: string[];
+  matchLimitPerContingent?: number;
 };
 
 const generateKategoriPertandingan = (
@@ -486,6 +487,150 @@ export const championships: Championship[] = [
     },
     payment: {
       closedAt: dateToNumber("2025-08-03", "23:59"),
+      total: 0,
+      confirmed: 0,
+      target: {
+        name: "Andra Ramdhan Malela Putera",
+        number: "0129228164100",
+        bank: "BJB",
+      },
+      contact: {
+        name: "Bob",
+        phoneNumber: "6285794163821",
+      },
+    },
+    matchCost: {
+      tanding: 375000,
+      tunggal: 375000,
+      ganda: 375000,
+      regu: 375000,
+    },
+    reserveForPal: false,
+    officialGroupLink: "https://chat.whatsapp.com/DExK59aj2Vs8SJTA84UnXi",
+    showOnHome: true,
+    dialogOnHome: false,
+    testerEmail: [
+      "irfansud2nd@gmail.com",
+      "iqbalbobalfarisy@gmail.com",
+      "andra08malela@gmail.com",
+    ],
+  },
+  {
+    privilegedEmail: ["alfarizzi1804@gmail.com"],
+    id: "bandung-open-26",
+    title: "Bandung Pencak Silat Tournament 2026",
+    image: {
+      downloadUrl: "/images/championships/bandung-open-26/thumbnail.png",
+    },
+    location_name: "GOR Bandung",
+    location_url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+    date_start: dateToNumber("2026-08-26"),
+    date_end: dateToNumber("2026-08-30"),
+    time_start: 0,
+    organizer: "",
+    created_by: "irfansud2nd@gmail.com",
+    created_at: dateToNumber("2026-05-31"),
+    description: "",
+    register: {
+      start: dateToNumber("2026-06-01"),
+      end: dateToNumber("2026-08-06", "17:59"),
+    },
+    editLimit: dateToNumber("2026-08-06", "17:59"),
+    athletes: 0,
+    matchCount: 0,
+    techmeet: {
+      date: dateToNumber("2026-08-25", "08:00"),
+      location: {
+        name: "GOR Bandung",
+        url: "https://maps.app.goo.gl/QKjqy6Y6gHY2Ey9L9",
+      },
+    },
+    matchLimitPerContingent: 50,
+    matchCategory: [
+      {
+        level: "Usia Dini I (SD Kelas 1, 2, 3)",
+        category: {
+          fight: generateKategoriPertandingan("P", 16, 2),
+          art: ["Tunggal Tangan Kosong"],
+        },
+        schema: "ROOKIE",
+      },
+      {
+        level: "Usia Dini II (SD Kelas 4, 5, 6)",
+        category: {
+          fight: generateKategoriPertandingan("O", 26, 2, true, true),
+          art: ["Tunggal Tangan Kosong", "Tunggal Bersenjata"],
+        },
+        schema: "ROOKIE",
+      },
+      {
+        level: "Pra Remaja (SMP)",
+        category: {
+          fight: generateKategoriPertandingan("P", 30, 3, true, true),
+          art: ["Tunggal Tangan Kosong", "Tunggal Bersenjata"],
+        },
+        schema: "ROOKIE",
+      },
+      {
+        level: "Remaja (SMA)",
+        category: {
+          fight: generateKategoriPertandingan("J", 39, 4, true, true),
+          art: ["Tunggal Tangan Kosong", "Tunggal Bersenjata"],
+        },
+        schema: "ROOKIE",
+      },
+      {
+        level: "Dewasa (Mahasiswa & Umum)",
+        category: {
+          fight: generateKategoriPertandingan("J", 45, 5, true, true),
+          art: ["Tunggal Tangan Kosong", "Tunggal Bersenjata"],
+        },
+        schema: "ROOKIE",
+      },
+      {
+        level: "Usia Dini II (8-11 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("O", 26, 2, true, true),
+          art: ["Tunggal"],
+        },
+        schema: "PRO",
+        oneAthletePerCategory: true,
+      },
+      {
+        level: "Pra Remaja (11-14 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("P", 30, 3, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        schema: "PRO",
+        oneAthletePerCategory: true,
+      },
+      {
+        level: "Remaja (14-17 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("J", 39, 4, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        schema: "PRO",
+        oneAthletePerCategory: true,
+      },
+      {
+        level: "Dewasa (17-35 Tahun)",
+        category: {
+          fight: generateKategoriPertandingan("J", 45, 5, true, true),
+          art: ["Tunggal", "Ganda", "Regu"],
+        },
+        schema: "PRO",
+        oneAthletePerCategory: true,
+      },
+    ],
+    proposal:
+      "https://gmihwxlbiosplzgwqscs.supabase.co/storage/v1/object/public/ipsi-kota-bandung/proposals/Bandung%20Open%20Tournament%202026.pdf",
+    status: {
+      checkLimit: false,
+    },
+    payment: {
+      closedAt: dateToNumber("2025-08-20", "23:59"),
       total: 0,
       confirmed: 0,
       target: {

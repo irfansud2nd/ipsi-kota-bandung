@@ -107,7 +107,7 @@ const InputFile = ({
             {umur && umur >= 17 ? "Atlet" : "Orang Tua"}
           </Badge>
         ) : null}
-        <span className="text-muted-foreground text-xs ml-1">(Max 1 MB)</span>
+        <span className="text-muted-foreground text-xs ml-1">(Max 512 KB)</span>
       </Label>
       <div
         className={`${

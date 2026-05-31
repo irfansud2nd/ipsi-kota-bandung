@@ -26,18 +26,23 @@ export type AthleteBase = {
 };
 
 export type AthleteSql = AthleteBase & {
-  image: string;
-  kk: string;
+  image?: string;
+  kk?: string;
+  id_card?: string;
 };
 
 export type Athlete = AthleteBase & {
   image: {
     file?: File;
-    downloadUrl: string;
+    downloadUrl?: string;
   };
   kk: {
     file?: File;
-    downloadUrl: string;
+    downloadUrl?: string;
+  };
+  id_card: {
+    file?: File;
+    downloadUrl?: string;
   };
 };
 
@@ -83,12 +88,15 @@ export const athleteInitialValue: Athlete = {
   kk: {
     downloadUrl: "",
   },
+  id_card: {
+    downloadUrl: "",
+  },
   created_at: 0,
 };
 
 export const athleteSchema = (ignore?: {
   image: boolean;
-  ktp: boolean;
+  id_card: boolean;
   kk: boolean;
 }) => {
   let schema = yup.object({
@@ -127,7 +135,7 @@ export const athleteSchema = (ignore?: {
     schema = schema.concat(
       yup.object({
         image: yup.object({
-          file: imageSchema(1),
+          file: imageSchema(),
         }),
       })
     );
@@ -136,7 +144,16 @@ export const athleteSchema = (ignore?: {
     schema = schema.concat(
       yup.object({
         kk: yup.object({
-          file: imageSchema(1),
+          file: imageSchema(),
+        }),
+      })
+    );
+
+  if (!ignore?.id_card)
+    schema = schema.concat(
+      yup.object({
+        id_card: yup.object({
+          file: imageSchema(),
         }),
       })
     );
@@ -213,6 +230,9 @@ export const getDummyAthletes = (length: number) => {
         downloadUrl: "",
       },
       kk: {
+        downloadUrl: "",
+      },
+      id_card: {
         downloadUrl: "",
       },
       created_at: 0,

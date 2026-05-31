@@ -34,7 +34,7 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
   const [open, setOpen] = useState(false);
   const [fileChanging, setFileChanging] = useState({
     image: false,
-    ktp: false,
+    id_card: false,
     kk: false,
   });
 
@@ -221,6 +221,19 @@ const AthleteForm = ({ championshipId }: { championshipId: string }) => {
                       formik={props}
                       isFileChanging={(value) => {
                         setFileChanging((prev) => ({ ...prev, kk: !value }));
+                      }}
+                      landscape
+                      championshipId={championshipId}
+                    />
+                    <InputFile
+                      label="KTP/KIA"
+                      name="id_card"
+                      formik={props}
+                      isFileChanging={(value) => {
+                        setFileChanging((prev) => ({
+                          ...prev,
+                          id_card: !value,
+                        }));
                       }}
                       landscape
                       championshipId={championshipId}

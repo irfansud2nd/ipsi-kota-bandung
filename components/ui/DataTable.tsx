@@ -21,11 +21,13 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  getRowClassName?: (row: TData) => string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  getRowClassName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -66,6 +68,7 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className={getRowClassName?.(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

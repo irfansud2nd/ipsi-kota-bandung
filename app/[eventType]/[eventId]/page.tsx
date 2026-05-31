@@ -76,7 +76,10 @@ const page = async ({ params }: Props) => {
           <Carousel className="mx-12 mt-4 px-2">
             <CarouselContent>
               {events.map((event) => (
-                <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
+                <CarouselItem
+                  className="basis-full md:basis-1/2 lg:basis-1/3"
+                  key={event.id}
+                >
                   <EventCard event={event} />
                 </CarouselItem>
               ))}

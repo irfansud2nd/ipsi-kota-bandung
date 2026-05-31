@@ -5,7 +5,9 @@ const EmployeeList = ({ employees }: { employees: Employee[] }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       {employees.length ? (
-        employees.map((employee) => <EmployeeCard employee={employee} />)
+        employees.map((employee) => (
+          <EmployeeCard employee={employee} key={employee.id} />
+        ))
       ) : (
         <p>Tidak ada.</p>
       )}

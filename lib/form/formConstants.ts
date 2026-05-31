@@ -24,7 +24,7 @@ export type InputProps = {
   championshipId?: string;
 };
 
-export const imageSchema = (mb: number = 1) => {
+export const imageSchema = (mb: number = 0.5) => {
   return yup
     .mixed()
     .test({

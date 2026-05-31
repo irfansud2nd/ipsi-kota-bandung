@@ -304,6 +304,24 @@ export const getRegisteredContingentAdminByContingentId = async (
   }
 };
 
+export const countMatchByContingentRegistrationId = async (
+  contingentRegistrationId: number
+): Promise<ServerAction<number>> => {
+  try {
+    const { data, error } = await supabase
+      .rpc("count_match_by_contingent_id", {
+        cont_reg_id: contingentRegistrationId,
+      })
+      .returns<number>();
+
+    if (error) throw new Error(error.message);
+
+    return action.success(data || 0);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
 // OTHERS
 export const countContingent = async (): Promise<ServerAction<number>> => {
   try {

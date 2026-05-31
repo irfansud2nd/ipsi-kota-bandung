@@ -66,7 +66,7 @@ export const officialSchema = (ignore?: {
     schema = schema.concat(
       yup.object({
         image: yup.object({
-          file: imageSchema(1),
+          file: imageSchema(),
         }),
       })
     );
@@ -75,7 +75,7 @@ export const officialSchema = (ignore?: {
   //   schema = schema.concat(
   //     yup.object({
   //       certificate_file: yup.object({
-  //         file: imageSchema(1),
+  //         file: imageSchema(),
   //       }),
   //     })
   //   );

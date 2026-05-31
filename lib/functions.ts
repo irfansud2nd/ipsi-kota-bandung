@@ -1,6 +1,7 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { SpecialUserRole } from "./admin/adminConstants";
 import { ServerAction } from "./constants";
+import { date } from "yup";
 
 // FORMAT TANGGAL
 export const formatDate = (
@@ -120,11 +121,11 @@ export const getFileUrl = (
   id: string
 ) => {
   return {
-    imageUrl: `${type}/image/${id}`,
-    kkUrl: `${type}/kk/${id}`,
-    ktpUrl: `${type}/ktp/${id}`,
-    certificateUrl: `${type}/certificate/${id}`,
-    proofUrl: `${type}/${id}`,
+    imageUrl: `${type}/image/${id}_${Date.now()}`,
+    kkUrl: `${type}/kk/${id}_${Date.now()}`,
+    idCardUrl: `${type}/id_card/${id}_${Date.now()}`,
+    certificateUrl: `${type}/certificate/${id}_${Date.now()}`,
+    proofUrl: `${type}/${id}_${Date.now()}`,
   };
 };
 

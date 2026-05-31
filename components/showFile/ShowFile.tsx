@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Skeleton } from "../ui/skeleton";
+import { BiLoader } from "react-icons/bi";
 import Link from "next/link";
 import { saveAs } from "file-saver";
 import { toastError } from "@/lib/form/formFunctions";
@@ -15,9 +16,11 @@ type Props = {
 };
 
 const ShowFile = ({ label, src, landscape, className }: Props) => {
-  const [skeleton, setSkeleton] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = async () => {
+    setIsDownloading(true);
     try {
       const response = await fetch(
         `/api/downloadimage?src=${encodeURIComponent(src)}`
@@ -30,31 +33,22 @@ const ShowFile = ({ label, src, landscape, className }: Props) => {
       saveAs(blob, label + ".png");
     } catch (error) {
       toastError(error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
   return (
     <div className={`flex flex-col gap-1 items-center w-fit ${className}`}>
-      <Label>{label}</Label>
-      <div
-        className={`border rounded-md relative overflow-hidden
-            ${landscape ? "aspect-video" : "aspect-[9/16]"}`}
-      >
+      <div className="relative">
         <img
           src={src}
-          className={`transition-all object-contain object-center bg-gray-200
-              ${skeleton ? "opacity-0" : "opacity-100"}
-              ${landscape ? "aspect-video" : "aspect-[9/16]"}
-              `}
-          onLoad={() => setSkeleton(false)}
+          className={`transition-all object-contain object-center max-h-[400px]
+          ${loading ? "opacity-0 scale-0" : "opacity-100 scale-100"}
+          ${landscape ? "aspect-video" : "aspect-[9/16]"}`}
+          onLoad={() => setLoading(false)}
         />
-        {skeleton && (
-          <Skeleton
-            className={`w-full h-full absolute top-0 ${
-              landscape ? "aspect-video" : "aspect-[9/16]"
-            }`}
-          />
-        )}
+        {loading && <BiLoader className="mx-auto animate-spin size-20" />}
       </div>
       <div className="flex gap-1">
         <Button size={"sm"} asChild>
@@ -62,7 +56,7 @@ const ShowFile = ({ label, src, landscape, className }: Props) => {
             Buka di Tab baru
           </Link>
         </Button>
-        <Button size={"sm"} onClick={handleDownload}>
+        <Button size={"sm"} onClick={handleDownload} disabled={isDownloading}>
           Unduh
         </Button>
       </div>

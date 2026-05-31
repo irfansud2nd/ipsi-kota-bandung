@@ -9,6 +9,7 @@ import {
 import {
   addContingentAtEventSql,
   addContingentSql,
+  countMatchByContingentRegistrationId,
   deleteContingentAtEventSql,
   deleteContingentSql,
   getContingenAtEventsByContingentId,
@@ -16,6 +17,7 @@ import {
   updateContingentSql,
 } from "./contingentActions";
 import { apiProtect } from "../admin/adminActions";
+import { Championship } from "../event/eventConstants";
 
 // CONTINGENT
 // UPDATE
@@ -234,4 +236,25 @@ export const getContingentConfirmationOption = (paid: boolean) => {
   const options = paid ? { cancelLabel: "Baik", cancelOnly: true } : undefined;
 
   return { ...options, message };
+};
+
+export const checkContingentMatchLimit = async (
+  contingentRegistrationId: number,
+  championship: Championship
+) => {
+  try {
+    if (!championship.matchLimitPerContingent) return;
+
+    const { result, error } = await countMatchByContingentRegistrationId(
+      contingentRegistrationId
+    );
+
+    if (error) throw error;
+
+    if (result < championship.matchLimitPerContingent) return;
+
+    return `Kontingen Anda telah mencapai batas maksimal ${championship.matchLimitPerContingent} nomor pertandingan yang diperbolehkan untuk kejuaraan ini.`;
+  } catch (error: any) {
+    return error.message as string;
+  }
 };

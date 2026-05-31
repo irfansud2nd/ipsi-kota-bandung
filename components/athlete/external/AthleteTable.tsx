@@ -23,7 +23,18 @@ const AthleteTable = ({ registered, championshipId }: Props) => {
           ? "atlet yang telah mendaftarkan pertandingan di event ini"
           : "atlet yang tergabung di kontingen anda"}
       </p>
-      <DataTable columns={AthleteColumns(championshipId)} data={athletes} />
+      <DataTable
+        columns={AthleteColumns(championshipId)}
+        data={athletes}
+        getRowClassName={(row) => {
+          const isComplete =
+            row.image.downloadUrl &&
+            row.kk.downloadUrl &&
+            row.id_card.downloadUrl;
+
+          return !isComplete ? "bg-destructive/20 hover:bg-destructive/40" : "";
+        }}
+      />
     </div>
   );
 };

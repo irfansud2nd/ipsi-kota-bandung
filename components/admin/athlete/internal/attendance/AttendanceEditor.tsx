@@ -166,7 +166,9 @@ const AttendanceEditor = ({ data, month, role }: Props) => {
           </SelectTrigger>
           <SelectContent>
             {attendanceTypes.map((item) => (
-              <SelectItem value={item}>{getAttendanceLabel(item)}</SelectItem>
+              <SelectItem value={item} key={item}>
+                {getAttendanceLabel(item)}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>

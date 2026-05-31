@@ -20,6 +20,7 @@ import { getChampionship } from "@/lib/event/eventFunctions";
 import { Championship } from "@/lib/event/eventConstants";
 import OptionButton from "../ui/OptionButton";
 import { useSession } from "next-auth/react";
+import { Badge } from "../ui/badge";
 
 export const OfficialColumn = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -58,6 +59,18 @@ export const OfficialColumn = (championshipId: string) => {
     {
       accessorKey: "phone_number",
       header: "Nomor Telepon",
+    },
+    {
+      accessorKey: "file_completeness",
+      header: "Kelengkapan Berkas",
+      cell: ({ row }) => {
+        const isComplete = row.original.image.downloadUrl;
+        return (
+          <Badge variant={isComplete ? "default" : "destructive"}>
+            {!isComplete && "Tidak"} Lengkap
+          </Badge>
+        );
+      },
     },
     {
       header: "Aksi",

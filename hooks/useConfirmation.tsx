@@ -20,13 +20,19 @@ const useConfirmation = () => {
   });
   const [options, SetOptions] = useState({
     cancelLabel: "",
+    confirmLabel: "",
     cancelOnly: false,
   });
   const [resolveCallback, setResolveCallback] = useState<any>(null);
 
   const confirm = (
     title: string,
-    options?: { message?: string; cancelLabel?: string; cancelOnly?: boolean }
+    options?: {
+      message?: string;
+      confirmLabel?: string;
+      cancelLabel?: string;
+      cancelOnly?: boolean;
+    }
   ) => {
     setContent({
       title,
@@ -34,6 +40,7 @@ const useConfirmation = () => {
     });
     SetOptions({
       cancelLabel: options?.cancelLabel || "",
+      confirmLabel: options?.confirmLabel || "",
       cancelOnly: options?.cancelOnly || false,
     });
     setOpen(true);
@@ -77,7 +84,9 @@ const useConfirmation = () => {
               variant={"destructive"}
               onClick={() => handleConfirm(true)}
             >
-              <AlertDialogAction>Ya</AlertDialogAction>
+              <AlertDialogAction>
+                {options.confirmLabel ? options.confirmLabel : "Ya"}
+              </AlertDialogAction>
             </Button>
           )}
         </AlertDialogFooter>
