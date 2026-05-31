@@ -13,7 +13,7 @@ const HomeBanner = () => {
         <Container className="flex justify-center items-center overflow-hidden w-full h-full">
           {/* <div className="flex flex-col transition-all w-fit text-white h-fit my-auto max-md:overflow-x-hidden p-2 z-[1]"> */}
           <h2 className="uppercase text-xl sm:text-3xl lg:text-5xl mt-20 sm:mt-16 md:mt-28 text-white font-extrabold tracking-wider transition-all animate__animated animate__slideInLeft">
-            #AREYOUTHENEXTCHAMPION?
+            #SPIRITTOTHEOLYMPIC
           </h2>
           {/* </div> */}
         </Container>
