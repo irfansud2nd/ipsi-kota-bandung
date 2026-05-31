@@ -25,6 +25,25 @@ const FooterInformation = () => {
       alt: "logo bpjs",
       landscape: true,
     },
+    {
+      src: "/sponsors/yamaha.png",
+      alt: "logo yamaha",
+      landscape: true,
+    },
+    {
+      src: "/sponsors/rush.png",
+      alt: "logo rush",
+      landscape: true,
+    },
+    {
+      src: "/sponsors/id-silat.png",
+      alt: "logo id silat",
+    },
+    {
+      src: "/sponsors/3boy.png",
+      alt: "logo 3boy",
+      landscape: true,
+    },
     // {
     //   src: "/images/logo-ars.png",
     //   alt: "logo ars",
