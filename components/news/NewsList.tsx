@@ -26,7 +26,7 @@ const NewsList = ({ onHome, newsArr }: Props) => {
           ))}
         </div>
       ) : (
-        <p>tidak ada Berita.</p>
+        <p>Tidak ada Berita.</p>
       )}
       {onHome && (
         <Button
