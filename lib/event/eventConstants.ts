@@ -516,9 +516,9 @@ export const championships: Championship[] = [
     ],
   },
   {
-    privilegedEmail: ["alfarizzi1804@gmail.com"],
+    // privilegedEmail: ["alfarizzi1804@gmail.com"],
     id: "bandung-open-26",
-    title: "Bandung Pencak Silat Tournament 2026",
+    title: "Bandung Open Tournament 2026",
     image: {
       downloadUrl: "/images/championships/bandung-open-26/thumbnail.png",
     },
