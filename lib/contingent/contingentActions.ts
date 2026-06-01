@@ -309,7 +309,7 @@ export const countMatchByContingentRegistrationId = async (
 ): Promise<ServerAction<number>> => {
   try {
     const { data, error } = await supabase
-      .rpc("count_match_by_contingent_id", {
+      .rpc("count_match_by_contingent_registration_id", {
         cont_reg_id: contingentRegistrationId,
       })
       .returns<number>();

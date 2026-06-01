@@ -6,7 +6,7 @@ export const athleteGender = ["Putra", "Putri"];
 
 export const matchSchema = ["Pemula", "Prestasi"];
 
-export const matchType = ["Tanding", "Seni"];
+export const matchType = ["Tanding", "Jurus"];
 
 export type AthleteBase = {
   id: string;

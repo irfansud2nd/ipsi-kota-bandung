@@ -47,7 +47,7 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
       length: 0,
     },
     {
-      label: "Kategori Seni",
+      label: "Kategori Jurus",
       href: "art",
       icon: <FaHandHoldingHand />,
       length: 0,

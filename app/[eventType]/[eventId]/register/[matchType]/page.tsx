@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
-    title: `Kategori ${params.matchType == "fight" ? "Tanding" : "Seni"}`,
+    title: `Kategori ${params.matchType == "fight" ? "Tanding" : "Jurus"}`,
   };
 }
 
@@ -24,7 +24,7 @@ const page = ({ params }: Props) => {
       <div className="flex items-center">
         <ChampionshipMenuButton />
         <h1 className="font-semibold text-3xl flex-1 max-md:text-center">
-          Kategori {isArt ? "Seni" : "Tanding"}
+          Kategori {isArt ? "Jurus" : "Tanding"}
         </h1>
         <RegisterAthleteForm championshipId={params.eventId} art={isArt} />
       </div>

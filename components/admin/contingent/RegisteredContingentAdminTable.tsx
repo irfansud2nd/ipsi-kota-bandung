@@ -31,9 +31,9 @@ const RegisteredContingentAdminTable = ({
           <TableHead>Official</TableHead>
           <TableHead>Nomor Pertandingan</TableHead>
           <TableHead>Pemula Tanding</TableHead>
-          <TableHead>Pemula Seni</TableHead>
+          <TableHead>Pemula Jurus</TableHead>
           <TableHead>Prestasi Tanding</TableHead>
-          <TableHead>Prestasi Seni</TableHead>
+          <TableHead>Prestasi Jurus</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Pembayaran</TableHead>
           <TableHead>Tagihan</TableHead>
