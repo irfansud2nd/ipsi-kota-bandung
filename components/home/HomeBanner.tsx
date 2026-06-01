@@ -3,8 +3,8 @@ import Container from "../ui/Container";
 const HomeBanner = () => {
   return (
     <div
-      className="w-full h-fit aspect-video sm:aspect-[16/5] transition-all bg-cover bg-no-repeat bg-center -mb-10 relative -z-[1]"
-      style={{ backgroundImage: "url(/images/home-banner-people.png)" }}
+      className="w-full h-fit aspect-video sm:aspect-[16/5] transition-all bg-cover bg-no-repeat bg-top -mb-10 relative -z-[1]"
+      style={{ backgroundImage: "url(/images/new-home-banner.jpeg)" }}
     >
       <div
         className="backdrop-blur-sm bg-gray-600/55 w-full h-full"
