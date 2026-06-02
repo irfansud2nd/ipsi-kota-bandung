@@ -17,7 +17,7 @@ const EventList = ({ onHome, events, championship, onAdmin }: Props) => {
     // COLOR_CHANGE
     <Container
       // className={`h-fit transition
-      className={`h-fit transition text-white
+      className={`h-fit transition
       ${
         onHome &&
         ` px-5 md:px-10 -mt-20 pt-10 rounded-t-[50px] md:rounded-t-[80px] ${
