@@ -81,6 +81,7 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
       className={`bg-gray-200 w-fit h-fit mr-0 mt-2 rounded-md md:top-[80px] p-2 flex flex-col gap-3 fixed md:sticky transition-all z-10 
       ${show ? "left-2 mr-2" : "-left-full"}`}
     >
+      {/* COLOR_CHANGE */}
       <ChampionshipMenuButton onSideMenu />
       {menus.map((menu) => (
         <TooltipProvider key={menu.href} delayDuration={100}>
@@ -88,9 +89,11 @@ const ChampionshipMenu = ({ championship }: { championship: Championship }) => {
             <TooltipTrigger asChild>
               <Link
                 href={`${menu.href}`}
-                className={`rounded p-2 bg-gray-100 hover:bg-primary transition-all flex items-center
+                // className={`rounded p-2 bg-gray-100 hover:bg-primary transition-all flex items-center
+                className={`rounded p-2 bg-gray-100 hover:bg-primary transition-all flex items-center hover:text-white
                 ${show && "justify-center"}
-                ${pathname.includes(menu.href) && "bg-primary"}`}
+                ${pathname.includes(menu.href) && "bg-primary text-white"}`}
+                // ${pathname.includes(menu.href) && "bg-primary"}`}
                 onClick={() =>
                   window.innerWidth <= 768 && dispatch(setSideMenu(false))
                 }
