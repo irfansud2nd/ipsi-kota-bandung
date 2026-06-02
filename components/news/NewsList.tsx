@@ -11,11 +11,14 @@ type Props = {
 
 const NewsList = ({ onHome, newsArr }: Props) => {
   return (
+    // COLOR_CHANGE
     <Container
-      className={`h-fit transition
+      // className={`h-fit transition
+      className={`h-fit transition text-white
       ${
         onHome &&
-        "px-5 md:px-10 -mb-5 pt-10 mt-10 bg-blue-200 rounded-t-[50px] md:rounded-t-[80px]"
+        // "px-5 md:px-10 -mb-5 pt-10 mt-10 bg-blue-200 rounded-t-[50px] md:rounded-t-[80px]"
+        "px-5 md:px-10 -mb-5 pt-10 mt-10 bg-[#419EBD] rounded-t-[50px] md:rounded-t-[80px]"
       }`}
     >
       {onHome && <h2 className="font-semibold text-3xl mb-3">Berita</h2>}

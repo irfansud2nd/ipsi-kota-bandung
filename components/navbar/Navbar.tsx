@@ -39,7 +39,9 @@ const Navbar = () => {
             <Link
               href={link.href}
               key={link.href}
-              className="text-lg font-medium hover:-translate-y-1 hover:border-b-2 border-green-400 transition-all"
+              // COLOR_CHANGE
+              // className="text-lg font-medium hover:-translate-y-1 hover:border-b-2 border-green-400 transition-all"
+              className="text-lg font-medium hover:-translate-y-1 hover:border-b-2 border-[#419EBD] transition-all"
             >
               {link.label}
             </Link>

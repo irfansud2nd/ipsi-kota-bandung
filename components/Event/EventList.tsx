@@ -14,12 +14,15 @@ type Props = {
 
 const EventList = ({ onHome, events, championship, onAdmin }: Props) => {
   return (
+    // COLOR_CHANGE
     <Container
-      className={`h-fit transition
+      // className={`h-fit transition
+      className={`h-fit transition text-white
       ${
         onHome &&
         ` px-5 md:px-10 -mt-20 pt-10 rounded-t-[50px] md:rounded-t-[80px] ${
-          championship ? "bg-yellow-200 pb-20" : "bg-green-200"
+          // championship ? "bg-yellow-200 pb-20" : "bg-green-200"
+          championship ? "bg-[#F7AD1A] pb-20" : "bg-[#063F5C]"
         }`
       }
       
@@ -45,7 +48,8 @@ const EventList = ({ onHome, events, championship, onAdmin }: Props) => {
           ${
             championship
               ? "from-yellow-900 to-yellow-500"
-              : "from-green-900 to-green-500"
+              : // : "from-green-900 to-green-500"
+                "from-blue-900 to-blue-500"
           }
           `}
           asChild

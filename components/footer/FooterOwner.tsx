@@ -3,7 +3,8 @@ import Container from "../ui/Container";
 
 const FooterOwner = () => {
   return (
-    <div className="w-full bg-blue-400 py-3">
+    // COLOR_CHANGE BLUE-400 -> #419EBD
+    <div className="w-full bg-[#419EBD] py-3">
       <Container className="px-10">
         <p className="inline">
           <span className="font-semibold">© 2024 IPSI KOTA BANDUNG</span>

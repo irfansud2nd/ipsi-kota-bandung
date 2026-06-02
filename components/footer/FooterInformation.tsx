@@ -65,6 +65,8 @@ const FooterInformation = () => {
     },
   ];
 
+  // COLOR_CHANGE BLUE-400 -> #419EBD
+
   return (
     <div className="w-full bg-muted py-5">
       <Container className="px-5 md:px-10">
@@ -72,9 +74,9 @@ const FooterInformation = () => {
           <div className="flex flex-col gap-3 max-md:order-2">
             <Link
               href={"https://maps.app.goo.gl/hy5xcJnrxGn4Aurs9"}
-              className="hover:text-blue-400 transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
+              className="hover:text-[#419EBD] transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
             >
-              <IoLocationSharp className="size-10 min-w-10 min-h-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <IoLocationSharp className="size-10 min-w-10 min-h-10 bg-[#419EBD] text-black rounded-full p-2 inline mr-2" />
               <div>
                 <p className="font-semibold">Sekretariat IPSI Kota Bandung</p>
                 <p>Jl. Jakarta No.18 (GOR KONI Kota Bandung) </p>
@@ -82,7 +84,7 @@ const FooterInformation = () => {
               </div>
             </Link>
             <div className="flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center">
-              <FaPhone className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <FaPhone className="size-10 bg-[#419EBD] text-black rounded-full p-2 inline mr-2" />
               <div>
                 <p className="font-semibold">Telepon</p>
                 <p>0857-9416-3821</p>
@@ -90,10 +92,10 @@ const FooterInformation = () => {
             </div>
             <Link
               href={"mailto:ipsikotabandungofficial@gmail.com"}
-              className="hover:text-blue-400 transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
+              className="hover:text-[#419EBD] transition flex max-[380px]:flex-col gap-1 max-[380px]:items-start items-center"
               target="_blank"
             >
-              <IoMdMail className="size-10 bg-blue-400 text-black rounded-full p-2 inline mr-2" />
+              <IoMdMail className="size-10 bg-[#419EBD] text-black rounded-full p-2 inline mr-2" />
               <div>
                 <p className="font-semibold">Email</p>
                 <p>ipsikotabandungofficial@gmail.com</p>
@@ -115,7 +117,7 @@ const FooterInformation = () => {
             <Link href={socmed.href} target="_blank" key={socmed.href}>
               {React.cloneElement(socmed.icon, {
                 className:
-                  "size-10 p-1 bg-blue-400 hover:bg-transparent text-black hover:text-blue-400 transition rounded-full inline mr-2 border-2 border-blue-400",
+                  "size-10 p-1 bg-[#419EBD] hover:bg-transparent text-black hover:text-[#419EBD] transition rounded-full inline mr-2 border-2 border-[#419EBD]",
               })}
             </Link>
           ))}
