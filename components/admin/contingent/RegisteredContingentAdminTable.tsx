@@ -26,8 +26,8 @@ const RegisteredContingentAdminTable = ({
         <TableRow>
           <TableHead>No</TableHead>
           <TableHead>Nama Kontingen</TableHead>
-          <TableHead>Atlet</TableHead>
-          <TableHead>Atlet Bertanding</TableHead>
+          <TableHead>Atlet Tersimpan</TableHead>
+          <TableHead>Atlet Terdaftar</TableHead>
           <TableHead>Official</TableHead>
           <TableHead>Nomor Pertandingan</TableHead>
           <TableHead>Pemula Tanding</TableHead>
