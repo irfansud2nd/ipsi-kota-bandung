@@ -625,7 +625,7 @@ export const championships: Championship[] = [
       },
     ],
     proposal:
-      "https://gmihwxlbiosplzgwqscs.supabase.co/storage/v1/object/public/ipsi-kota-bandung/proposals/Bandung%20Open%20Tournament%202026.pdf",
+      "https://gmihwxlbiosplzgwqscs.supabase.co/storage/v1/object/public/ipsi-kota-bandung/proposals/Bandung%20Open%20Tournament%202026%20National%20Version.pdf",
     status: {
       checkLimit: false,
     },
