@@ -16,14 +16,11 @@ export const addEventSql = async (
     const response = await apiProtect({ directory: "event" });
     if (response) throw new Error(response.message);
 
-    console.log({ eventSql });
-
     const { error } = await supabase.from("events").insert(eventSql);
     if (error) throw new Error(error.message);
 
     return action.success(eventSql);
   } catch (error) {
-    console.log({ error });
     return action.error(error);
   }
 };

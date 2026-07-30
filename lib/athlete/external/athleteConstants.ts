@@ -241,3 +241,7 @@ export const getDummyAthletes = (length: number) => {
 
   return athletes;
 };
+
+export const duplicateAthleteSchema = yup.object({
+  id: yup.string().uuid().required("Tolong lengkapi ID Atlet"),
+});

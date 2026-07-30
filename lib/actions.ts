@@ -68,8 +68,6 @@ export const uploadFile = async (
       .from("ipsi-kota-bandung")
       .upload(directory, file, { upsert: true });
 
-    console.log(error);
-
     if (error) throw error.message;
 
     return action.success("success");

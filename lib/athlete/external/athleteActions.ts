@@ -12,6 +12,7 @@ import { athleteSqlToAthlete } from "./athleteFunctions";
 import { ServerAction } from "@/lib/constants";
 import { action } from "@/lib/functions";
 import { cache } from "react";
+import { v4 } from "uuid";
 
 // ATHLETE SQL
 // CREATE
@@ -27,6 +28,45 @@ export const addAthleteSql = async (
     if (error) throw new Error(error.message);
 
     return action.success(athleteSql);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+// DUPLICATE
+export const duplicateAthleteSql = async (
+  athleteId: string,
+  contingentId: string,
+  contingentName: string
+): Promise<ServerAction<AthleteSql>> => {
+  try {
+    const response = await apiProtect();
+    if (response) throw new Error(response.message);
+
+    const { data, error: getAthleteError } = await supabase
+      .from("athletes")
+      .select()
+      .eq("id", athleteId)
+      .returns<AthleteSql[]>();
+
+    if (getAthleteError) throw new Error(getAthleteError.message);
+
+    const athlete = data[0];
+
+    if (!athlete) throw new Error("Atlet tidak ditemukan");
+
+    let duplicatedAthlete: AthleteSql = athlete;
+
+    duplicatedAthlete.id = v4();
+    duplicatedAthlete.contingent_id = contingentId;
+    duplicatedAthlete.contingent_name = contingentName;
+    duplicatedAthlete.created_at = Date.now();
+
+    const { error } = await supabase.from("athletes").insert(duplicatedAthlete);
+
+    if (error) throw new Error(error.message);
+
+    return action.success(duplicatedAthlete);
   } catch (error) {
     return action.error(error);
   }

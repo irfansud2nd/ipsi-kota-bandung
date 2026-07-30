@@ -25,6 +25,7 @@ import { Championship } from "@/lib/event/eventConstants";
 import OptionButton from "@/components/ui/OptionButton";
 import { useSession } from "next-auth/react";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 export const AthleteColumns = (championshipId: string) => {
   const championship = getChampionship(championshipId) as Championship;
@@ -145,6 +146,14 @@ export const AthleteColumns = (championshipId: string) => {
           dispatch(deleteAthleteRedux(athlete));
         };
 
+        const handleCopy = () => {
+          navigator.clipboard
+            .writeText(athlete.id)
+            .then(() =>
+              toast.success("Atlet berhasil disalin", { duration: 700 })
+            );
+        };
+
         return (
           <>
             <ConfirmationDialog />
@@ -166,6 +175,9 @@ export const AthleteColumns = (championshipId: string) => {
                   className={`text-destructive`}
                 >
                   Hapus
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleCopy}>
+                  Salin ID
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

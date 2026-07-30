@@ -65,7 +65,7 @@ const InputTextarea = ({
         value={values[name]}
         className={`resize-none 
         ${errors[name] && touched[name] && "border-destructive"}`}
-        rows={3}
+        rows={5}
       />
       <ErrorMessage name={name} component={ErrorText} />
     </div>
