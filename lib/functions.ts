@@ -143,6 +143,7 @@ export const action = {
     return { result, error: null };
   },
   error: <T>(error: any): ServerAction<T> => {
+    console.log(error);
     return { result: null, error: error as PostgrestError };
   },
 };
