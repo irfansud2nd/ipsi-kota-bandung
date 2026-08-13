@@ -56,7 +56,8 @@ export const getRegisteredOfficialsSql = async (
   page: number,
   limit: number,
   championshipId: string,
-  showAll: boolean = false
+  showAll: boolean = false,
+  onlyUndownloaded: boolean = true
 ): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect({ directory: "official" });
@@ -66,10 +67,16 @@ export const getRegisteredOfficialsSql = async (
       pg: page,
       lmt: limit,
       champ_id: championshipId,
+      only_undldd: onlyUndownloaded,
     };
 
     if (showAll) {
-      params.lmt = 500;
+      params = {
+        champ_id: championshipId,
+        pg: 1,
+        lmt: 1000,
+        only_undldd: onlyUndownloaded,
+      };
     }
 
     let getData = supabase
@@ -120,6 +127,29 @@ export const updateOfficialSql = async (
     if (error) throw new Error(error.message);
 
     return action.success(officialSql);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+export const updateOfficialDownloadedIDCard = async (
+  ids: string[],
+  champId: string
+): Promise<ServerAction<string>> => {
+  try {
+    const response = await apiProtect();
+    if (response) throw new Error(response.message);
+
+    const { error } = await supabase
+      .from("athletes")
+      .update({
+        downloaded_id_card: champId,
+      })
+      .in("name", ids);
+
+    if (error) throw new Error(error.message);
+
+    return action.success("success");
   } catch (error) {
     return action.error(error);
   }

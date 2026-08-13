@@ -101,7 +101,8 @@ export const getRegisteredOfficials = async (
   page: number,
   limit: number,
   championdhipId: string,
-  showAll: boolean = false
+  showAll: boolean = false,
+  onlyUndownloaded: boolean = false
 ) => {
   try {
     const response = await apiProtect({ directory: "official" });
@@ -111,7 +112,8 @@ export const getRegisteredOfficials = async (
       page,
       limit,
       championdhipId,
-      showAll
+      showAll,
+      onlyUndownloaded
     );
     if (error) throw error;
 

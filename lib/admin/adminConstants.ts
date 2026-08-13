@@ -334,6 +334,20 @@ export const championshipAdminLinks: {
         },
       ],
     },
+    {
+      title: "ID Card",
+      prefix: "id_card",
+      links: [
+        {
+          href: "/athlete",
+          label: "Atlet",
+        },
+        {
+          href: "/official",
+          label: "Official",
+        },
+      ],
+    },
   ],
 };
 

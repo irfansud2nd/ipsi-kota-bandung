@@ -22,6 +22,7 @@ import {
   deleteAthleteSql,
   getAthletesSql,
   getAthletesSqlByContingentId,
+  getPaidAthletesSqlByChampionshipId,
   getUnregisteredAthletesSql,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
@@ -103,6 +104,33 @@ export const getAthletes = async (
     if (error) throw error;
 
     const athletes = athletesSql.map((athleteSql) =>
+      athleteSqlToAthlete(athleteSql)
+    );
+
+    return athletes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPaidAthletesByChampionshipId = async (
+  championshipId: string,
+  page: number,
+  limit: number,
+  showAll: boolean = false,
+  onlyUndownloaded: boolean = false
+) => {
+  try {
+    const { result, error } = await getPaidAthletesSqlByChampionshipId(
+      championshipId,
+      page,
+      limit,
+      showAll,
+      onlyUndownloaded
+    );
+    if (error) throw error;
+
+    const athletes = result.map((athleteSql) =>
       athleteSqlToAthlete(athleteSql)
     );
 

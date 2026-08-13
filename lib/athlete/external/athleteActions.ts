@@ -97,6 +97,45 @@ export const getAthletesSql = async (
   }
 };
 
+export const getPaidAthletesSqlByChampionshipId = async (
+  championshipId: string,
+  page: number,
+  limit: number,
+  showAll: boolean = false,
+  onlyUndownloaded: boolean = true
+): Promise<ServerAction<AthleteSql[]>> => {
+  try {
+    let params = {
+      champ_id: championshipId,
+      pg: page,
+      lmt: limit,
+      only_undldd: onlyUndownloaded,
+    };
+
+    if (showAll) {
+      params = {
+        champ_id: championshipId,
+        pg: 1,
+        lmt: 1000,
+        only_undldd: onlyUndownloaded,
+      };
+    }
+
+    let getData = supabase.rpc("get_paid_athletes_by_championship_id", params);
+
+    const { data, error } = await getData;
+
+    console.log("DATA ", data);
+
+    if (error) throw error.message;
+
+    return action.success(data);
+  } catch (error) {
+    console.log("ERROR", error);
+    return action.error(error);
+  }
+};
+
 export const getUnregisteredAthletesSql = async (
   page: number,
   limit: number,
@@ -169,6 +208,29 @@ export const updateAthleteSql = async (
     if (error) throw new Error(error.message);
 
     return action.success(athleteSql);
+  } catch (error) {
+    return action.error(error);
+  }
+};
+
+export const updateAthleteDownloadedIDCard = async (
+  ids: string[],
+  champId: string
+): Promise<ServerAction<string>> => {
+  try {
+    const response = await apiProtect();
+    if (response) throw new Error(response.message);
+
+    const { error } = await supabase
+      .from("athletes")
+      .update({
+        downloaded_id_card: champId,
+      })
+      .in("name", ids);
+
+    if (error) throw new Error(error.message);
+
+    return action.success("success");
   } catch (error) {
     return action.error(error);
   }
