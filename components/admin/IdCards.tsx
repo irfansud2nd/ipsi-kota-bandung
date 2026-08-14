@@ -8,11 +8,13 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { updateAthleteDownloadedIDCard } from "@/lib/athlete/external/athleteActions";
 import { updateOfficialDownloadedIDCard } from "@/lib/official/officialActions";
+import { useRouter } from "next/navigation";
 
 export default function IdCards({
   champId,
   data,
   isAthlete,
+  downloadAll,
 }: {
   champId: string;
   data: {
@@ -22,7 +24,9 @@ export default function IdCards({
     image?: string;
   }[];
   isAthlete: boolean;
+  downloadAll: boolean;
 }) {
+  const router = useRouter();
   const refs = useRef<(HTMLDivElement | null)[]>([]);
 
   async function waitForImages(container: HTMLElement) {
@@ -56,8 +60,6 @@ export default function IdCards({
       const results = await Promise.all(
         batch.map(async (node, idx) => {
           if (!node) return null;
-          const count = i + idx + 1;
-
           await waitForImages(node);
 
           const dataUrl = await toPng(node, {
@@ -65,8 +67,9 @@ export default function IdCards({
             cacheBust: true,
           });
 
+          const selectedData = data[i + idx];
           return {
-            name: `${count}_${data[i + idx].name}.png`,
+            name: `${selectedData.name.toUpperCase()}_${selectedData.contingent_name.toUpperCase()}.png`,
             data: dataUrl.split(",")[1],
           };
         })
@@ -95,8 +98,11 @@ export default function IdCards({
       toast.error("Error when marking rows", { id: toastId });
       return;
     }
-    toast.loading("ID Card berhasil diproses", { id: toastId });
+    toast.success("ID Card berhasil diproses", { id: toastId });
 
+    if (!downloadAll) {
+      router.refresh();
+    }
     saveAs(blob, "bulk-images.zip");
   };
 

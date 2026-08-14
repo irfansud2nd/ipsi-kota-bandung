@@ -145,7 +145,7 @@ export const updateOfficialDownloadedIDCard = async (
       .update({
         downloaded_id_card: champId,
       })
-      .in("name", ids);
+      .in("id", ids);
 
     if (error) throw new Error(error.message);
 

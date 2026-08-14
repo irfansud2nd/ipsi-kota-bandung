@@ -16,7 +16,7 @@ export default async function page({
 
   const page = Number(searchParams.page) || 1;
   const downloadAll = searchParams.download_all == "TRUE";
-  const limit = 10;
+  const limit = 300;
   const showAll = searchParams.showAll == "true";
   // const showAll = true;
 
@@ -27,26 +27,32 @@ export default async function page({
           page,
           limit,
           showAll,
-          downloadAll
+          !downloadAll
         )
       : await getRegisteredOfficials(
           page,
           limit,
           params.championshipId,
           showAll,
-          downloadAll
+          !downloadAll
         );
 
   return (
     <IdCards
       champId={params.championshipId}
-      data={data.map((item) => ({
-        id: item.id,
-        name: item.name,
-        contingent_name: item.contingent_name,
-        image: item.image.downloadUrl,
-      }))}
+      data={data
+        .filter(
+          (item) =>
+            !["MTs YPPA Cipulus", "GARDHA SAKTI"].includes(item.contingent_name)
+        )
+        .map((item) => ({
+          id: item.id,
+          name: item.name,
+          contingent_name: item.contingent_name,
+          image: item.image.downloadUrl,
+        }))}
       isAthlete={params.type == "athlete"}
+      downloadAll={downloadAll}
     />
   );
 }
