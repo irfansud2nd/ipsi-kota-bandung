@@ -124,6 +124,13 @@ export const getPaidAthletesSqlByChampionshipId = async (
     let getData = supabase.rpc("get_paid_athletes_by_championship_id", params);
 
     const { data, error } = await getData;
+    // const { data, error } = await supabase
+    //   .from("athletes")
+    //   .select()
+    //   .in("contingent_id", [
+    //     "621dc1c7-f628-4ace-9056-4fe5bca133bb", // Pesilat Selatan Bangka Belitung
+    //     "aad4d204-f965-4256-856e-77d48d43b17b", // Pesantren Entrepreneur Kiai Demak
+    //   ]);
 
     console.log("DATA ", data);
 
