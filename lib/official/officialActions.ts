@@ -10,13 +10,17 @@ import { OfficialSql } from "./officialContants";
 export const getOfficialsSql = async (
   page: number,
   limit: number,
-  showAll: boolean = false
+  showAll: boolean = false,
 ): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect({ directory: "official" });
     if (response) throw new Error(response.message);
 
-    let getData = supabase.from("officials").select().returns<OfficialSql[]>();
+    let getData = supabase
+      .from("officials")
+      .select()
+      .order("created_at", { ascending: false })
+      .returns<OfficialSql[]>();
 
     if (!showAll)
       getData = getData.range(page * limit - limit, page * limit - 1);
@@ -32,7 +36,7 @@ export const getOfficialsSql = async (
 };
 
 export const getOfficialsSqlByContingentId = async (
-  contingentId: string
+  contingentId: string,
 ): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect();
@@ -56,7 +60,7 @@ export const getRegisteredOfficialsSql = async (
   page: number,
   limit: number,
   championshipId: string,
-  showAll: boolean = false
+  showAll: boolean = false,
 ): Promise<ServerAction<OfficialSql[]>> => {
   try {
     const response = await apiProtect({ directory: "official" });
@@ -88,7 +92,7 @@ export const getRegisteredOfficialsSql = async (
 
 // CREATE
 export const addOfficialSql = async (
-  officialSql: OfficialSql
+  officialSql: OfficialSql,
 ): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect();
@@ -106,7 +110,7 @@ export const addOfficialSql = async (
 
 // UPDATE
 export const updateOfficialSql = async (
-  officialSql: OfficialSql
+  officialSql: OfficialSql,
 ): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect();
@@ -127,7 +131,7 @@ export const updateOfficialSql = async (
 
 // DELETE
 export const deleteOfficialSql = async (
-  officialSql: OfficialSql
+  officialSql: OfficialSql,
 ): Promise<ServerAction<OfficialSql>> => {
   try {
     const response = await apiProtect();
@@ -162,7 +166,7 @@ export const countOfficial = async (): Promise<ServerAction<number>> => {
 };
 
 export const getOfficialIdsByContingentId = async (
-  contingentId: string
+  contingentId: string,
 ): Promise<ServerAction<string[]>> => {
   try {
     const response = await apiProtect({ directory: "official" });
