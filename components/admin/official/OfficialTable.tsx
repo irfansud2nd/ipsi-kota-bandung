@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/functions";
 import ShowFileButton from "@/components/showFile/ShowFileButton";
+import OfficialDeleteButton from "./OfficialDeleteButton";
 
 const OfficialTable = ({ officials }: { officials: Official[] }) => {
   return (
@@ -38,6 +39,7 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
                 title={`Pas Foto ${official.name}`}
                 src={official.image.downloadUrl}
               />
+              <OfficialDeleteButton official={official} />
             </TableCell>
           </TableRow>
         ))}
