@@ -30,8 +30,12 @@ const OfficialDeleteButton = ({ official }: { official: Official }) => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant={"outline"} size={"icon"} onClick={handleDelete}>
-              <MdOutlineDeleteForever />
+            <Button
+              variant={"destructive"}
+              size={"icon"}
+              onClick={handleDelete}
+            >
+              <MdOutlineDeleteForever className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
