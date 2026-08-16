@@ -533,9 +533,9 @@ export const championships: Championship[] = [
     description: "",
     register: {
       start: dateToNumber("2026-06-01"),
-      end: dateToNumber("2026-08-24", "17:59"),
+      end: dateToNumber("2026-08-16", "20:00"),
     },
-    editLimit: dateToNumber("2026-08-24", "17:59"),
+    editLimit: dateToNumber("2026-08-16", "20:00"),
     athletes: 0,
     matchCount: 0,
     techmeet: {
