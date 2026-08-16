@@ -34,7 +34,7 @@ const OfficialTable = ({ officials }: { officials: Official[] }) => {
             <TableCell>{official.contingent_name}</TableCell>
             <TableCell>{official.position}</TableCell>
             <TableCell>{formatDate(official.created_at)}</TableCell>
-            <TableCell>
+            <TableCell className="flex gap-1 items-center">
               <ShowFileButton
                 title={`Pas Foto ${official.name}`}
                 src={official.image.downloadUrl}
