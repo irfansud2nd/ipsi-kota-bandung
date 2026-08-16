@@ -70,7 +70,7 @@ export const eventSchema = (ignoreImage: boolean = false) => {
         image: yup.object({
           file: imageSchema(imageMaxSize.event),
         }),
-      })
+      }),
     );
   return schema;
 };
@@ -130,7 +130,7 @@ const generateKategoriPertandingan = (
   start: number,
   step: number,
   bebasBawah: boolean = false,
-  bebasAtas: boolean = false
+  bebasAtas: boolean = false,
 ) => {
   const numberToAlphabet = (index: number) => {
     return String.fromCharCode(index + "A".charCodeAt(0));
@@ -151,7 +151,7 @@ const generateKategoriPertandingan = (
     kategoriArr.push(
       `Kelas ${numberToAlphabet(i)} (${startKategori}-${
         startKategori + step
-      } KG)`
+      } KG)`,
     );
     startKategori += step;
   }
@@ -516,7 +516,7 @@ export const championships: Championship[] = [
     ],
   },
   {
-    // privilegedEmail: ["alfarizzi1804@gmail.com"],
+    privilegedEmail: ["hannasafitri77@gmail.com"],
     id: "bandung-open-26",
     title: "Bandung Open Tournament 2026",
     image: {
