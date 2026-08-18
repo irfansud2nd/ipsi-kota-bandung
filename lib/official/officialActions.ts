@@ -80,7 +80,7 @@ export const getRegisteredOfficialsSql = async (
     }
 
     let getData = supabase
-      .rpc("get_registered_athletes", params)
+      .rpc("get_registered_officials", params)
       .returns<OfficialSql[]>();
 
     const { data, error } = await getData;
@@ -141,7 +141,7 @@ export const updateOfficialDownloadedIDCard = async (
     if (response) throw new Error(response.message);
 
     const { error } = await supabase
-      .from("athletes")
+      .from("officials")
       .update({
         downloaded_id_card: champId,
       })
