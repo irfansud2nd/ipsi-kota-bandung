@@ -97,12 +97,13 @@ export const getAthletesSql = async (
   }
 };
 
-export const getPaidAthletesSqlByChampionshipId = async (
+export const getAthletesSqlByChampionshipId = async (
   championshipId: string,
   page: number,
   limit: number,
   showAll: boolean = false,
-  onlyUndownloaded: boolean = true
+  onlyUndownloaded: boolean = true,
+  isPaid: boolean = true
 ): Promise<ServerAction<AthleteSql[]>> => {
   try {
     let params = {
@@ -110,6 +111,7 @@ export const getPaidAthletesSqlByChampionshipId = async (
       pg: page,
       lmt: limit,
       only_undldd: onlyUndownloaded,
+      is_pd: isPaid,
     };
 
     if (showAll) {
@@ -118,10 +120,11 @@ export const getPaidAthletesSqlByChampionshipId = async (
         pg: 1,
         lmt: 1000,
         only_undldd: onlyUndownloaded,
+        is_pd: isPaid,
       };
     }
 
-    let getData = supabase.rpc("get_paid_athletes_by_championship_id", params);
+    let getData = supabase.rpc("get_athletes_by_championship_id", params);
 
     const { data, error } = await getData;
     // const { data, error } = await supabase

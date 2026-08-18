@@ -22,7 +22,7 @@ import {
   deleteAthleteSql,
   getAthletesSql,
   getAthletesSqlByContingentId,
-  getPaidAthletesSqlByChampionshipId,
+  getAthletesSqlByChampionshipId,
   getUnregisteredAthletesSql,
   updateAthleteAtEventSql,
   updateAthleteAtEventsSql,
@@ -113,20 +113,22 @@ export const getAthletes = async (
   }
 };
 
-export const getPaidAthletesByChampionshipId = async (
+export const getAthletesByChampionshipId = async (
   championshipId: string,
   page: number,
   limit: number,
   showAll: boolean = false,
-  onlyUndownloaded: boolean = false
+  onlyUndownloaded: boolean = false,
+  isPaid: boolean = true
 ) => {
   try {
-    const { result, error } = await getPaidAthletesSqlByChampionshipId(
+    const { result, error } = await getAthletesSqlByChampionshipId(
       championshipId,
       page,
       limit,
       showAll,
-      onlyUndownloaded
+      onlyUndownloaded,
+      isPaid
     );
     if (error) throw error;
 

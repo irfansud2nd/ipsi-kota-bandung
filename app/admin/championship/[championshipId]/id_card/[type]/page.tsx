@@ -1,5 +1,5 @@
 import IdCards from "@/components/admin/IdCards";
-import { getPaidAthletesByChampionshipId } from "@/lib/athlete/external/athleteFunctions";
+import { getAthletesByChampionshipId } from "@/lib/athlete/external/athleteFunctions";
 import { getRegisteredOfficials } from "@/lib/official/officialFunctions";
 import { notFound } from "next/navigation";
 
@@ -18,16 +18,18 @@ export default async function page({
   const downloadAll = searchParams.download_all == "TRUE";
   const limit = 300;
   const showAll = searchParams.showAll == "true";
+  const isPaid = false;
   // const showAll = true;
 
   const data =
     params.type == "athlete"
-      ? await getPaidAthletesByChampionshipId(
+      ? await getAthletesByChampionshipId(
           params.championshipId,
           page,
           limit,
           showAll,
-          !downloadAll
+          !downloadAll,
+          isPaid
         )
       : await getRegisteredOfficials(
           page,
